@@ -21,7 +21,7 @@ export default function App() {
           hideNavBar
           initial
         />
-        <Scene key="auth" type="reset" hideNavBar>
+        <Scene key="auth" type="reset" hideNavBar duration={0}>
           <Scene key="login"
             component={LoginScreen}
             title="Login"
@@ -50,7 +50,7 @@ export default function App() {
             title="Resource"
           />
         </Scene>
-        <Scene key="alarm" type="reset" hideNavBar>
+        <Scene key="alarm" type="reset" hideNavBar duration={0}>
           <Scene key="start"
             component={AlarmScreen}
             title="Alarm Start"
