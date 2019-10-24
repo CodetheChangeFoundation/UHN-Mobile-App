@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
+import SetTimeButton from './SetTimeButton';
 /**
 * Override styles that get passed from props
 **/
@@ -8,15 +9,25 @@ rotateCircle = (percentage, base_degrees) => {
     return {
         transform: [{ rotateZ: `${rotateBy}deg` }]
     };
-}
+};
 
-convertSecondsToMinutes = (seconds) => {
-    let minute = Math.floor(seconds % 3600 / 60);
+convertSeconds = (seconds) => {
     let second = Math.floor(seconds % 3600 % 60);
     if(second <= 9){
         second = "0" + second;
     }
-    return minute+ ' : '+second;
+    return second;
+};
+
+convertSecondsToMinutes = (seconds) => {
+    let minute = Math.floor(seconds % 3600 / 60);
+    //let second = Math.floor(seconds % 3600 % 60);
+    // if(second <= 9){
+    //     second = "0" + second;
+    // }
+    //return minute+ ' : '+second;
+    return minute;
+
 };
 
 renderSecondLayer = (percentage) => {
@@ -25,9 +36,9 @@ renderSecondLayer = (percentage) => {
     } else {
         return <View style={styles.offsetLayer}></View>
     }
-}
+};
 
-export default ProgressCircle = ({ percentage, seconds}) => {
+export default ProgressCircle = ({ percentage, seconds, increaseTimeHandler, decreaseTimeHandler}) => {
     let firstProgressLayerStyle;
     if (percentage > 50) {
         firstProgressLayerStyle = rotateCircle(50, -135);
@@ -39,7 +50,13 @@ export default ProgressCircle = ({ percentage, seconds}) => {
         <View style={styles.baseLayer}>
             <View style={[styles.firstProgressLayer, firstProgressLayerStyle]}></View>
             {renderSecondLayer(percentage)}
-            <Text style={styles.timeDisplay}>{convertSecondsToMinutes(seconds)}</Text>
+            <SetTimeButton changeTimeHandler={increaseTimeHandler}>+15</SetTimeButton>
+            <View style={styles.timeLayout}>
+                <Text style={styles.timeDisplay}>{convertSecondsToMinutes(seconds)}</Text>
+                <Text style={styles.timeDisplay}>:</Text>
+                <Text style={styles.timeDisplay}>{convertSeconds(seconds)}</Text>
+            </View>
+            <SetTimeButton changeTimeHandler={decreaseTimeHandler}>-15</SetTimeButton>
         </View>
     );
 }
@@ -90,9 +107,13 @@ const styles = StyleSheet.create({
         borderTopColor: '#60a781',
         transform: [{ rotateZ: '-135deg' }]
     },
+    timeLayout:{
+        flexDirection: 'row',
+        alignItems: 'stretch'
+    },
     timeDisplay: {
         fontSize: 72,
         fontWeight: 'bold',
-        color: '#67686B'
+        color: '#67686B',
     }
 });
