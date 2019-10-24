@@ -1,5 +1,8 @@
 database = require("../database");
 var db = database.getdb();
+let jwt = require('jsonwebtoken');
+let config = require('../config');
+let middleware = require('../middleware');
 
 async function loginUser(req,res){
   var username = req.body.username;
@@ -15,9 +18,21 @@ async function loginUser(req,res){
     const result = await db.collection('details').findOne({username: data.username, password: data.password});
 
     if (result){
-      console.log(result);
-      res.status(200).send("Successful login");
+      let token = jwt.sign({username: data.username},
+        config.secret,
+        {
+          expiresIn: '24h'
+        }
+      );
+
+      res.status(200).json({
+        success: true,
+        message: 'Authentication successful!',
+        token: token
+      })
+      console.log("Successful login.");
     }
+
     else{
       res.status(404).send("Failed login");
     }
@@ -52,7 +67,11 @@ function signupUser(req,res){
     });
 }
 
+async function userInfo(req,res){
+  const result = await db.collection('details').findOne({username: req.decoded.username});
+  res.status(200).send(result);
+}
+
 module.exports = {
-  signupUser: signupUser,
-  loginUser : loginUser
+  signupUser,loginUser,userInfo
 }
