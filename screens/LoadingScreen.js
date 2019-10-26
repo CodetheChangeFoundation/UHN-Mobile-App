@@ -19,17 +19,19 @@ const LoadingScreen = () => {
   })
 
   asyncLoadFonts = async() => {
-    await Font.loadAsync({
-      // UHN requested fonts
-      'OpenSans-Regular' : require('../assets/fonts/OpenSans-Regular.ttf'),
-      'OpenSans-SemiBold' : require('../assets/fonts/OpenSans-SemiBold.ttf'),
-      'Prompt-Regular' : require('../assets/fonts/Prompt-Regular.ttf'),
-      // NativeBase fonts
-      Roboto : require('../node_modules/native-base/Fonts/Roboto.ttf'),
-      Roboto_medium : require('../node_modules/native-base/Fonts/Roboto_medium.ttf'),
-      ...Ionicons.font,
-    });
-    setFontsLoaded(true);
+    if (!fontsLoaded) {
+      await Font.loadAsync({
+        // UHN requested fonts
+        'OpenSans-Regular' : require('../assets/fonts/OpenSans-Regular.ttf'),
+        'OpenSans-SemiBold' : require('../assets/fonts/OpenSans-SemiBold.ttf'),
+        'Prompt-Regular' : require('../assets/fonts/Prompt-Regular.ttf'),
+        // NativeBase fonts
+        Roboto : require('../node_modules/native-base/Fonts/Roboto.ttf'),
+        Roboto_medium : require('../node_modules/native-base/Fonts/Roboto_medium.ttf'),
+        ...Ionicons.font,
+      });
+      setFontsLoaded(true);
+    }
   }
 
   asyncCheckToken = async() => {

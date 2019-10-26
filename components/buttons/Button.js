@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import theme from '../styles/base';
+import theme from '../../styles/base';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Button as NBButton } from 'native-base';
-import { Text } from './text';
+import Text from '../typography/Text';
 
-export const Button = (props) => {
+const Button = (props) => {
   return (
-      <TouchableOpacity style={[buttonStyles[props.variant], props.styles]}>
+      <TouchableOpacity style={[buttonStyles[props.variant], props.style]}>
           <Text variant={props.variant}>{props.children}</Text>
       </TouchableOpacity>
   );
@@ -71,3 +71,5 @@ const buttonStyles = StyleSheet.create({
     backgroundColor: theme.colors.red,
   },
 });
+
+export default Button;

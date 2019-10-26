@@ -1,14 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import theme from '../styles/base'
+import theme from '../../styles/base'
 import { Text as RNText, StyleSheet } from 'react-native';
 import { Title, Text as NBText } from 'native-base';
 
-export const Text = (props) => {
+const Text = (props) => {
   return (
-      <NBText style={[textStyles[props.variant], props.styles]}>{props.children}</NBText>
+      <NBText style={[textStyles[props.variant], props.style]}>{props.children}</NBText>
   );
 }
+
+/* Prop Types */
+
+Text.propTypes = {
+  variant: PropTypes.oneOf([ 'body', 'header', 'primary', 'secondary', 'alarm', 'urgent']),
+};
+
+Text.defaultProps = {
+  variant: 'body',
+};
 
 /* Styles */
 
@@ -27,9 +37,13 @@ const textStyles = StyleSheet.create({
       ...body,
       color: theme.colors.darkGrey,
   },
-  header: {
+  title: {
       ...header,
       color: theme.colors.lightGrey,
+  },
+  header: {
+      ...header,
+      color: theme.colors.white,
   },
   primary: {
       ...body,
@@ -50,3 +64,5 @@ const textStyles = StyleSheet.create({
       color: theme.colors.white,
   },
 });
+
+export default Text;

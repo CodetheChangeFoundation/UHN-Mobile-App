@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import theme from '../styles/base';
-import { View as RNView, StyleSheet } from 'react-native';
-import { Container, Content, Form, Item, Input as NBInput, Label } from 'native-base';
+import theme from '../../styles/base';
+import { StyleSheet } from 'react-native';
+import { Item, Input as NBInput, Label } from 'native-base';
 
-export const Input = (props) => {
+const Input = (props) => {
   return (
     <Item floatingLabel last={props.last} style={inputStyles.item}>
       <Label style={inputStyles.label}>{props.label}</Label>
-      <NBInput {...inputProps[props.variant]} style={inputStyles.input}/>
+      <NBInput {...inputProps[props.variant]} style={[inputStyles.input, props.style]}/>
     </Item>
   );
 }
@@ -17,6 +17,7 @@ export const Input = (props) => {
 
 Input.propTypes = {
   variant: PropTypes.oneOf([ 'text', 'number']),
+  label: PropTypes.string.isRequired,
 };
 
 Input.defaultProps = {
@@ -40,6 +41,7 @@ const inputProps = {
 const baseStyles = {
   paddingTop: 10,
   paddingBottom: 10,
+  marginRight: 15,
   fontFamily: theme.fonts.body,
   fontSize: theme.fontSizes.medium,
   color: theme.colors.darkGrey,
@@ -57,3 +59,5 @@ const inputStyles = StyleSheet.create({
     ...baseStyles,
   },
 });
+
+export default Input;

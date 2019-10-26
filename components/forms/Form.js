@@ -1,0 +1,22 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import theme from '../../styles/base';
+import { StyleSheet } from 'react-native';
+import { Form as NBForm } from 'native-base';
+
+const Form = (props) => {
+  return (
+      <NBForm style={[formStyles.form, props.style]}>{props.children}</NBForm>
+  );
+}
+
+/* Styles */
+
+const formStyles = StyleSheet.create({
+  form: {
+    flex: 1,
+    padding: 20,
+  },
+});
+
+export default Form;

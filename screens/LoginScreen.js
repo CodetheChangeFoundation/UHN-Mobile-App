@@ -1,37 +1,67 @@
 import React, { Component } from 'react';
 import {
   StyleSheet,
-  Text,
   View,
-  Button
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import { Icon } from 'native-base';
+// import { Container } from '../components/layout/Container';
+// import { Content } from '../components/layout/Content';
+// import { Header } from '../components/layout/Header';
+import { Container, Content, Header } from "../components/layout";
+import { Text } from '../components/typography/Text';
+import { Button } from '../components/buttons/Button';
+import { Form } from '../components/forms/Form';
+import { Input } from '../components/forms/Input';
 
 const LoginScreen = () => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.welcome}>
-        Login Screen
-      </Text>
-      <Button title="Go to Signup" onPress={() => Actions.signup()} />
-      <Button title="Login" onPress={() => Actions.main()} />
-    </View>
+    <Container>
+    <Header>Hello</Header>
+
+    <Content>
+    <Form>
+      <View style={styles.loginInfo}>
+        <Input variant='text' label='Username' />
+        <Input variant='text' label='Password' />
+      </View>
+
+      <View style={styles.rememberMe}>
+        <Text>remember me</Text>
+        <Icon ios='ios-add' android='md-add' />
+      </View>
+
+      <View style={styles.loginButton}>
+        <Button variant='primary' onPress={() => Actions.main()}>login</Button>
+      </View>
+
+      <View style={styles.signupButton}>
+        <Button variant='secondary' onPress={() => Actions.signup()}>sign up</Button>
+      </View>
+    </Form>
+    </Content>
+    </Container>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  loginInfo: {
+    flex: 4,
+  },
+  rememberMe: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#bb0000',
+    flexDirection: 'row',
+    padding: 18,
+    alignSelf: 'flex-end',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-    color: '#ffffff',
+  loginButton: {
+    flex: 4,
+    alignSelf: 'center',
   },
+  signupButton: {
+    flex: 2,
+    alignSelf: 'center',
+  }
 });
 
 export default LoginScreen;
