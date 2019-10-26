@@ -1,9 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import theme from '../styles/base';
-import { StyleSheet, TouchableOpacity } from 'react-native';
-import { Button as NBButton } from 'native-base';
-import { Text } from './text';
+import React from "react";
+import PropTypes from "prop-types";
+import theme from "../styles/base";
+import { StyleSheet, TouchableOpacity } from "react-native";
+import { Button as NBButton } from "native-base";
+import { Text } from "./text";
 
 export const Button = (props) => {
   return (
@@ -16,19 +16,19 @@ export const Button = (props) => {
 /* Prop Types */
 
 Button.propTypes = {
-  variant: PropTypes.oneOf([ 'primary', 'secondary', 'alarm', 'urgent']),
+  variant: PropTypes.oneOf([ "primary", "secondary", "alarm", "urgent"]),
 };
 
 Button.defaultProps = {
-  variant: 'primary',
+  variant: "primary",
 };
 
 /* Styles */
 
 const base = {
   margin: 4,
-  alignItems: 'center',
-  justifyContent: 'center',
+  alignItems: "center",
+  justifyContent: "center",
 }
 
 const medium = {

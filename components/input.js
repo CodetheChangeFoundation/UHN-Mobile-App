@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import theme from '../styles/base';
-import { View as RNView, StyleSheet } from 'react-native';
-import { Container, Content, Form, Item, Input as NBInput, Label } from 'native-base';
+import React from "react";
+import PropTypes from "prop-types";
+import theme from "../styles/base";
+import { View as RNView, StyleSheet } from "react-native";
+import { Container, Content, Form, Item, Input as NBInput, Label } from "native-base";
 
 export const Input = (props) => {
   return (
@@ -16,22 +16,22 @@ export const Input = (props) => {
 /* Prop Types */
 
 Input.propTypes = {
-  variant: PropTypes.oneOf([ 'text', 'number']),
+  variant: PropTypes.oneOf([ "text", "number"]),
 };
 
 Input.defaultProps = {
-  variant: 'text',
+  variant: "text",
 };
 
 /* Props */
 
 const inputProps = {
   text: {
-    autoCapitalize: 'none',
+    autoCapitalize: "none",
     autoCorrect: false,
   },
   number: {
-    keyboardType: 'phone-pad',
+    keyboardType: "phone-pad",
   },
 };
 

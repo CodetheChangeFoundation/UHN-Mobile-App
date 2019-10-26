@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
   View,
   AsyncStorage
-} from 'react-native';
-import { Actions } from 'react-native-router-flux';
-import * as Font from 'expo-font';
-import { Ionicons } from '@expo/vector-icons';
-import { AppLoading } from 'expo';
+} from "react-native";
+import { Actions } from "react-native-router-flux";
+import * as Font from "expo-font";
+import { Ionicons } from "@expo/vector-icons";
+import { AppLoading } from "expo";
 
 const LoadingScreen = () => {
   const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -21,12 +21,12 @@ const LoadingScreen = () => {
   asyncLoadFonts = async() => {
     await Font.loadAsync({
       // UHN requested fonts
-      'OpenSans-Regular' : require('../assets/fonts/OpenSans-Regular.ttf'),
-      'OpenSans-SemiBold' : require('../assets/fonts/OpenSans-SemiBold.ttf'),
-      'Prompt-Regular' : require('../assets/fonts/Prompt-Regular.ttf'),
+      "OpenSans-Regular" : require("../assets/fonts/OpenSans-Regular.ttf"),
+      "OpenSans-SemiBold" : require("../assets/fonts/OpenSans-SemiBold.ttf"),
+      "Prompt-Regular" : require("../assets/fonts/Prompt-Regular.ttf"),
       // NativeBase fonts
-      Roboto : require('../node_modules/native-base/Fonts/Roboto.ttf'),
-      Roboto_medium : require('../node_modules/native-base/Fonts/Roboto_medium.ttf'),
+      Roboto : require("../node_modules/native-base/Fonts/Roboto.ttf"),
+      Roboto_medium : require("../node_modules/native-base/Fonts/Roboto_medium.ttf"),
       ...Ionicons.font,
     });
     setFontsLoaded(true);

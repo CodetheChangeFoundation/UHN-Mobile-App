@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import theme from '../styles/base'
-import { Text as RNText, StyleSheet } from 'react-native';
-import { Title, Text as NBText } from 'native-base';
+import React from "react";
+import PropTypes from "prop-types";
+import theme from "../styles/base"
+import { Text as RNText, StyleSheet } from "react-native";
+import { Title, Text as NBText } from "native-base";
 
 export const Text = (props) => {
   return (
