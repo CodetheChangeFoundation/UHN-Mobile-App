@@ -6,10 +6,7 @@ import {
   Button
 } from "react-native";
 import { Actions } from "react-native-router-flux";
-<<<<<<< HEAD
 import Timer from "../components/Timer/Timer";
-=======
->>>>>>> master
 
 const UsingScreen = () => {
   return (
