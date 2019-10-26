@@ -1,9 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import SetTimeButton from './SetTimeButton';
-/**
-* Override styles that get passed from props
-**/
+
 rotateCircle = (percentage, base_degrees) => {
     const rotateBy = base_degrees + (percentage * 3.6);
     return {
@@ -13,7 +11,7 @@ rotateCircle = (percentage, base_degrees) => {
 
 convertSeconds = (seconds) => {
     let second = Math.floor(seconds % 3600 % 60);
-    if(second <= 9){
+    if (second <= 9) {
         second = "0" + second;
     }
     return second;
@@ -21,11 +19,6 @@ convertSeconds = (seconds) => {
 
 convertSecondsToMinutes = (seconds) => {
     let minute = Math.floor(seconds % 3600 / 60);
-    //let second = Math.floor(seconds % 3600 % 60);
-    // if(second <= 9){
-    //     second = "0" + second;
-    // }
-    //return minute+ ' : '+second;
     return minute;
 
 };
@@ -38,7 +31,7 @@ renderSecondLayer = (percentage) => {
     }
 };
 
-export default ProgressCircle = ({ percentage, seconds, increaseTimeHandler, decreaseTimeHandler}) => {
+export default ProgressCircle = ({ percentage, seconds, increaseTimeHandler, decreaseTimeHandler }) => {
     let firstProgressLayerStyle;
     if (percentage > 50) {
         firstProgressLayerStyle = rotateCircle(50, -135);
@@ -107,7 +100,7 @@ const styles = StyleSheet.create({
         borderTopColor: '#60a781',
         transform: [{ rotateZ: '-135deg' }]
     },
-    timeLayout:{
+    timeLayout: {
         flexDirection: 'row',
         alignItems: 'stretch'
     },
