@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
   StyleSheet,
   Text,
   View,
   Button
-} from 'react-native';
+} from "react-native";
 
 const ProfileScreen = () => {
   return (
@@ -19,15 +19,15 @@ const ProfileScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'brown',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "brown",
   },
   welcome: {
     fontSize: 20,
-    textAlign: 'center',
+    textAlign: "center",
     margin: 10,
-    color: '#ffffff',
+    color: "#ffffff",
   },
 });
 
