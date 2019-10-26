@@ -1,15 +1,15 @@
-import React from 'react';
-import { Router, Scene } from 'react-native-router-flux';
-import LoginScreen from './screens/LoginScreen';
-import SignupScreen from './screens/SignupScreen';
-import LoadingScreen from './screens/LoadingScreen';
-import UsingScreen from './screens/UsingScreen';
-import RespondingScreen from './screens/RespondingScreen';
-import AlarmScreen from './screens/AlarmScreen';
-import SnoozeScreen from './screens/SnoozeScreen';
-import ProfileScreen from './screens/ProfileScreen';
-import ResourceScreen from './screens/ResourceScreen';
-import DrawerContent from './components/drawer/DrawerContent';
+import React from "react";
+import { Router, Scene } from "react-native-router-flux";
+import LoginScreen from "./screens/LoginScreen";
+import SignupScreen from "./screens/SignupScreen";
+import LoadingScreen from "./screens/LoadingScreen";
+import UsingScreen from "./screens/UsingScreen";
+import RespondingScreen from "./screens/RespondingScreen";
+import AlarmScreen from "./screens/AlarmScreen";
+import SnoozeScreen from "./screens/SnoozeScreen";
+import ProfileScreen from "./screens/ProfileScreen";
+import ResourceScreen from "./screens/ResourceScreen";
+import DrawerContent from "./components/drawer/DrawerContent";
 
 export default function App() {
   return (
