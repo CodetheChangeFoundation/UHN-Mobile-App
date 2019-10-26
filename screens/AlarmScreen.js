@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
   StyleSheet,
   Text,
   View,
   Button
-} from 'react-native';
-import { Actions } from 'react-native-router-flux';
+} from "react-native";
+import { Actions } from "react-native-router-flux";
 
 const AlarmScreen = () => {
   return (
@@ -22,15 +22,15 @@ const AlarmScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'purple',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "purple",
   },
   welcome: {
     fontSize: 20,
-    textAlign: 'center',
+    textAlign: "center",
     margin: 10,
-    color: '#ffffff',
+    color: "#ffffff",
   },
 });
 

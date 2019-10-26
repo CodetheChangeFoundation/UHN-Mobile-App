@@ -1,5 +1,5 @@
-import React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import React from "react";
+import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
 export default function SetTimeButton ({changeTimeHandler, children}) {
     return (
@@ -16,10 +16,10 @@ const style = StyleSheet.create({
     buttonText: {
         paddingLeft: 8,
         fontSize: 22,
-        color: '#67686B',
+        color: "#67686B",
     },
     secondsText: {
         fontSize: 14,
-        color: '#67686B',       
+        color: "#67686B",       
     }
 });

@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { View } from 'react-native';
-import ProgressCircle from './ProgressCircle'
+import React, { Component } from "react";
+import { View } from "react-native";
+import ProgressCircle from "./ProgressCircle"
 
 export default class Timer extends Component {
     state = {
@@ -31,7 +31,7 @@ export default class Timer extends Component {
     };
 
     componentDidMount() {
-        console.log('here');
+        console.log("here");
         this.interval = setInterval(() => {
             this.countdown();
         }, 1000);
