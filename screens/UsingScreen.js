@@ -6,10 +6,12 @@ import {
   Button
 } from "react-native";
 import { Actions } from "react-native-router-flux";
+import Timer from "../components/Timer/Timer";
 
 const UsingScreen = () => {
   return (
     <View style={styles.container}>
+      <Timer/>
       <Text style={styles.welcome}>
         Using Screen
       </Text>
