@@ -6,14 +6,14 @@ import { Title, Text as NBText } from 'native-base';
 
 const Text = (props) => {
   return (
-      <NBText style={[textStyles[props.variant], props.style]}>{props.children}</NBText>
+      <NBText {...props} style={[textStyles[props.variant], props.style]}>{props.children}</NBText>
   );
 }
 
 /* Prop Types */
 
 Text.propTypes = {
-  variant: PropTypes.oneOf([ 'body', 'header', 'primary', 'secondary', 'alarm', 'urgent']),
+  variant: PropTypes.oneOf([ 'body', 'title', 'header', 'primary', 'secondary', 'alarm', 'urgent']),
 };
 
 Text.defaultProps = {
@@ -39,7 +39,7 @@ const textStyles = StyleSheet.create({
   },
   title: {
       ...header,
-      color: theme.colors.lightGrey,
+      color: theme.colors.darkGrey,
   },
   header: {
       ...header,
@@ -51,7 +51,7 @@ const textStyles = StyleSheet.create({
   },
   secondary: {
       ...body,
-      color: theme.colors.lightGrey,
+      color: theme.colors.darkGrey,
   },
   alarm: {
       ...body,

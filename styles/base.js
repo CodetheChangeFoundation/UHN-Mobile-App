@@ -1,10 +1,12 @@
 export const theme = {
   colors : {
-    lightGrey: '#999B9E', 
-    darkGrey: '#67686B', 
     green: '#60A781',
+    fadedGreen: '#CEE4D8',
+    darkGrey: '#67686B',
+    lightGrey: '#999B9E',
+    fadedGrey: '#E5E5E6',
     white: '#FFFFFF',
-    red: '#FF0000'
+    red: '#FF0000',
   }, 
   fonts : {
     body: 'OpenSans-Regular',

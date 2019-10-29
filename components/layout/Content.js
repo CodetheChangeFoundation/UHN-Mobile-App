@@ -6,7 +6,7 @@ import { Content as NBContent } from 'native-base';
 
 const Content = (props) => {
   return (
-      <NBContent contentContainerStyle={[contentStyles.content, props.style]}>{props.children}</NBContent>
+      <NBContent {...props} contentContainerStyle={[contentStyles.content, props.style]}>{props.children}</NBContent>
   );
 }
 

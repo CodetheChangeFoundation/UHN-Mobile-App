@@ -6,7 +6,7 @@ import { View as NBView } from "native-base";
 
 const View = (props) => {
   return (
-    <NBView style={[viewStyles.view, props.style]}>{props.children}</NBView>
+    <NBView {...props} style={[viewStyles.view, props.style]}>{props.children}</NBView>
   );
 }
 

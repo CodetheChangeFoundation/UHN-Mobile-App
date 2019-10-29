@@ -1,20 +1,21 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from "react";
 import {
   StyleSheet,
-  View,
-} from 'react-native';
-import { Actions } from 'react-native-router-flux';
-import { Icon } from 'native-base';
-// import { Container } from '../components/layout/Container';
-// import { Content } from '../components/layout/Content';
-// import { Header } from '../components/layout/Header';
-import { Container, Content, Header } from "../components/layout";
-import { Text } from '../components/typography/Text';
-import { Button } from '../components/buttons/Button';
-import { Form } from '../components/forms/Form';
-import { Input } from '../components/forms/Input';
+} from "react-native";
+import { Actions } from "react-native-router-flux";
+import { Container, Content, Header, View } from "../components/layout";
+import { Text } from "../components/typography";
+import { Button, Switch } from "../components/buttons";
+import { Form, Input } from "../components/forms";
 
 const LoginScreen = () => {
+  const [rememberMe, setRememberMe] = useState(true);
+  let passwordInputRef = React.createRef();
+
+  _toggleRememberMe = (newValue) => {
+    setRememberMe(newValue);
+  };
+
   return (
     <Container>
     <Header>Hello</Header>
@@ -22,21 +23,28 @@ const LoginScreen = () => {
     <Content>
     <Form>
       <View style={styles.loginInfo}>
-        <Input variant='text' label='Username' />
-        <Input variant='text' label='Password' />
+        <Input variant="text" 
+          label="Username" 
+          hasNext
+          onSubmitEditing={() => {passwordInputRef._root.focus();}}
+        />
+        <Input variant="text" 
+          label="Password" 
+          ref={(input) => {passwordInputRef = input;}}
+        />
       </View>
 
       <View style={styles.rememberMe}>
         <Text>remember me</Text>
-        <Icon ios='ios-add' android='md-add' />
+        <Switch style={styles.rememberMeSwitch} value={rememberMe} onValueChange={_toggleRememberMe}/>
       </View>
 
       <View style={styles.loginButton}>
-        <Button variant='primary' onPress={() => Actions.main()}>login</Button>
+        <Button variant="primary" onPress={() => Actions.main()}>login</Button>
       </View>
 
       <View style={styles.signupButton}>
-        <Button variant='secondary' onPress={() => Actions.signup()}>sign up</Button>
+        <Button variant="secondary" onPress={() => Actions.signup()}>sign up</Button>
       </View>
     </Form>
     </Content>
@@ -49,18 +57,18 @@ const styles = StyleSheet.create({
     flex: 4,
   },
   rememberMe: {
-    flex: 1,
-    flexDirection: 'row',
-    padding: 18,
-    alignSelf: 'flex-end',
+    flexDirection: "row",
+    paddingVertical: 16,
+    alignSelf: "flex-end",
+  },
+  rememberMeSwitch: {
+    marginLeft: 16,
   },
   loginButton: {
-    flex: 4,
-    alignSelf: 'center',
+    flex: 6,
   },
   signupButton: {
     flex: 2,
-    alignSelf: 'center',
   }
 });
 

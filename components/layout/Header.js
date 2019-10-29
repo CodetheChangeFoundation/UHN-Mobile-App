@@ -7,7 +7,7 @@ import Text from '../typography/Text';
 
 const Header = (props) => {
   return (
-    <NBHeader style={[headerStyles.header, props.style]}>
+    <NBHeader {...props} style={[headerStyles.header, props.style]}>
       <Left style={headerStyles.left}>
         <Text variant='header'>{props.children}</Text>
       </Left>
