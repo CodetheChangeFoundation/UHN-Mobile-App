@@ -1,13 +1,18 @@
-import React from "react";
-import PropTypes from "prop-types";
-import theme from "../styles/base";
-import { StyleSheet, TouchableOpacity } from "react-native";
-import { Button as NBButton } from "native-base";
-import { Text } from "./text";
+import React from 'react';
+import PropTypes from 'prop-types';
+import theme from '../../styles/base';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import { Button as NBButton } from 'native-base';
+import Text from '../typography/Text';
 
-export const Button = (props) => {
+const Button = (props) => {
+  const combinedProps = {
+    ...buttonProps,
+    ...props,
+  };
+
   return (
-      <TouchableOpacity style={[buttonStyles[props.variant], props.styles]}>
+      <TouchableOpacity {...combinedProps} style={[buttonStyles[props.variant], props.style]}>
           <Text variant={props.variant}>{props.children}</Text>
       </TouchableOpacity>
   );
@@ -22,6 +27,12 @@ Button.propTypes = {
 Button.defaultProps = {
   variant: "primary",
 };
+
+/* Props */
+
+const buttonProps = {
+  activeOpacity: 0.5,
+}
 
 /* Styles */
 
@@ -51,14 +62,14 @@ const buttonStyles = StyleSheet.create({
   primary: {
     ...base,
     ...medium,
-    backgroundColor: theme.colors.lightGrey,
+    backgroundColor: theme.colors.darkGrey,
   },
   secondary: {
     ...base,
     ...medium,
     ...border,
     backgroundColor: theme.colors.white,
-    borderColor: theme.colors.lightGrey,
+    borderColor: theme.colors.darkGrey,
   },
   alarm: {
     ...base,
@@ -71,3 +82,5 @@ const buttonStyles = StyleSheet.create({
     backgroundColor: theme.colors.red,
   },
 });
+
+export default Button;
