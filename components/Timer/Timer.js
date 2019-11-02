@@ -22,10 +22,12 @@ export default class Timer extends Component {
     this.setState({ timeRemaining: this.state.timeRemaining + 15, 
                     time: this.state.timeRemaining + 15 }, 
                     () => {
-                      clearInterval(this.interval);
-                      this.interval = setInterval(() => {
-                        this.countdown();
-                      }, 1000);
+                      if(this.props.using){
+                        clearInterval(this.interval);
+                        this.interval = setInterval(() => {
+                          this.countdown();
+                        }, 1000);
+                      }
                     });
   };
 
@@ -34,10 +36,12 @@ export default class Timer extends Component {
       this.setState({ timeRemaining: this.state.timeRemaining - 15,
                       time: this.state.timeRemaining - 15 }, 
                       () => {
-                        clearInterval(this.interval);
-                        this.interval = setInterval(() => {
-                          this.countdown();
-                        }, 1000);
+                        if(this.props.using){
+                          clearInterval(this.interval);
+                          this.interval = setInterval(() => {
+                            this.countdown();
+                          }, 1000);
+                        }
                     });
     }
   };

@@ -1,37 +1,75 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import {
   StyleSheet,
-  Text,
-  View,
-  Button
 } from "react-native";
 import { Actions } from "react-native-router-flux";
+import { Container, Content, Header, View } from "../components/layout";
+import { Text } from "../components/typography";
+import { Button, Switch } from "../components/buttons";
+import { Form, Input } from "../components/forms";
 
 const LoginScreen = () => {
+  const [rememberMe, setRememberMe] = useState(true);
+  let passwordInputRef = React.createRef();
+
+  _toggleRememberMe = (newValue) => {
+    setRememberMe(newValue);
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.welcome}>
-        Login Screen
-      </Text>
-      <Button title="Go to Signup" onPress={() => Actions.signup()} />
-      <Button title="Login" onPress={() => Actions.main()} />
-    </View>
+    <Container>
+    <Header>Hello</Header>
+
+    <Content>
+    <Form>
+      <View style={styles.loginInfo}>
+        <Input variant="text" 
+          label="Username" 
+          hasNext
+          onSubmitEditing={() => {passwordInputRef._root.focus();}}
+        />
+        <Input variant="text" 
+          label="Password" 
+          ref={(input) => {passwordInputRef = input;}}
+        />
+      </View>
+
+      <View style={styles.rememberMe}>
+        <Text>remember me</Text>
+        <Switch style={styles.rememberMeSwitch} value={rememberMe} onValueChange={_toggleRememberMe}/>
+      </View>
+
+      <View style={styles.loginButton}>
+        <Button variant="primary" onPress={() => Actions.main()}>login</Button>
+      </View>
+
+      <View style={styles.signupButton}>
+        <Button variant="secondary" onPress={() => Actions.signup()}>sign up</Button>
+      </View>
+    </Form>
+    </Content>
+    </Container>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#bb0000",
+  loginInfo: {
+    flex: 4,
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: "center",
-    margin: 10,
-    color: "#ffffff",
+  rememberMe: {
+    flexDirection: "row",
+    paddingVertical: 16,
+    alignSelf: "flex-end",
   },
+  rememberMeSwitch: {
+    marginLeft: 16,
+  },
+  loginButton: {
+    flex: 6,
+  },
+  signupButton: {
+    flex: 2,
+  }
 });
 
 export default LoginScreen;
