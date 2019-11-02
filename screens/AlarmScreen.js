@@ -11,6 +11,7 @@ import Timer from "../components/Timer/Timer"
 const AlarmScreen = () => {
   return (
     <View style={styles.container}>
+      <Timer using={true}/>
       <Text style={styles.welcome}>
         Alarm Screen
       </Text>

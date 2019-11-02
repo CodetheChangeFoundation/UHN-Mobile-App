@@ -11,7 +11,7 @@ import Timer from "../components/Timer/Timer";
 const UsingScreen = () => {
   return (
     <View style={styles.container}>
-      <Timer/>
+      <Timer using={false}/>
       <Text style={styles.welcome}>
         Using Screen
       </Text>

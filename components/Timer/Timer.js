@@ -4,7 +4,7 @@ import ProgressCircle from "./ProgressCircle"
 
 export default class Timer extends Component {
   state = {
-    counting: true,
+    using: false,
     time: 120,
     timeRemaining: 120,
   };
@@ -19,31 +19,40 @@ export default class Timer extends Component {
   };
 
   incrementTimer() {
-    this.setState({ timeRemaining: this.state.timeRemaining + 15 });
-    this.setState({ time: this.state.timeRemaining + 15 });
+    this.setState({ timeRemaining: this.state.timeRemaining + 15, 
+                    time: this.state.timeRemaining + 15 }, 
+                    () => {
+                      clearInterval(this.interval);
+                      this.interval = setInterval(() => {
+                        this.countdown();
+                      }, 1000);
+                    });
   };
 
   decrementTimer() {
     if (this.state.timeRemaining > 15) {
-      this.setState({ timeRemaining: this.state.timeRemaining - 15 });
-      this.setState({ time: this.state.timeRemaining - 15 });
+      this.setState({ timeRemaining: this.state.timeRemaining - 15,
+                      time: this.state.timeRemaining - 15 }, 
+                      () => {
+                        clearInterval(this.interval);
+                        this.interval = setInterval(() => {
+                          this.countdown();
+                        }, 1000);
+                    });
     }
   };
 
-<<<<<<< HEAD
   componentDidMount() {
-    this.interval = setInterval(() => {
-      this.countdown();
-    }, 1000);
+    if (this.props.using) {
+      this.interval = setInterval(() => {
+        this.countdown();
+      }, 1000);
+    }
   };
-=======
-    componentDidMount() {
-        console.log("here");
-        this.interval = setInterval(() => {
-            this.countdown();
-        }, 1000);
-    };
->>>>>>> 853bad79acaa55575e93c6ec12407a7a77ca1535
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
 
   render() {
     return (

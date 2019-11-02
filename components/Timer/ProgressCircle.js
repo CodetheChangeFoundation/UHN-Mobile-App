@@ -55,7 +55,6 @@ export default ProgressCircle = ({ percentage, seconds, increaseTimeHandler, dec
 }
 
 const styles = StyleSheet.create({
-<<<<<<< HEAD
   baseLayer: {
     width: 255,
     height: 255,
@@ -111,60 +110,3 @@ const styles = StyleSheet.create({
     color: '#67686B',
   }
 });
-=======
-    baseLayer: {
-        width: 255,
-        height: 255,
-        borderWidth: 8,
-        borderRadius: 127.5,
-        borderColor: "#60a781",
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    firstProgressLayer: {
-        width: 255,
-        height: 255,
-        borderWidth: 8,
-        borderRadius: 127.5,
-        position: "absolute",
-        borderLeftColor: "transparent",
-        borderBottomColor: "transparent",
-        borderRightColor: "#999b9e",
-        borderTopColor: "#999b9e",
-        transform: [{ rotateZ: "-135deg" }]
-    },
-    secondProgressLayer: {
-        width: 255,
-        height: 255,
-        borderWidth: 8,
-        borderRadius: 127.5,
-        position: "absolute",
-        borderLeftColor: "transparent",
-        borderBottomColor: "transparent",
-        borderRightColor: "#999b9e",
-        borderTopColor: "#999b9e",
-        transform: [{ rotateZ: "45deg" }]
-    },
-    offsetLayer: {
-        width: 255,
-        height: 255,
-        borderWidth: 8,
-        borderRadius: 127.5,
-        position: "absolute",
-        borderLeftColor: "transparent",
-        borderBottomColor: "transparent",
-        borderRightColor: "#60a781",
-        borderTopColor: "#60a781",
-        transform: [{ rotateZ: "-135deg" }]
-    },
-    timeLayout: {
-        flexDirection: "row",
-        alignItems: "stretch"
-    },
-    timeDisplay: {
-        fontSize: 72,
-        fontWeight: "bold",
-        color: "#67686B",
-    }
-});
->>>>>>> 853bad79acaa55575e93c6ec12407a7a77ca1535
