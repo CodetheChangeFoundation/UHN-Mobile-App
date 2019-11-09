@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import theme from '../../styles/base';
-import { StyleSheet } from 'react-native';
-import { Container as NBContainer } from 'native-base';
+import React from "react";
+import PropTypes from "prop-types";
+import theme from "../../styles/base";
+import { StyleSheet } from "react-native";
+import { Container as NBContainer } from "native-base";
 
 const Container = (props) => {
   return (

@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import theme from '../../styles/base'
-import { Text as RNText, StyleSheet } from 'react-native';
-import { Title, Text as NBText } from 'native-base';
+import React from "react";
+import PropTypes from "prop-types";
+import theme from "../../styles/base"
+import { Text as RNText, StyleSheet } from "react-native";
+import { Title, Text as NBText } from "native-base";
 
 const Text = (props) => {
   return (
@@ -13,11 +13,11 @@ const Text = (props) => {
 /* Prop Types */
 
 Text.propTypes = {
-  variant: PropTypes.oneOf([ 'body', 'footnote', 'title', 'header', 'primary', 'secondary', 'alarm', 'urgent']),
+  variant: PropTypes.oneOf([ "body", "footnote", "title", "header", "primary", "secondary", "alarm", "urgent"]),
 };
 0
 Text.defaultProps = {
-  variant: 'body',
+  variant: "body",
 };
 
 /* Styles */
