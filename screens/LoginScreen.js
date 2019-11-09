@@ -26,16 +26,17 @@ const LoginScreen = () => {
         <Input variant="text" 
           label="Username" 
           hasNext
-          onSubmitEditing={() => {passwordInputRef._root.focus();}}
+          onSubmitEditing={() => passwordInputRef._root.focus()}
         />
         <Input variant="text" 
           label="Password" 
-          ref={(input) => {passwordInputRef = input;}}
+          ref={(input) => passwordInputRef = input}
+          onSubmitEditing={() => Actions.main()}
         />
       </View>
 
       <View style={styles.rememberMe}>
-        <Text>remember me</Text>
+        <Text variant="footnote">remember me</Text>
         <Switch style={styles.rememberMeSwitch} value={rememberMe} onValueChange={_toggleRememberMe}/>
       </View>
 
@@ -54,9 +55,10 @@ const LoginScreen = () => {
 
 const styles = StyleSheet.create({
   loginInfo: {
-    flex: 4,
+    flex: 0,
   },
   rememberMe: {
+    flex: 2,
     flexDirection: "row",
     paddingVertical: 16,
     alignSelf: "flex-end",

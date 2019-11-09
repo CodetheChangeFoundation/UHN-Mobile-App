@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import theme from '../../styles/base'
-import { Text as RNText, StyleSheet } from 'react-native';
-import { Title, Text as NBText } from 'native-base';
+import React from "react";
+import PropTypes from "prop-types";
+import theme from "../../styles/base"
+import { Text as RNText, StyleSheet } from "react-native";
+import { Title, Text as NBText } from "native-base";
 
 const Text = (props) => {
   return (
@@ -13,55 +13,61 @@ const Text = (props) => {
 /* Prop Types */
 
 Text.propTypes = {
-  variant: PropTypes.oneOf([ 'body', 'title', 'header', 'primary', 'secondary', 'alarm', 'urgent']),
+  variant: PropTypes.oneOf([ "body", "footnote", "title", "header", "primary", "secondary", "alarm", "urgent"]),
 };
-
+0
 Text.defaultProps = {
-  variant: 'body',
+  variant: "body",
 };
 
 /* Styles */
 
-const body = {
+const regular = {
   fontFamily: theme.fonts.body,
   fontSize: theme.fontSizes.medium,
+  color: theme.colors.darkGrey,
 }
 
-const header = {
+const big = {
   fontFamily: theme.fonts.header,
   fontSize: theme.fontSizes.large,
+  color: theme.colors.darkGrey,
 }
 
 const textStyles = StyleSheet.create({
   body: {
-      ...body,
-      color: theme.colors.darkGrey,
+    ...regular,
+  },
+  footnote: {
+    ...regular,
+    fontSize: theme.fontSizes.small,
+    textAlign: "center",
   },
   title: {
-      ...header,
-      color: theme.colors.darkGrey,
+    ...big,
+    textAlign: "center",
   },
   header: {
-      ...header,
-      color: theme.colors.white,
+    ...big,
+    color: theme.colors.white,
   },
   primary: {
-      ...body,
-      color: theme.colors.white,
+    ...regular,
+    color: theme.colors.white,
   },
   secondary: {
-      ...body,
-      color: theme.colors.darkGrey,
+    ...regular,
+    color: theme.colors.darkGrey,
   },
   alarm: {
-      ...body,
-      fontSize: theme.fontSizes.large,
-      color: theme.colors.white,
+    ...regular,
+    fontSize: theme.fontSizes.large,
+    color: theme.colors.white,
   },
   urgent: {
-      ...body,
-      fontSize: theme.fontSizes.large,
-      color: theme.colors.white,
+    ...regular,
+    fontSize: theme.fontSizes.large,
+    color: theme.colors.white,
   },
 });
 

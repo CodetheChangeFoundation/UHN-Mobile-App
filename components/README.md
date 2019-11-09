@@ -97,11 +97,11 @@ return(
     <Input variant="text" 
       label="Username" 
       hasNext
-      onSubmitEditing={() => {passwordInputRef._root.focus();}}
+      onSubmitEditing={() => passwordInputRef._root.focus()}
     />
     <Input variant="text" 
       label="Password" 
-      ref={(input) => {passwordInputRef = input;}}
+      ref={(input) => passwordInputRef = input}
     />
   </Form>
 );
@@ -136,7 +136,7 @@ Props:
 - variant: changes the text appearance
   - optional
   - type: one of
-    - "body", "title" (used for displaying text on screen)
+    - "body", "footnote", "title" (used for displaying text on screen)
     - "header" (used in the Header component)
     - "primary", "secondary", "alarm", "urgent" (used in the Button component)
   - default: "body"

@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import theme from '../../styles/base';
-import { StyleSheet, Switch as RNSwitch, Platform } from 'react-native';
+import React from "react";
+import PropTypes from "prop-types";
+import theme from "../../styles/base";
+import { StyleSheet, Switch as RNSwitch, Platform } from "react-native";
 
 const Switch = (props) => {
   const combinedProps = {
