@@ -1,35 +1,72 @@
 import React, { Component } from "react";
 import {
   StyleSheet,
-  Text,
-  View,
-  Button
 } from "react-native";
 import { Actions } from "react-native-router-flux";
+import { Container, Content, Header, View } from "../components/layout";
+import { Text } from "../components/typography";
+import { Button } from "../components/buttons";
+import { Form, Input } from "../components/forms";
 
 const SignupScreen = () => {
+  let usernameInputRef = React.createRef();
+  let passwordInputRef = React.createRef();
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.welcome}>
-        Signup Screen
-      </Text>
-      <Button title="Go to Login" onPress={() => Actions.login()} />
-    </View>
+    <Container>
+    <Header>Sign Up</Header>
+
+    <Content>
+    <Form>
+      <View style={styles.title}>
+        <Text variant="title">Create your account</Text>
+      </View>
+
+      <View style={styles.loginInfo}>
+        <Input variant="number"
+          label="Phone Number"
+          hasNext
+          onSubmitEditing={() => usernameInputRef._root.focus()}
+        />
+        <Input variant="text"
+          label="Username"
+          ref={(input) => usernameInputRef = input}
+          hasNext
+          onSubmitEditing={() => passwordInputRef._root.focus()}
+        />
+        <Input variant="text"
+          label="Password"
+          ref={(input) => passwordInputRef = input}
+          onSubmitEditing={() => Actions.login()}
+        />
+      </View>
+
+      <View style={styles.signupButton}>
+        <Button variant="primary" onPress={() => Actions.login()}>sign up</Button>
+      </View>
+
+      <View style={styles.message}>
+        <Text variant="footnote">You'll receive a verification code via text.</Text>
+      </View>
+    </Form>
+    </Content>
+    </Container>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#808080",
+  title: {
+    flex: 0,
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: "center",
-    margin: 10,
-    color: "#ffffff",
+  loginInfo: {
+    flex: 0,
+  },
+  signupButton: {
+    flex: 2,
+    justifyContent: "center",
+  },
+  message: {
+    flex: 3,
   },
 });
 
