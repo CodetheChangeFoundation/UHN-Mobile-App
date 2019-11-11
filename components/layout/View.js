@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import theme from '../../styles/base';
-import { StyleSheet, View as RNView } from 'react-native';
+import React from "react";
+import PropTypes from "prop-types";
+import theme from "../../styles/base";
+import { StyleSheet, View as RNView } from "react-native";
 import { View as NBView } from "native-base";
 
 const View = (props) => {

@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import theme from '../../styles/base';
-import { StyleSheet } from 'react-native';
-import { Item, Input as NBInput, Label } from 'native-base';
+import React from "react";
+import PropTypes from "prop-types";
+import theme from "../../styles/base";
+import { StyleSheet } from "react-native";
+import { Item, Input as NBInput, Label } from "native-base";
 
 const Input = React.forwardRef((props, ref) => {
   const combinedProps = {
@@ -23,13 +23,13 @@ const Input = React.forwardRef((props, ref) => {
 /* Prop Types */
 
 Input.propTypes = {
-  variant: PropTypes.oneOf([ 'text', 'number']),
+  variant: PropTypes.oneOf([ "text", "number"]),
   label: PropTypes.string.isRequired,
   hasNext: PropTypes.bool,
 };
 
 Input.defaultProps = {
-  variant: 'text',
+  variant: "text",
   hasNext: false,
 };
 
@@ -41,12 +41,12 @@ const baseProps = {
 const inputProps = {
   text: {
     ...baseProps,
-    autoCapitalize: 'none',
+    autoCapitalize: "none",
     autoCorrect: false,
   },
   number: {
     ...baseProps,
-    keyboardType: 'phone-pad',
+    keyboardType: "phone-pad",
   },
 };
 

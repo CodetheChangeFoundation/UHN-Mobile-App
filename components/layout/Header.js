@@ -1,15 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import theme from '../../styles/base';
-import { StyleSheet } from 'react-native';
-import { Header as NBHeader, Left, Body, Right } from 'native-base';
-import Text from '../typography/Text';
+import React from "react";
+import PropTypes from "prop-types";
+import theme from "../../styles/base";
+import { StyleSheet } from "react-native";
+import { Header as NBHeader, Left, Body, Right } from "native-base";
+import Text from "../typography/Text";
 
 const Header = (props) => {
   return (
     <NBHeader {...props} style={[headerStyles.header, props.style]}>
       <Left style={headerStyles.left}>
-        <Text variant='header'>{props.children}</Text>
+        <Text variant="header">{props.children}</Text>
       </Left>
       <Body style={headerStyles.body} />
       <Right style={headerStyles.right} />
