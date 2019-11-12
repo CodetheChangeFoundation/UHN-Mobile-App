@@ -1,0 +1,5 @@
+export const INCREMENT_TIMER = "INCREMENT_TIMER";
+export const DECREMENT_TIMER = "DECREMENT_TIMER";
+export const COUNTDOWN = "COUNTDOWN";
+export const CLEARTIME = "CLEARTIME";
+export const RESETTIME = "RESETTIME";
