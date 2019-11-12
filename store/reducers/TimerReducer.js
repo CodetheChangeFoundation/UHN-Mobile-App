@@ -1,8 +1,8 @@
 import { INCREMENT_TIMER, DECREMENT_TIMER, COUNTDOWN, CLEARTIME, RESETTIME } from "../actions/Types"
 
 const initialState = {
-  time: 10,
-  timeRemaining: 10
+  time: 120,
+  timeRemaining: 120
 };
 
 export default (state = initialState, action) => {
