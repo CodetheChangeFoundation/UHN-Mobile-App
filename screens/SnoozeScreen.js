@@ -1,20 +1,25 @@
 import React, { Component } from "react";
 import {
   StyleSheet,
-  Text,
-  View,
   Button
 } from "react-native";
 import { Actions } from "react-native-router-flux";
+import { Container, Content, Header, View } from "../components/layout";
+import { Text } from "../components/typography";
 
 const SnoozeScreen = () => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.welcome}>
-        Snooze Screen
-      </Text>
-      <Button title="Snooze" onPress={() => Actions.alarm()} />
-    </View>
+    <Container>
+    <Header>Snooze Mode</Header>
+    <Content>
+      <View style={styles.container}>
+        <Text style={styles.welcome}>
+          Snooze Screen
+        </Text>
+        <Button title="Snooze" onPress={() => Actions.alarm()} />
+      </View>
+    </Content>
+    </Container>
   );
 }
 

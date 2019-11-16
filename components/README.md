@@ -9,7 +9,11 @@ import { Button, Switch } from "../components/buttons";
 import { Form, Input } from "../components/forms";
 ```
 
-Note: if you add a new component to the components/ folder, you might need to clear Expo's cache before you can import that component into another file.
+Note: if you add a new file to the components/ folder, Expo might give you an error like
+
+> Invariant Violation: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+To resolve this, try restarting Expo and clearing its cache.
 
 ```
 expo start --clear
@@ -121,6 +125,23 @@ Layout is based on NativeBase's structure. The View component can be used inside
   </Content>
 </Container>
 ```
+
+**Header**
+
+```
+<Header leftButton="arrow" onLeftButtonPress={() => this.props.navigation.goBack()}}>Home Screen</Text>
+```
+
+Props:
+
+- leftButton: the icon that appears on the left edge of the header
+  - optional
+  - type: one of "arrow", "header"
+  - default: none
+- onLeftButtonPress: the function to execute when the left button (if present) is pressed
+  - optional
+  - type: function
+  - default: none
 
 ## Typography
 
