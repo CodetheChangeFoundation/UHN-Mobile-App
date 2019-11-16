@@ -43,32 +43,32 @@ Header.propTypes = {
 const iconName = {
   arrow: "md-arrow-back",
   menu: "md-menu"
-}
+};
 
 const headerProps = {
   leftButton: {
     size: 28,
     color: theme.colors.white,
   }
-}
+};
 
 /* Styles */
 
 const segment = {
   flex: 0,
   alignSelf: "flex-end",
-}
+};
 
 const headerStyles = StyleSheet.create({
   header: {
-    height: 90,
+    height: theme.layout.headerHeight,
     alignItems: "flex-end",
-    paddingVertical: 16,
+    paddingVertical: theme.layout.margin,
     backgroundColor: theme.colors.darkGrey,
   },
   left: {
     ...segment,
-    marginLeft: 16
+    marginLeft: theme.layout.margin
   },
   body: {
     ...segment,
@@ -77,7 +77,7 @@ const headerStyles = StyleSheet.create({
   },
   right: {
     ...segment,
-    marginRight: 16,
+    marginRight: theme.layout.margin
   }
 });
 

@@ -15,7 +15,7 @@ const Form = (props) => {
 const formStyles = StyleSheet.create({
   form: {
     flex: 1,
-    padding: 20,
+    padding: theme.layout.padding,
   },
 });
 

@@ -4,7 +4,7 @@ import {
   Button
 } from "react-native";
 import { Actions } from "react-native-router-flux";
-import { Container, Content, Header, View } from "../components/layout";
+import { Container, Content, Header, View, Segment, Banner } from "../components/layout";
 import { Text } from "../components/typography";
 
 const RespondingScreen = () => {
@@ -13,6 +13,12 @@ const RespondingScreen = () => {
     <Header leftButton="menu" onLeftButtonPress={() => Actions.drawerOpen()}>Responding Mode</Header>
 
     <Content>
+      <Banner>
+        <Segment active="right"
+          leftText="using" rightText="responding"
+          onLeftButtonPress={() => Actions.using()}/>
+      </Banner>
+
       <View style={styles.container}>
         <Text style={styles.welcome}>
           Responding Screen

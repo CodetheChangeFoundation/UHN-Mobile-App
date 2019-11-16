@@ -1,5 +1,5 @@
 export const theme = {
-  colors : {
+  colors: {
     green: "#60A781",
     fadedGreen: "#CEE4D8",
     darkGrey: "#67686B",
@@ -8,17 +8,27 @@ export const theme = {
     white: "#FFFFFF",
     red: "#FF0000",
   }, 
-  fonts : {
+  fonts: {
     body: "OpenSans-Regular",
     header: "OpenSans-SemiBold",
     numeral: "Prompt-Regular",
   }, 
-  fontSizes : {
+  fontSizes: {
     small: 16,
     medium: 18,
     large: 24,
     xlarge: 72,
   },
+  layout: {
+    padding: 4,
+    margin: 16,
+    headerHeight: 90,
+    bannerHeight: 54,
+    segmentHeight: 54
+  },
+  buttons: {
+    buttonPressOpacity: 0.5
+  }
 }
 
 export default theme;

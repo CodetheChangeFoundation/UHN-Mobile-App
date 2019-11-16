@@ -5,7 +5,7 @@ import {
 } from "react-native";
 import { Actions } from "react-native-router-flux";
 import Timer from "../components/Timer/Timer";
-import { Container, Content, Header, View } from "../components/layout";
+import { Container, Content, Header, View, Segment, Banner } from "../components/layout";
 import { Text } from "../components/typography";
 
 const UsingScreen = () => {
@@ -14,6 +14,13 @@ const UsingScreen = () => {
     <Header leftButton="menu" onLeftButtonPress={() => Actions.drawerOpen()}>Using Mode</Header>
 
     <Content>
+      <Banner>
+        <Segment active="left"
+          leftText="using" rightText="responding"
+          onRightButtonPress={() => Actions.responding()}
+        />
+      </Banner>
+    
       <View style={styles.container}>
         <Timer using={false}/>
         <Text style={styles.welcome}>

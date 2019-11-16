@@ -113,7 +113,11 @@ return(
 
 ## Layout
 
-Layout is based on NativeBase's structure. The View component can be used inside Content for additional layout/styling.
+Layout is based on NativeBase's structure.
+- Container encapsulates the entire screen
+- Header is the static header at the top of the screen, used for navigation
+- Content is the main part of the screen (scrollable in iOS)
+- Banner is a fixed-height element, used to wrap a row of components inside Content
 
 ```
 <Container>
@@ -121,6 +125,7 @@ Layout is based on NativeBase's structure. The View component can be used inside
     User Profile
   </Header>
   <Content>
+    <Banner />
     ...
   </Content>
 </Container>
@@ -129,7 +134,10 @@ Layout is based on NativeBase's structure. The View component can be used inside
 **Header**
 
 ```
-<Header leftButton="arrow" onLeftButtonPress={() => this.props.navigation.goBack()}}>Home Screen</Text>
+<Header leftButton="arrow" 
+  onLeftButtonPress={() => this.props.navigation.goBack()}}>
+  Home Screen 
+</Header>
 ```
 
 Props:
@@ -139,6 +147,39 @@ Props:
   - type: one of "arrow", "header"
   - default: none
 - onLeftButtonPress: the function to execute when the left button (if present) is pressed
+  - optional
+  - type: function
+  - default: none
+
+**Segment**
+
+```
+<Segment active="left"
+  leftText="Previous" rightText="Next"
+  onRightButtonPress={() => handleLeftButtonPress()}
+/>
+<Segment active="right"
+  leftText="Previous" rightText="Next"
+  onLeftButtonPress={() => handleRightButtonPress()}
+/>
+```
+
+Props:
+- active: which button is active for the current screen
+  - optional
+  - type: one of "left", "right"
+  - default: left
+- leftText: the text to show on the left button
+  - required
+  - type: string
+- rightText: the text to show on the right button
+  - required
+  - type: string
+- onLeftButtonPress: the function to execute when the left button is pressed
+  - optional
+  - type: function
+  - default: none
+- onRightButtonPress: the function to execute when the right button is pressed
   - optional
   - type: function
   - default: none

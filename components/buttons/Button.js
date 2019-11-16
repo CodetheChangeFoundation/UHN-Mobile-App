@@ -31,13 +31,13 @@ Button.defaultProps = {
 /* Props */
 
 const buttonProps = {
-  activeOpacity: 0.5,
+  activeOpacity: theme.buttons.buttonPressOpacity,
 }
 
 /* Styles */
 
 const base = {
-  margin: 4,
+  margin: theme.layout.margin,
   alignItems: "center",
   justifyContent: "center",
 }
