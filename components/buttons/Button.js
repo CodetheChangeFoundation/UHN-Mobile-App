@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import theme from "../../styles/base";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Button as NBButton } from "native-base";
-import Text from "../typography/Text";
+import { Text } from "../typography";
 
 const Button = (props) => {
   const combinedProps = {
@@ -31,13 +31,13 @@ Button.defaultProps = {
 /* Props */
 
 const buttonProps = {
-  activeOpacity: 0.5,
+  activeOpacity: theme.buttons.buttonPressOpacity,
 }
 
 /* Styles */
 
 const base = {
-  margin: 4,
+  margin: theme.layout.margin,
   alignItems: "center",
   justifyContent: "center",
 }

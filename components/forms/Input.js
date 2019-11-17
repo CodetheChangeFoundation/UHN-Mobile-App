@@ -61,7 +61,7 @@ const baseStyles = {
 const inputStyles = StyleSheet.create({
   item: {
     ...baseStyles,
-    marginTop: 20,
+    marginTop: theme.layout.margin,
   },
   label: {
     ...baseStyles,

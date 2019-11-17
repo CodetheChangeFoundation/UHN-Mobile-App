@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
-  Text,
-  View,
   AsyncStorage
 } from "react-native";
 import { Actions } from "react-native-router-flux";
 import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
 import { AppLoading } from "expo";
+import { Container, Content, View } from "../components/layout";
+import { Text } from "../components/typography";
 
 const LoadingScreen = () => {
   const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -50,11 +50,15 @@ const LoadingScreen = () => {
     return <AppLoading />
   } else {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Loading Screen
-        </Text>
-      </View>
+      <Container>
+      <Content>
+        <View style={styles.container}>
+          <Text style={styles.welcome}>
+            Loading Screen
+          </Text>
+        </View>
+      </Content>
+      </Container>
     );
   }
 }

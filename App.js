@@ -37,7 +37,7 @@ export default function App() {
               title="Signup"
             />
           </Scene>
-          <Scene key="main" drawer type="reset" hideNavBar contentComponent={DrawerContent}>
+          <Scene key="main" drawer type="reset" hideNavBar contentComponent={DrawerContent} headerMode="none">
             <Scene key="using"
               component={UsingScreen}
               title="Using"

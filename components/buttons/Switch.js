@@ -36,7 +36,7 @@ const switchProps = {
   },
   ios_backgroundColor: theme.colors.white,
   height: 24,
-  width: 41,
+  width: 42,
   borderWidth: 1,
   borderRadius: 16,
   borderColor: theme.colors.lightGrey,

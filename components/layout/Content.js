@@ -15,7 +15,7 @@ const Content = (props) => {
 const contentStyles = StyleSheet.create({
   content: {
     flex: 1,
-    padding: 20,
+    padding: (theme.layout.padding + theme.layout.margin),
   },
 });
 

@@ -3,6 +3,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { Actions } from "react-native-router-flux";
+import theme from "../styles/base"
 import { Container, Content, Header, View } from "../components/layout";
 import { Text } from "../components/typography";
 import { Button, Switch } from "../components/buttons";
@@ -60,11 +61,11 @@ const styles = StyleSheet.create({
   rememberMe: {
     flex: 2,
     flexDirection: "row",
-    paddingVertical: 16,
+    marginTop: theme.layout.margin,
     alignSelf: "flex-end",
   },
   rememberMeSwitch: {
-    marginLeft: 16,
+    marginLeft: theme.layout.margin,
   },
   loginButton: {
     flex: 6,
