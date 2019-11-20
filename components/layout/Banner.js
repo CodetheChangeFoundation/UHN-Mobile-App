@@ -19,7 +19,6 @@ const bannerStyles = StyleSheet.create({
     justifyContent: "center",
     height: theme.layout.bannerHeight,
     padding: theme.layout.padding,
-    marginBottom: theme.layout.margin,
     overflow: "hidden"
   },
 });

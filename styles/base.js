@@ -24,7 +24,7 @@ export const theme = {
     margin: 16,
     headerHeight: 90,
     bannerHeight: 54,
-    segmentHeight: 54
+    segmentHeight: 40
   },
   buttons: {
     buttonPressOpacity: 0.5

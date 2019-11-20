@@ -16,6 +16,7 @@ const viewStyles = StyleSheet.create({
   view: {
     flex: 1,
     alignItems: "center",
+    justifyContent: "center"
   },
 });
 
