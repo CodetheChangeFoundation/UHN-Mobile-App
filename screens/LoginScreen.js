@@ -9,49 +9,78 @@ import { Text } from "../components/typography";
 import { Button, Switch } from "../components/buttons";
 import { Form, Input } from "../components/forms";
 
-const LoginScreen = () => {
-  const [rememberMe, setRememberMe] = useState(true);
-  let passwordInputRef = React.createRef();
+export default class LoginForm extends Component {
 
-  _toggleRememberMe = (newValue) => {
-    setRememberMe(newValue);
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: "",
+      password: "",
+      error: "",
+      loading: false,
+      rememberMe : false
+    };
+    this.setRememberMe = this.setRememberMe.bind(this);
+  }
 
-  return (
-    <Container>
-    <Header>Hello</Header>
+  setRememberMe(){
+    console.log("here");
+    if(this.state.rememberMe){
+      this.setState({rememberMe: false});
+    }else{
+      this.setState({rememberMe: true});
+    }
+  }
 
-    <Content>
-    <Form>
-      <View style={styles.loginInfo}>
-        <Input variant="text" 
-          label="Username" 
-          hasNext
-          onSubmitEditing={() => passwordInputRef._root.focus()}
-        />
-        <Input variant="text" 
-          label="Password" 
-          ref={(input) => passwordInputRef = input}
-          onSubmitEditing={() => Actions.main()}
-        />
-      </View>
+  render() {
+    let passwordInputRef = React.createRef();
+    // _toggleRememberMe = (newValue) => {
+    //   setRememberMe(newValue);
+    // };
+    //const [rememberMe, setRememberMe] = useState(true);
 
-      <View style={styles.rememberMe}>
-        <Text variant="footnote">remember me</Text>
-        <Switch style={styles.rememberMeSwitch} value={rememberMe} onValueChange={_toggleRememberMe}/>
-      </View>
+    return (
+      <Container>
+        <Header>Hello</Header>
 
-      <View style={styles.loginButton}>
-        <Button variant="primary" onPress={() => Actions.main()}>login</Button>
-      </View>
+        <Content>
+          <Form>
+            <View style={styles.loginInfo}>
+              <Input variant="text"
+                label="Username"
+                hasNext
+                onChangeText={username => {
+                  console.log(username);
+                }}
+                onSubmitEditing={() => passwordInputRef._root.focus()}
+              />
+              <Input variant="text"
+                label="Password"
+                ref={(input) => passwordInputRef = input}
+                onChangeText={password => {
+                  console.log(password);
+                }}
+                onSubmitEditing={() => Actions.main()}
+              />
+            </View>
 
-      <View style={styles.signupButton}>
-        <Button variant="secondary" onPress={() => Actions.signup()}>sign up</Button>
-      </View>
-    </Form>
-    </Content>
-    </Container>
-  );
+            <View style={styles.rememberMe}>
+              <Text variant="footnote">remember me</Text>
+              <Switch style={styles.rememberMeSwitch} value={this.state.rememberMe} onValueChange={this.setRememberMe} />
+            </View>
+
+            <View style={styles.loginButton}>
+              <Button variant="primary" onPress={() => Actions.main()}>login</Button>
+            </View>
+
+            <View style={styles.signupButton}>
+              <Button variant="secondary" onPress={() => Actions.signup()}>sign up</Button>
+            </View>
+          </Form>
+        </Content>
+      </Container>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -74,5 +103,3 @@ const styles = StyleSheet.create({
     flex: 2,
   }
 });
-
-export default LoginScreen;
