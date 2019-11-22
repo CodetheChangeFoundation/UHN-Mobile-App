@@ -25,6 +25,7 @@ export default class LoginScreen extends Component {
     this.onLoginButtonPress = this.onLoginButtonPress.bind(this);
     this.onLoginSuccess = this.onLoginSuccess.bind(this);
     this.onLoginFailed = this.onLoginFailed.bind(this);
+    this,renderLoginButtonOrSpinner = this.renderLoginButtonOrSpinner.bind(this);
   }
 
   setRememberMe() {
