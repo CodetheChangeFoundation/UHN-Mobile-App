@@ -5,18 +5,22 @@ import { Container, Content, Header, View } from "../components/layout";
 import { Text } from "../components/typography";
 import { Button } from "../components/buttons";
 import { Form, Input } from "../components/forms";
+import Spinner from "../components/forms/Spinner";
 import * as axios from 'axios';
+import { SERVER_ROOT } from 'react-native-dotenv';
 
 export default class SignupScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = {
+    this.initialState = {
       phoneNumber: "",
       email: "",
       username: "",
       password: "",
       loading: false
     }
+    this.state = this.initialState;
+    this.renderSignUpButtonOrSpinner = this.renderSignUpButtonOrSpinner.bind(this);
     this.onSignUpButtonPress = this.onSignUpButtonPress.bind(this);
     this.onSignUpSuccess = this.onSignUpSuccess.bind(this);
     this.onSignUpFailed = this.onSignUpFailed.bind(this);
@@ -28,31 +32,36 @@ export default class SignupScreen extends Component {
     console.log("[DEBUG] username is " + username + ", password is " + password + "\n email is " + email + " phoneNum is " + phoneNumber);
     // TODO: generate error if username or password is empty string
 
+    this.setState({ loading: true });
 
-    // firebase.auth().signInWithEmailAndPassword(email, password)
-    //     .then(this.onLoginSuccess.bind(this))
-    //     .catch(() => {
-    //         firebase.auth().createUserWithEmailAndPassword(email,password)
-    //             .then(this.onLoginSuccess.bind(this))
-    //             .catch(this.onLoginFailed.bind(this));
-    //     });
-    axios.post('http://localhost:3000/signup', {
+    axios.post( SERVER_ROOT + '/signup', {
       email: email,
       phone: phoneNumber,
       username: username,
       password: password,
     }).then(this.onSignUpSuccess)
-    .catch(this.onSignUpFailed);
-
-    Actions.login();
+      .catch(this.onSignUpFailed);
   }
 
   onSignUpSuccess(response) {
     console.log(response);
+    this.setState(this.initialState);
+    Actions.login();
   }
 
   onSignUpFailed(error) {
     console.log(error);
+    this.setState(this.initialState);
+  }
+
+  renderSignUpButtonOrSpinner() {
+    return (this.state.loading) ?
+      (<Spinner />) 
+      :
+      (<Button variant="primary" onPress={this.onSignUpButtonPress}>
+        sign up
+        </Button>
+      );
   }
 
   render() {
@@ -104,12 +113,10 @@ export default class SignupScreen extends Component {
                   this.setState({ password: password });
                   console.log(this.state.password);
                 }}
-              //onSubmitEditing={() => Actions.login()}
               />
             </View>
-
             <View style={styles.signupButton}>
-              <Button variant="primary" onPress={this.onSignUpButtonPress}>sign up</Button>
+              {this.renderSignUpButtonOrSpinner()}
             </View>
 
             <View style={styles.message}>

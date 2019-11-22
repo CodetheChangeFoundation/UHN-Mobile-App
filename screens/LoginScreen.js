@@ -7,18 +7,20 @@ import { Text } from "../components/typography";
 import { Button, Switch } from "../components/buttons";
 import { Form, Input } from "../components/forms";
 import * as axios from 'axios';
+import { SERVER_ROOT } from 'react-native-dotenv';
 
 export default class LoginScreen extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
+    this.initialState = {
       username: "",
       password: "",
       error: "",
       loading: false,
       rememberMe: false
     };
+    this.state = this.initialState;
     this.setRememberMe = this.setRememberMe.bind(this);
     this.onLoginButtonPress = this.onLoginButtonPress.bind(this);
     this.onLoginSuccess = this.onLoginSuccess.bind(this);
@@ -38,21 +40,34 @@ export default class LoginScreen extends Component {
     console.log("[DEBUG] LOGIN Button pressed.");
     console.log("[DEBUG] username is " + username + ", password is " + password);
 
-    axios.post('http://localhost:3000/login', {
+    this.setState({ loading: true });
+
+    axios.post(SERVER_ROOT + '/login', {
       username: username,
       password: password,
     }).then(this.onLoginSuccess)
     .catch(this.onLoginFailed);
-
-    Actions.main();
   }
 
   onLoginSuccess(response) {
     console.log(response);
+    this.setState({loading: false});
+    Actions.main();
   }
 
   onLoginFailed(error) {
     console.log(error);
+    this.setState({loading: false});
+  }
+
+  renderLoginButtonOrSpinner() {
+    return (this.state.loading) ?
+      (<Spinner />) 
+      :
+      (<Button variant="primary" onPress={this.onLoginButtonPress}>
+        login
+        </Button>
+      );
   }
 
   render() {
@@ -81,7 +96,6 @@ export default class LoginScreen extends Component {
                   this.setState({ password: password });
                   console.log(this.state.password);
                 }}
-                // onSubmitEditing={this.onLoginButtonPress}
               />
             </View>
 
@@ -91,7 +105,7 @@ export default class LoginScreen extends Component {
             </View>
 
             <View style={styles.loginButton}>
-              <Button variant="primary" onPress={this.onLoginButtonPress}>login</Button>
+              {this.renderLoginButtonOrSpinner()}
             </View>
 
             <View style={styles.signupButton}>
