@@ -202,3 +202,11 @@ Props:
     - "header" (used in the Header component)
     - "primary", "secondary", "alarm", "urgent" (used in the Button component)
   - default: "body"
+
+**Username**
+
+Used when displaying a list of usernames. Formats each username as a padded row with 100% width and a bottom border.
+
+```
+<Username>pandy</Username>
+```

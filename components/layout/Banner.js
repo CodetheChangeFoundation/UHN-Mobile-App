@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import theme from "../../styles/base";
-import { StyleSheet, View as RNView } from "react-native";
-import { View } from "native-base";
+import { StyleSheet } from "react-native";
+import View from "./View";
 
 const Banner = (props) => {
   return (
