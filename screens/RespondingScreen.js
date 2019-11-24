@@ -32,7 +32,7 @@ const RespondingScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 7,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "lightblue",

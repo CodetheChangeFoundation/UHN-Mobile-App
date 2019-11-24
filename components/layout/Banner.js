@@ -14,12 +14,13 @@ const Banner = (props) => {
 
 const bannerStyles = StyleSheet.create({
   view: {
-    flex: 0,
+    flex: 1,
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
-    height: theme.layout.bannerHeight,
+    justifyContent: "space-between",
+    // height: theme.layout.bannerHeight,
     padding: theme.layout.padding,
-    overflow: "hidden"
+    overflow: "hidden",
   },
 });
 
