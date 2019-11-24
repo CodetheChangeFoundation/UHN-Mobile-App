@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import {
-  StyleSheet,
-  Button
+  StyleSheet
 } from "react-native";
 import { Actions } from "react-native-router-flux";
 import Timer from "../components/Timer/Timer";
 import { Container, Content, Header, View, Segment, Banner } from "../components/layout";
+import { Button, IconButton } from "../components/buttons";
 import { Text } from "../components/typography";
 
 const UsingScreen = () => {
@@ -20,14 +20,17 @@ const UsingScreen = () => {
           onRightButtonPress={() => Actions.responding()}
         />
       </Banner>
+      <Banner>
+        <IconButton variant="icon" name="md-pin" label="current location" />
+        <IconButton variant="counter" counterValue={3} label="responders available" />
+      </Banner>
     
-      <View style={styles.container}>
+      <View style={styles.timer}>
         <Timer using={false}/>
-        <Text style={styles.welcome}>
-          Using Screen
-        </Text>
-        <Button title="Responding" onPress={() => Actions.responding()} />
-        <Button title="Start" onPress={() => Actions.alarm()} />
+      </View>
+
+      <View style={styles.startButton}>
+        <Button variant="alarm" onPress={() => Actions.alarm()}>start</Button>
       </View>
     </Content>
     </Container>
@@ -35,17 +38,11 @@ const UsingScreen = () => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "pink",
+  timer: {
+    flex: 5,
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: "center",
-    margin: 10,
-    color: "#ffffff",
+  startButton: {
+    flex: 2,
   },
 });
 

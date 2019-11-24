@@ -13,7 +13,7 @@ const Text = (props) => {
 /* Prop Types */
 
 Text.propTypes = {
-  variant: PropTypes.oneOf([ "body", "footnote", "title", "header", "primary", "secondary", "alarm", "urgent"]),
+  variant: PropTypes.oneOf([ "body", "footnote", "title", "header", "primary", "secondary", "alarm", "urgent", "label"]),
 };
 0
 Text.defaultProps = {
@@ -68,6 +68,11 @@ const textStyles = StyleSheet.create({
     ...regular,
     fontSize: theme.fontSizes.large,
     color: theme.colors.white,
+  },
+  label: {
+    ...regular,
+    fontSize: theme.fontSizes.xsmall,
+    textAlign: "center",
   },
 });
 
