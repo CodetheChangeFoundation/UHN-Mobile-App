@@ -15,8 +15,9 @@ const Banner = (props) => {
 const bannerStyles = StyleSheet.create({
   view: {
     flex: 0,
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
     height: theme.layout.bannerHeight,
     padding: theme.layout.padding,
     overflow: "hidden"

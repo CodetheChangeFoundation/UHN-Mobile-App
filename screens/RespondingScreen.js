@@ -31,9 +31,7 @@ const RespondingScreen = () => {
   const usernames = fakeUsernames;
 
   useEffect(() => {
-    return () => {
-      // TODO: send the updated availiabilty status
-    };
+    // TODO: send the updated availiabilty status
   });
   
   return (
@@ -44,7 +42,8 @@ const RespondingScreen = () => {
       <Banner>
         <Segment active="right"
           leftText="using" rightText="responding"
-          onLeftButtonPress={() => Actions.using()}/>
+          onLeftButtonPress={() => Actions.using()}
+        />
       </Banner>
 
       <View style={styles.setAvailability}>
@@ -66,7 +65,6 @@ const RespondingScreen = () => {
             return (
               <ListItem key={index}
                 leftText={username}
-                rightText="available"
               />
             );
           })

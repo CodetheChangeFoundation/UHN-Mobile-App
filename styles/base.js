@@ -14,6 +14,7 @@ export const theme = {
     numeral: "Prompt-Regular",
   }, 
   fontSizes: {
+    xsmall: 14,
     small: 16,
     medium: 18,
     large: 24,
@@ -23,12 +24,12 @@ export const theme = {
     padding: 4,
     margin: 16,
     headerHeight: 90,
-    bannerHeight: 54,
-    segmentHeight: 40
+    bannerHeight: 64,
+    segmentHeight: 40,
   },
   buttons: {
     buttonPressOpacity: 0.5
-  }
+  },
 }
 
 export default theme;

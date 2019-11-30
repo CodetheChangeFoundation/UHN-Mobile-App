@@ -54,7 +54,7 @@ const listItemStyles = StyleSheet.create({
     color: theme.colors.lightGrey,
   },
   rightText: {
-    fontSize: theme.fontSizes.small,
+    fontSize: theme.fontSizes.xsmall,
   },
 });
 
