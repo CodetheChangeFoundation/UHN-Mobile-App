@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import theme from "../../styles/base";
-import { StyleSheet, View as RNView } from "react-native";
-import { View } from "native-base";
+import { StyleSheet } from "react-native";
+import View from "./View";
 
 const Banner = (props) => {
   return (
@@ -14,13 +14,13 @@ const Banner = (props) => {
 
 const bannerStyles = StyleSheet.create({
   view: {
-    flex: 1,
+    flex: 0,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    // height: theme.layout.bannerHeight,
+    height: theme.layout.bannerHeight,
     padding: theme.layout.padding,
-    overflow: "hidden",
+    overflow: "hidden"
   },
 });
 
