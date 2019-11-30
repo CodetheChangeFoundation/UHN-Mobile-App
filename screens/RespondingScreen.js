@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import {
-  StyleSheet,
-  ScrollView
+  StyleSheet
 } from "react-native";
 import { Actions } from "react-native-router-flux";
-import { Container, Content, Header, View, Segment, Banner } from "../components/layout";
+import { Container, Content, Header, View, Segment, Banner, List, ListItem } from "../components/layout";
 import { Switch } from "../components/buttons";
-import { Text, Username } from "../components/typography";
+import { Text } from "../components/typography";
 import theme from "../styles/base";
 
 // fake data
@@ -16,13 +15,13 @@ const fakeUsernames = [
   "bluebird",
   "pandy",
   "alpha1",
-  // "a",
-  // "b",
-  // "c",
-  // "d",
-  // "e",
-  // "f",
-  // "g",
+  "a",
+  "b",
+  "c",
+  "d",
+  "e",
+  "f",
+  "g",
 ];
 
 const RespondingScreen = () => {
@@ -61,17 +60,18 @@ const RespondingScreen = () => {
         <Text>I am watching for</Text>
       </View>
 
-      <ScrollView style={styles.usernameList}>
+      <List style={styles.list}>
         {
           usernames.map((username, index) => {
             return (
-              <Username key={index}>
-                {username}
-              </Username>
+              <ListItem key={index}
+                leftText={username}
+                rightText="available"
+              />
             );
           })
         }
-      </ScrollView>
+      </List>
     </Content>
     </Container>
   );
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     marginVertical: theme.layout.margin
   },
-  usernameList: {
+  list: {
     flex: 0
   }
 });
