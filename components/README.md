@@ -211,6 +211,33 @@ Props:
   - type: function
   - default: none
 
+**List & ListItem**
+
+```
+<List>
+  <ListItem leftText="user123" rightText="available" />
+  <ListItem leftText="user456" rightText="unavailable" />
+</List>
+```
+
+Props:
+- leftText: text on the left side of the ListItem
+  - optional
+  - type: string
+  - default: none
+- leftTextStyle: styling for the leftText
+  - optional
+  - type: object
+  - default: heavy font, regular size (for usernames)
+- rightText: text on the right side of the ListItem
+  - optional
+  - type: string
+  - default: none
+- rightTextStyle: styling for the rightText
+  - optional
+  - type: object
+  - default: regular font, extra small size (for user availability status)
+
 ## Typography
 
 **Text**
@@ -230,11 +257,3 @@ Props:
     - "primary", "secondary", "alarm", "urgent" (used in the Button component)
     - "label" (used in the IconButton component)
   - default: "body"
-
-**Username**
-
-Used when displaying a list of usernames. Formats each username as a padded row with 100% width and a bottom border.
-
-```
-<Username>pandy</Username>
-```
