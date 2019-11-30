@@ -24,8 +24,6 @@ class SignupScreen extends Component {
     this.state = this.initialState;
     this.renderSignUpButtonOrSpinner = this.renderSignUpButtonOrSpinner.bind(this);
     this.onSignUpButtonPress = this.onSignUpButtonPress.bind(this);
-    // this.onSignUpSuccess = this.onSignUpSuccess.bind(this);
-    // this.onSignUpFailed = this.onSignUpFailed.bind(this);
   }
 
   onSignUpButtonPress() {
@@ -41,17 +39,6 @@ class SignupScreen extends Component {
       password: password,
     });
   }
-
-  // onSignUpSuccess(response) {
-  //   console.log(response);
-  //   this.setState(this.initialState);
-  //   Actions.login();
-  // }
-
-  // onSignUpFailed(error) {
-  //   console.log(error);
-  //   this.setState(this.initialState);
-  // }
 
   renderSignUpButtonOrSpinner() {
     return (this.props.auth.loading) ?

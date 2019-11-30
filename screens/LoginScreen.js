@@ -8,7 +8,7 @@ import { Button, Switch } from "../components/buttons";
 import { Form, Input } from "../components/forms";
 import { connect } from 'react-redux';
 import { SERVER_ROOT } from 'react-native-dotenv';
-import { longinHandler, setLoading } from '../store/actions';
+import { loginHandler, setLoading } from '../store/actions';
 
 class LoginScreen extends Component {
 
@@ -37,7 +37,7 @@ class LoginScreen extends Component {
     console.log("[DEBUG] LOGIN Button pressed.");
     console.log("[DEBUG] username is " + username + ", password is " + password);
     this.props.setLoading(true);
-    this.props.longinHandler({ username: username, password: password }, rememberMe);
+    this.props.loginHandler({ username: username, password: password }, rememberMe);
   }
 
   renderLoginButtonOrSpinner() {
@@ -126,4 +126,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { longinHandler, setLoading })(LoginScreen);
+export default connect(mapStateToProps, { loginHandler, setLoading })(LoginScreen);
