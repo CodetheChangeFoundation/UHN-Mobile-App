@@ -11,10 +11,11 @@ import ProfileScreen from "./screens/ProfileScreen";
 import ResourceScreen from "./screens/ResourceScreen";
 import DrawerContent from "./components/drawer/DrawerContent";
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware} from 'redux';
+import thunk from "redux-thunk";
 import reducers from './store/reducers'
 
-const store = createStore(reducers);
+const store = createStore(reducers, applyMiddleware(thunk));
 
 export default function App() {
   return (
