@@ -15,6 +15,7 @@ const AlarmScreen = () => {
 
     <Content>
       <Banner />
+      <Banner />
       
       <View style={styles.container}>
         <Timer using={true}/>
@@ -31,7 +32,7 @@ const AlarmScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 5,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "purple",

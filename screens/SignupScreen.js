@@ -138,10 +138,10 @@ const styles = StyleSheet.create({
   },
   signupButton: {
     flex: 2,
-    justifyContent: "center",
   },
   message: {
     flex: 3,
+    justifyContent: "flex-start",
   },
 });
 

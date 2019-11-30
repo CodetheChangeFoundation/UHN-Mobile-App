@@ -60,6 +60,32 @@ Props:
   - type: boolean
   - default: true
 
+**IconButton**
+
+```
+<IconButton variant="icon" name="md-pin" label="current location" />
+<IconButton variant="counter" counterValue={3} label="responders available" />
+```
+
+Props:
+
+- variant: determines what is displayed inside the button
+  - optional
+  - type: one of "counter", "icon"
+  - default: "counter"
+- label: the text underneath the button
+  - optional
+  - type: string
+  - default: none
+- name: the name of the icon (only used if variant == "icon"). For options, see https://ionicons.com/ (must prefix the name with "md-" or "ios-")
+  - optional
+  - type: string
+  - default: "md-pin"
+- counterValue: the current value of the counter (only used if variant == "counter")
+  - optional
+  - type: number
+  - default: 0
+
 ## Forms
 
 **Form**
@@ -117,7 +143,8 @@ Layout is based on NativeBase's structure.
 - Container encapsulates the entire screen
 - Header is the static header at the top of the screen, used for navigation
 - Content is the main part of the screen (scrollable in iOS)
-- Banner is a fixed-height element, used to wrap a row of components inside Content
+- Banner can be used to wrap a row of components inside Content
+- View can be used for other page-specific formatting
 
 ```
 <Container>
@@ -125,8 +152,8 @@ Layout is based on NativeBase's structure.
     User Profile
   </Header>
   <Content>
-    <Banner />
-    ...
+    <Banner> ... </Banner>
+    <View> ... </View>
   </Content>
 </Container>
 ```
@@ -201,4 +228,5 @@ Props:
     - "body", "footnote", "title" (used for displaying text on screen)
     - "header" (used in the Header component)
     - "primary", "secondary", "alarm", "urgent" (used in the Button component)
+    - "label" (used in the IconButton component)
   - default: "body"
