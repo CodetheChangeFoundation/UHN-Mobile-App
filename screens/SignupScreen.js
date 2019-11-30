@@ -8,8 +8,11 @@ import { Form, Input } from "../components/forms";
 import Spinner from "../components/forms/Spinner";
 import * as axios from 'axios';
 import { SERVER_ROOT } from 'react-native-dotenv';
+import { signupHandler, setLoading } from '../store/actions';
+import { connect } from 'react-redux';
 
-export default class SignupScreen extends Component {
+
+class SignupScreen extends Component {
   constructor(props) {
     super(props);
     this.initialState = {
@@ -17,13 +20,12 @@ export default class SignupScreen extends Component {
       email: "",
       username: "",
       password: "",
-      loading: false
     }
     this.state = this.initialState;
     this.renderSignUpButtonOrSpinner = this.renderSignUpButtonOrSpinner.bind(this);
     this.onSignUpButtonPress = this.onSignUpButtonPress.bind(this);
-    this.onSignUpSuccess = this.onSignUpSuccess.bind(this);
-    this.onSignUpFailed = this.onSignUpFailed.bind(this);
+    // this.onSignUpSuccess = this.onSignUpSuccess.bind(this);
+    // this.onSignUpFailed = this.onSignUpFailed.bind(this);
   }
 
   onSignUpButtonPress() {
@@ -31,32 +33,29 @@ export default class SignupScreen extends Component {
     console.log("[DEBUG] SignUp Button pressed.");
     console.log("[DEBUG] username is " + username + ", password is " + password + "\n email is " + email + " phoneNum is " + phoneNumber);
     // TODO: generate error if username or password is empty string
-
-    this.setState({ loading: true });
-
-    axios.post( SERVER_ROOT + '/signup', {
+    this.props.setLoading(true);
+    this.props.signupHandler({
       email: email,
       phone: phoneNumber,
       username: username,
       password: password,
-    }).then(this.onSignUpSuccess)
-      .catch(this.onSignUpFailed);
+    });
   }
 
-  onSignUpSuccess(response) {
-    console.log(response);
-    this.setState(this.initialState);
-    Actions.login();
-  }
+  // onSignUpSuccess(response) {
+  //   console.log(response);
+  //   this.setState(this.initialState);
+  //   Actions.login();
+  // }
 
-  onSignUpFailed(error) {
-    console.log(error);
-    this.setState(this.initialState);
-  }
+  // onSignUpFailed(error) {
+  //   console.log(error);
+  //   this.setState(this.initialState);
+  // }
 
   renderSignUpButtonOrSpinner() {
-    return (this.state.loading) ?
-      (<Spinner />) 
+    return (this.props.auth.loading) ?
+      (<Spinner />)
       :
       (<Button variant="primary" onPress={this.onSignUpButtonPress}>
         sign up
@@ -145,3 +144,11 @@ const styles = StyleSheet.create({
     flex: 3,
   },
 });
+
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth
+  }
+}
+
+export default connect(mapStateToProps, { signupHandler, setLoading })(SignupScreen);

@@ -6,26 +6,22 @@ import { Container, Content, Header, View } from "../components/layout";
 import { Text } from "../components/typography";
 import { Button, Switch } from "../components/buttons";
 import { Form, Input } from "../components/forms";
-import * as axios from 'axios';
+import { connect } from 'react-redux';
 import { SERVER_ROOT } from 'react-native-dotenv';
+import { longinHandler, setLoading } from '../store/actions';
 
-export default class LoginScreen extends Component {
+class LoginScreen extends Component {
 
   constructor(props) {
     super(props);
-    this.initialState = {
+    this.state = {
       username: "",
       password: "",
-      error: "",
-      loading: false,
       rememberMe: false
     };
-    this.state = this.initialState;
     this.setRememberMe = this.setRememberMe.bind(this);
     this.onLoginButtonPress = this.onLoginButtonPress.bind(this);
-    this.onLoginSuccess = this.onLoginSuccess.bind(this);
-    this.onLoginFailed = this.onLoginFailed.bind(this);
-    this,renderLoginButtonOrSpinner = this.renderLoginButtonOrSpinner.bind(this);
+    this.renderLoginButtonOrSpinner = this.renderLoginButtonOrSpinner.bind(this);
   }
 
   setRememberMe() {
@@ -37,33 +33,16 @@ export default class LoginScreen extends Component {
   }
 
   onLoginButtonPress() {
-    const { username, password } = this.state;
+    const { username, password, rememberMe } = this.state;
     console.log("[DEBUG] LOGIN Button pressed.");
     console.log("[DEBUG] username is " + username + ", password is " + password);
-
-    this.setState({ loading: true });
-
-    axios.post(SERVER_ROOT + '/login', {
-      username: username,
-      password: password,
-    }).then(this.onLoginSuccess)
-    .catch(this.onLoginFailed);
-  }
-
-  onLoginSuccess(response) {
-    console.log(response);
-    this.setState({loading: false});
-    Actions.main();
-  }
-
-  onLoginFailed(error) {
-    console.log(error);
-    this.setState({loading: false});
+    this.props.setLoading(true);
+    this.props.longinHandler({ username: username, password: password }, rememberMe);
   }
 
   renderLoginButtonOrSpinner() {
-    return (this.state.loading) ?
-      (<Spinner />) 
+    return (this.props.auth.loading) ?
+      (<Spinner />)
       :
       (<Button variant="primary" onPress={this.onLoginButtonPress}>
         login
@@ -139,3 +118,11 @@ const styles = StyleSheet.create({
     flex: 2,
   }
 });
+
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth
+  }
+}
+
+export default connect(mapStateToProps, { longinHandler, setLoading })(LoginScreen);
