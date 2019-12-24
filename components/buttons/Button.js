@@ -40,6 +40,7 @@ const base = {
   margin: theme.layout.margin,
   alignItems: "center",
   justifyContent: "center",
+  flexShrink: 1,
 }
 
 const medium = {

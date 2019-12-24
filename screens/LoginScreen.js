@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   signupButton: {
-    flex: 2,
+    flex: 3,
   }
 });
 
