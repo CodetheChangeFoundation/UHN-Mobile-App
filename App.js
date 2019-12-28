@@ -9,6 +9,7 @@ import AlarmScreen from "./screens/AlarmScreen";
 import SnoozeScreen from "./screens/SnoozeScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import ResourceScreen from "./screens/ResourceScreen";
+import MyRespondersScreen from "./screens/MyRespondersScreen";
 import DrawerContent from "./components/drawer/DrawerContent";
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware} from 'redux';
@@ -66,6 +67,13 @@ export default function App() {
             <Scene key="snooze"
               component={SnoozeScreen}
               title="Snooze"
+            />
+          </Scene>
+          <Scene key="responders" type="reset" hideNavBar>
+            <Scene key="list"
+              component={MyRespondersScreen}
+              title="My Responders"
+              initial
             />
           </Scene>
         </Scene>

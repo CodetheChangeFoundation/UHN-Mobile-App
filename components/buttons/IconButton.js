@@ -30,7 +30,7 @@ const IconButton = (props) => {
   const content = iconButtonContent[props.variant];
 
   return (
-    <TouchableOpacity {...combinedProps} style={[iconButtonStyles.touchableOpacity, props.style]}>
+    <TouchableOpacity {...combinedProps} onPress={props.onPress} style={[iconButtonStyles.touchableOpacity, props.style]}>
       <View style={iconButtonStyles.view}>
           {content}
       </View>
@@ -46,6 +46,7 @@ IconButton.propTypes = {
   label: PropTypes.string,
   name: PropTypes.string,
   counterValue: PropTypes.number,
+  onPress: PropTypes.func,
 };
 
 IconButton.defaultProps = {
