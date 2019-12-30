@@ -6,6 +6,7 @@ import { View } from "../layout";
 import { Button } from "../buttons";
 import { Text } from "../typography";
 
+// TODO: On iOS, issue with closing/opening the drawer when modal is opened.
 const Modal = (props) => {
   const deviceHeight = Math.round(Dimensions.get('window').height * 0.5);
 
