@@ -85,6 +85,10 @@ Props:
   - optional
   - type: number
   - default: 0
+- onPress: the function to execute when the IconButton is pressed
+  - optional
+  - type: function
+  - default: none
 
 ## Forms
 
