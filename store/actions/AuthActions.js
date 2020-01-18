@@ -39,7 +39,7 @@ const signupFailed = (error) => {
 
 export const loginHandler = (credential, rememberMe) => {
   return (dispatch) => {
-    axios.post('http://' + SERVER_ROOT + '/login', credential)
+    axios.post(SERVER_ROOT + '/login', credential)
       .then(response => {
         dispatch(setLoading(false));
         dispatch(login(response.data, rememberMe));
@@ -53,8 +53,9 @@ export const loginHandler = (credential, rememberMe) => {
 }
 
 export const signupHandler = (userData) => {
+  console.log('http://' + SERVER_ROOT + '/signup', userData)
   return (dispatch) => {
-    axios.post('http://' + SERVER_ROOT + '/signup', userData)
+    axios.post(SERVER_ROOT + '/signup', userData)
     .then(response => {
       dispatch(setLoading(false));
       console.log(response.data);
