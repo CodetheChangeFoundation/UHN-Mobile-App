@@ -21,7 +21,7 @@ const UsingScreen = () => {
         />
       </Banner>
       <Banner>
-        <IconButton variant="icon" name="md-pin" label="current location" />
+        <IconButton variant="icon" name="md-pin" label="current location" onPress={() => Actions.location()}/>
         <IconButton variant="counter" counterValue={3} label="responders available" onPress={() => Actions.responders()} />
       </Banner>
     
