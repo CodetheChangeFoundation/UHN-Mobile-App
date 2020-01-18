@@ -298,6 +298,44 @@ Props:
   - type: object
   - default: regular font, extra small size (for user availability status)
 
+## Popups
+
+**Modal**
+
+```
+const [modalVisible, setModalVisible] = useState(false);
+
+const modalHeader="Logout";
+const modalBody = (<Text>Are you sure?</Text>);
+const modalFooterLeft = (<Button variant="secondary" onPress={() => setModalVisible(false)}>Cancel</Button>);
+const modalFooterRight = (<Button variant="primary" onPress={() => Actions.auth()}>Logout</Button>);
+
+<Modal
+  modalVisible={modalVisible}
+  modalHeader={modalHeader}
+  modalBody={modalBody}
+  modalFooterLeft={modalFooterLeft}
+  modalFooterRight={modalFooterRight}
+  onBackdropPress={() => setModalVisible(false)}
+  onBackButtonPress={() => setModalVisible(false)}
+/>
+```
+
+Props: 
+- modalVisible: controls whether the modal is shown on-screen
+  - required
+  - type: boolean
+- modalHeader: the header text of the modal
+  - required
+  - type: string
+- modalBody: the body of the modal (usually a Text or List component)
+  - required
+  - type: element
+- modalFooterLeft and modalFooterRight: the footer comoponents of the modal (probably Buttons). If you only need 1 footer component, leave either modalFooterLeft or modalFooterRight undefined; the other will be centered.
+  - optional
+  - type: element
+  - default: none
+
 ## Typography
 
 **Text**
