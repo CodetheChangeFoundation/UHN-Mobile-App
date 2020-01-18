@@ -26,6 +26,8 @@ Input.propTypes = {
   variant: PropTypes.oneOf([ "text", "number"]),
   label: PropTypes.string.isRequired,
   hasNext: PropTypes.bool,
+  onChangeText: PropTypes.func.isRequired,
+  onSubmitEditing: PropTypes.func.isRequired
 };
 
 Input.defaultProps = {

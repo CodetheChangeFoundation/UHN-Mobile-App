@@ -76,6 +76,7 @@ class LoginScreen extends Component {
                   this.setState({ password: password });
                   console.log(this.state.password);
                 }}
+                onSubmitEditing={() => Actions.signup()}
               />
             </View>
 
