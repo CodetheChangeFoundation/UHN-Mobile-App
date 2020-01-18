@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import { StyleSheet } from "react-native";
 import { Actions } from "react-native-router-flux";
 import { Container, Content, Header, View, List, ListItem } from "../components/layout";
-import { Checkbox, SearchBar, Input } from "../components/forms";
+import { Checkbox } from "../components/forms";
 import { Text } from "../components/typography";
 import { Button } from "../components/buttons";
+import { Modal } from "../components/popups";
 import theme from "../styles/base";
 
 // fake data
@@ -22,19 +23,18 @@ const fakeResponders = [
   "cc",
 ];
 
-class AddRespondersScreen extends Component {
+class RemoveRespondersScreen extends Component {
   constructor(props) {
     super(props);
-    // TODO: fetch all responders (& put in alphabetical order)
+    // TODO: fetch all responders for this user
     let responderSelectionMap = new Map();
     for (username of fakeResponders) {
       responderSelectionMap.set(username, false);
     }
     this.state = {
-      searchQuery: "",
       responderSelectionMap: responderSelectionMap,
       allResponders: fakeResponders,
-      queriedResponders: fakeResponders
+      modalVisible: false
     };
   }
 
@@ -45,62 +45,59 @@ class AddRespondersScreen extends Component {
     this.setState({responderSelectionMap});
   }
 
-  regexEscape = (str) => {
-    return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
-  }
-
-  searchForUsername = () => {
-    const searchQuery = this.regexEscape(this.state.searchQuery);
-    const regex = new RegExp("^" + searchQuery, "i");
-    let queriedResponders = [];
-    for (username of this.state.allResponders) {
-      if (regex.test(username)) {
-        queriedResponders.push(username);
-      }
-    }
-    this.setState({queriedResponders});
-  }
-
-  addSelectedResponders = () => {
+  removeSelectedResponders = () => {
     let selectedResponders = [];
     for (let [username, isSelected] of this.state.responderSelectionMap) {
       if (isSelected) {
         selectedResponders.push(username);
       }
     }
-    // TODO: ping backend to add the usernames in selectedResponders as responders for this user
+    // TODO: ping backend to remove the usernames in selectedResponders from this user's profile
     
     Actions.pop();
   }
 
+  modalHeader = "Removing responders";
+  modalFooterLeft = (<Button variant="secondary" onPress={() => this.setState({modalVisible: false})}>Cancel</Button>);
+  modalFooterRight = (<Button variant="primary" style={{backgroundColor: theme.colors.red}} onPress={() => this.removeSelectedResponders()}>Remove</Button>);
+
   render() {
+  modalBody = (<List style={styles.list}>
+                {
+                  (this.state.modalVisible) &&
+                    this.state.allResponders.map((username, index) => {
+                      if (this.state.responderSelectionMap.get(username)) {
+                        return (
+                          <ListItem key={index} leftText={username} />
+                        );
+                      }
+                    })
+                }
+              </List>);
+
     return (
       <Container>
+        <Modal
+          modalVisible={this.state.modalVisible}
+          modalHeader={this.modalHeader}
+          modalBody={modalBody}
+          modalFooterLeft={this.modalFooterLeft}
+          modalFooterRight={this.modalFooterRight}
+          onBackdropPress={() => this.setState({modalVisible: false})}
+          onBackButtonPress={() => this.setState({modalVisible: false})}
+        /> 
+
         <Header leftButton="arrow" 
         onLeftButtonPress={() => Actions.pop()}
         >
-          Add Responders
+          Remove Responders
         </Header>
 
         <Content>
-          <View style={styles.search}>
-            <SearchBar placeholder="Search for a username"
-              enableClearButton
-              onChangeText={(searchQuery) => this.setState({searchQuery})}
-              onClearButtonPress={() => this.setState({searchQuery: ""})}
-              onSubmitEditing={() => this.searchForUsername()} 
-            />
-          </View>
 
           <List style={styles.list}>
             {
-              (this.state.queriedResponders.length == 0) ?
-              
-                <Text>No results found.</Text>
-              
-              :
-              
-                this.state.queriedResponders.map((username, index) => {
+                this.state.allResponders.map((username, index) => {
                   return (
                     <View style={styles.row} key={index}>
                       <Checkbox checked={this.state.responderSelectionMap.get(username)}
@@ -111,13 +108,12 @@ class AddRespondersScreen extends Component {
                     </View>
                   );
                 })
-              
             }
           </List>
 
-          <View style={styles.addButton}>
-            <Button variant="primary" style={{backgroundColor: theme.colors.green}}
-            onPress={() => this.addSelectedResponders()}>add selected</Button>
+          <View style={styles.removeButton}>
+            <Button variant="primary" style={{backgroundColor: theme.colors.red}}
+            onPress={() => this.setState({modalVisible: true})}>remove selected</Button>
           </View>
         </Content>
       </Container>
@@ -126,19 +122,16 @@ class AddRespondersScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  search: {
-    flex: 0,
-  },
   list: {
   },
   row: {
     flexDirection: "row",
     justifyContent: "space-around"
   },
-  addButton: {
+  removeButton: {
     flex: 0,
     marginTop: theme.layout.margin
   }
 });
 
-export default AddRespondersScreen;
+export default RemoveRespondersScreen;
