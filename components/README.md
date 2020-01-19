@@ -7,6 +7,7 @@ import { Container, Content, Header, View } from "../components/layout";
 import { Text } from "../components/typography";
 import { Button, Switch } from "../components/buttons";
 import { Form, Input } from "../components/forms";
+import Timer from "../components/Timer/Timer";
 ```
 
 Note: if you add a new file to the components/ folder, Expo might give you an error like
@@ -299,3 +300,55 @@ Props:
     - "primary", "secondary", "alarm", "urgent" (used in the Button component)
     - "label" (used in the IconButton component)
   - default: "body"
+
+## Timer
+
+**Timer**
+
+```
+<Timer using={true}/>
+<Timer using={false}/>
+```
+
+Props:
+
+- using: specifies weather the Timer is in "using" mode (i.e. when the Timer is activated and starts counting)
+  - required
+  - type: boolean
+   
+**ProgressCircle**
+
+```
+<ProgressCircle 
+  percentage={(1 - timeRemaining / time) * 100}
+  seconds={timeRemaining} 
+  increaseTimeHandler={this.incrementTimer} 
+  decreaseTimeHandler={this.decrementTimer} 
+/>
+```
+
+Props: 
+- percentage: the percentage of the time remaining over the initial start time
+  - required
+  - type: number
+- seconds: the time remaining in seconds 
+  - required
+  - type: number
+- increaseTimeHandler: the function that increase the time remaining by 15 seconds
+  - required
+  - type: function
+- decreaseTimeHandler: the function that decrease the time reamining by 15 seconds
+  - required
+  - type: function
+
+
+**SetTimeButton**
+
+```
+<SetTimeButton changeTimeHandler={decreaseTimeHandler}>-15</SetTimeButton>
+```
+
+Props: 
+- changeTimeHandler: the function that modifies the time
+  - required
+  - type: function
