@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, TextInput } from 'react-native';
+import { StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { WebViewLeaflet } from 'react-native-webview-leaflet'
 
 import { Actions } from "react-native-router-flux";
@@ -38,7 +38,7 @@ const LocationScreen = () => {
     
     useEffect(() => {
         setRecentAddresses([
-            "3087 West 38th Ave",
+            "3087 West 38th Ave Vancouver",
             "Vancouver, V6T 1Z4"
         ])
         getLocation(setLocation)
@@ -65,7 +65,8 @@ const LocationScreen = () => {
     }
 
     const pickRecent = (num) => {
-        console.log(recentAddresses[num])
+        convertToCoordinates(recentAddresses[num], setLocation)
+        setAddressConfirm(true)
     }
 
     const handleSave = () => {
@@ -116,17 +117,18 @@ const LocationScreen = () => {
             />
 
             <Text style={{marginVertical: 20, width: "80%", height: 20}}>Recent Locations:</Text>
-
-            <TextInput editable={false}
-                style={styles.clickableText}
-                onPress={() => {pickRecent(0)}}
-            >{recentAddresses[0]}
-            </TextInput>
-            <TextInput editable={false}
-                style={styles.clickableText}
-                onPress={() => {pickRecent(1)}}
-            >{recentAddresses[1]}
-            </TextInput>
+            <TouchableOpacity onPress={() => {pickRecent(0)}}>
+                <TextInput  editable={false}
+                            style={styles.clickableText}
+                            pointerEvents="none"
+                >{recentAddresses[0]}</TextInput>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {pickRecent(1)}}>
+                <TextInput  editable={false}
+                            style={styles.clickableText}
+                            pointerEvents="none"
+                >{recentAddresses[1]}</TextInput>
+            </TouchableOpacity>
         </Form>
 
         <View style={styles.saveButton}>

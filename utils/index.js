@@ -1,3 +1,3 @@
-export * from './getLocation'
+export * from './_utils/getLocation'
 
-export * from './geocodeLocation'
+export * from './_utils/geocodeLocation'

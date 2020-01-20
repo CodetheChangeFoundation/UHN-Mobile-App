@@ -13,7 +13,10 @@ export const convertToCoordinates = (address, success) => {
 export const convertToAddress = (coordinates, success) => {
     Location.reverseGeocodeAsync(coordinates)
     .then((results) => {
-        console.log(results)
+        // street, name, city, region, country, postalCode, name
+        const { name, city, region, country } = results[0]
+        const address = `${name}, ${city} ${region}, ${country}`
+        success(address)
     })
     .catch((error) => {
         console.error('cannot reverse geocode coordinates!', {error})
