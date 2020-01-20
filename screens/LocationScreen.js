@@ -8,7 +8,7 @@ import { Button } from "../components/buttons";
 import { Form, Input } from "../components/forms"
 import { Text } from "../components/typography"
 import theme from '../styles/base'
-import getLocation from '../utils/getLocation'
+import { getLocation, convertToCoordinates } from '../utils/index'
 
 import mapMarkerIcon from '../components/icons/mapMarker'
 
@@ -22,21 +22,19 @@ const openStreetMapLayer = {
 const LocationScreen = () => {
     const [webViewLeafletRef, setWebViewLeafletRef] = useState(null)
     const [mapCenterPosition, setMapCenterPosition] = useState({
-        // Default loation is set to Vancouver
+        // Default location is set to Vancouver
         lat: 49.2827,
         lng: -123.1207
     })
     const [mapZoom, setMapZoom] = useState(7)
     const [mapLayers, setMapLayers] = useState(null)
-    const [mapMarkers, setMapMarkers] = useState([{
-        icon: mapMarkerIcon,
-        position: { lat: 49.2827, lng: -123.1207 },
-        name: "Current Location"
-    }])
+    const [mapMarkers, setMapMarkers] = useState([])
 
     const [address, changeAddress] = useState(null)
-    const [recentAddresses, setRecentAddresses] = useState([])
+    const [addressConfirm, setAddressConfirm] = useState(false) 
     const [notes, changeNotes] = useState(null)
+
+    const [recentAddresses, setRecentAddresses] = useState([])
     
     useEffect(() => {
         setRecentAddresses([
@@ -44,7 +42,6 @@ const LocationScreen = () => {
             "Vancouver, V6T 1Z4"
         ])
         getLocation(setLocation)
-        console.log({mapMarkerIcon})
     }, [])
 
     const mapLoad = () => {
@@ -53,10 +50,9 @@ const LocationScreen = () => {
 
     const setLocation = (location) => {
         const { latitude, longitude } = location
-        console.log(location)
         // Set new location and map zoom
         setMapCenterPosition({ lat: latitude, lng: longitude })
-        setMapZoom(12)
+        setMapZoom(18)
         setMapMarkers([{
             icon: mapMarkerIcon,
             position: { lat: latitude, lng: longitude },
@@ -72,12 +68,20 @@ const LocationScreen = () => {
         console.log(recentAddresses[num])
     }
 
-    const handleSubmit = () => {
-        Actions.using()
+    const handleSave = () => {
+        if(addressConfirm) {
+            /***
+             * Need a way to update database with:
+             * (a) current address
+             * (b) most recent addresses
+             * (c) note
+             */
+            Actions.using()
+        } else {
+            convertToCoordinates(address, setLocation)
+            setAddressConfirm(true)
+        }
     }
-
-    const geocode = () => []
-    const reverseGeocode = () => []
 
   return (
     <Container>
@@ -100,7 +104,7 @@ const LocationScreen = () => {
         <Form style={styles.inputWrapper}>
             <Input label=""
                 variant="text"
-                onChangeText={text => changeAddress(text)}
+                onChangeText={text => { setAddressConfirm(false); changeAddress(text) }}
                 placeholder="Enter Address"
                 value={address}
             />
@@ -126,7 +130,7 @@ const LocationScreen = () => {
         </Form>
 
         <View style={styles.saveButton}>
-            <Button variant="alarm" onPress={handleSubmit}>save</Button>
+            <Button variant="alarm" onPress={handleSave}>{addressConfirm ? 'confirm' : 'save'}</Button>
          </View>
     </Content>
     </Container>
