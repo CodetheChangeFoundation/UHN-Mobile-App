@@ -8,6 +8,14 @@ import { Button } from "../components/buttons";
 import { Form, Input } from "../components/forms"
 import { Text } from "../components/typography"
 import theme from '../styles/base'
+import getLocation from '../utils/getLocation'
+
+const openStreetMapLayer = {
+    attribution:'&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+    baseLayerIsChecked: true,
+    baseLayerName: "OpenStreetMap.Mapnik",
+    url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+}
 
 const LocationScreen = () => {
     const [webViewLeafletRef, setWebViewLeafletRef] = useState(null)
@@ -16,29 +24,36 @@ const LocationScreen = () => {
         lat: 49.2827,
         lng: -123.1207
     })
+    const [mapZoom, setMapZoom] = useState(7)
+    const [mapLayers, setMapLayers] = useState(null)
+
     const [address, changeAddress] = useState(null)
     const [recentAddresses, setRecentAddresses] = useState([])
     const [notes, changeNotes] = useState(null)
-
+    
     useEffect(() => {
-        // setMapCenterPosition({lat: location.coords.latitude, lng: location.coords.longitude})
         setRecentAddresses([
             "3087 West 38th Ave",
             "Vancouver, V6T 1Z4"
         ])
+        // navigator.geolocation.getCurrentPosition(setLocation)
+        getLocation(setLocation)
     }, [])
+
+    const mapLoad = () => {
+        setMapLayers([openStreetMapLayer])
+    }
+
+    const setLocation = (location) => {
+        const { latitude, longitude } = location
+        console.log(location)
+        // Set new location and map zoom
+        setMapCenterPosition({ lat: latitude, lng: longitude })
+        setMapZoom(12)
+    }
 
     const onMessageReceived = (message) => {
         // console.log("App Recieved", message)
-    }
-    const onMapLoad = () => {
-        console.log(webViewLeafletRef)
-        webViewLeafletRef.sendMessage({
-            zoom: 12,
-            zoomControl: false,
-            showZoomControl: false,
-            boxZoom: false
-        })
     }
 
     const pickRecent = (num) => {
@@ -49,7 +64,8 @@ const LocationScreen = () => {
         Actions.using()
     }
 
-    const geoCode = () => []
+    const geocode = () => []
+    const reverseGeocode = () => []
 
   return (
     <Container>
@@ -59,19 +75,13 @@ const LocationScreen = () => {
         <Text style={{margin: 10}}>Please confirm your location</Text>
         <View style={styles.map}>
             <WebViewLeaflet
-                ref={(component) => { setWebViewLeafletRef(component) }}
-                onMessageReceived={onMessageReceived}
-                mapLayers={[
-                    {
-                        attribution:'&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-                        baseLayerIsChecked: true,
-                        baseLayerName: "OpenStreetMap.Mapnik",
-                        url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    },
-                ]}
                 doShowDebugMessages={false}
+                ref={(component) => { setWebViewLeafletRef(component) }}
+                mapLayers={mapLayers}
                 mapCenterPosition={mapCenterPosition}
-                onLoadEnd={onMapLoad}
+                onLoadEnd={mapLoad}
+                onMessageReceived={onMessageReceived}
+                zoom={mapZoom}
             />
         </View>
         <Form style={styles.inputWrapper}>
