@@ -10,6 +10,8 @@ import { Text } from "../components/typography"
 import theme from '../styles/base'
 import getLocation from '../utils/getLocation'
 
+import mapMarkerIcon from '../components/icons/mapMarker'
+
 const openStreetMapLayer = {
     attribution:'&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
     baseLayerIsChecked: true,
@@ -26,6 +28,11 @@ const LocationScreen = () => {
     })
     const [mapZoom, setMapZoom] = useState(7)
     const [mapLayers, setMapLayers] = useState(null)
+    const [mapMarkers, setMapMarkers] = useState([{
+        icon: mapMarkerIcon,
+        position: { lat: 49.2827, lng: -123.1207 },
+        name: "Current Location"
+    }])
 
     const [address, changeAddress] = useState(null)
     const [recentAddresses, setRecentAddresses] = useState([])
@@ -36,8 +43,8 @@ const LocationScreen = () => {
             "3087 West 38th Ave",
             "Vancouver, V6T 1Z4"
         ])
-        // navigator.geolocation.getCurrentPosition(setLocation)
         getLocation(setLocation)
+        console.log({mapMarkerIcon})
     }, [])
 
     const mapLoad = () => {
@@ -50,6 +57,11 @@ const LocationScreen = () => {
         // Set new location and map zoom
         setMapCenterPosition({ lat: latitude, lng: longitude })
         setMapZoom(12)
+        setMapMarkers([{
+            icon: mapMarkerIcon,
+            position: { lat: latitude, lng: longitude },
+            name: "Current Location"
+        }])
     }
 
     const onMessageReceived = (message) => {
@@ -79,6 +91,7 @@ const LocationScreen = () => {
                 ref={(component) => { setWebViewLeafletRef(component) }}
                 mapLayers={mapLayers}
                 mapCenterPosition={mapCenterPosition}
+                mapMarkers={mapMarkers}
                 onLoadEnd={mapLoad}
                 onMessageReceived={onMessageReceived}
                 zoom={mapZoom}
