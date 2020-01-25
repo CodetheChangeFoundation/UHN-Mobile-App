@@ -1,7 +1,7 @@
 import { Platform } from 'react-native'
 import * as Location from 'expo-location';
 
-export const getLocation = (success) => {
+export const getCurrentLocation = (success) => {
     Location.requestPermissionsAsync()
     .then(() => {
         Location.getCurrentPositionAsync()
