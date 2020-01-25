@@ -1,5 +1,5 @@
 import * as axios from 'axios';
-import { LOGIN, LOGIN_FAILED, SIGNUP, SET_LOADING } from "./Types"
+import { LOGIN, LOGIN_FAILED, SIGNUP_FAILED, SET_LOADING } from "./Types"
 import { SERVER_ROOT } from 'react-native-dotenv';
 import { Actions } from "react-native-router-flux";
 
@@ -39,7 +39,7 @@ const signupFailed = (error) => {
 
 export const loginHandler = (credential, rememberMe) => {
   return (dispatch) => {
-    axios.post('http://' + SERVER_ROOT + '/login', credential)
+    axios.post(SERVER_ROOT + '/login', credential)
       .then(response => {
         dispatch(setLoading(false));
         dispatch(login(response.data, rememberMe));
@@ -54,7 +54,7 @@ export const loginHandler = (credential, rememberMe) => {
 
 export const signupHandler = (userData) => {
   return (dispatch) => {
-    axios.post('http://' + SERVER_ROOT + '/signup', userData)
+    axios.post(SERVER_ROOT + '/signup', userData)
     .then(response => {
       dispatch(setLoading(false));
       console.log(response.data);

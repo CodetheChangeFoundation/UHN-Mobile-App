@@ -68,7 +68,7 @@ class SignupScreen extends Component {
                 hasNext
                 onChangeText={email => {
                   this.setState({ email: email });
-                  console.log(this.state.email);
+                  // console.log(this.state.email);
                 }}
                 onSubmitEditing={() => phoneNumberInputRef._root.focus()}
               />
@@ -78,7 +78,7 @@ class SignupScreen extends Component {
                 hasNext
                 onChangeText={phoneNumber => {
                   this.setState({ phoneNumber: phoneNumber });
-                  console.log(this.state.phoneNumber);
+                  // console.log(this.state.phoneNumber);
                 }}
                 onSubmitEditing={() => usernameInputRef._root.focus()}
               />
@@ -88,7 +88,7 @@ class SignupScreen extends Component {
                 hasNext
                 onChangeText={username => {
                   this.setState({ username: username });
-                  console.log(this.state.username);
+                  // console.log(this.state.username);
                 }}
                 onSubmitEditing={() => passwordInputRef._root.focus()}
               />
@@ -97,7 +97,7 @@ class SignupScreen extends Component {
                 ref={(input) => passwordInputRef = input}
                 onChangeText={password => {
                   this.setState({ password: password });
-                  console.log(this.state.password);
+                  // console.log(this.state.password);
                 }}
               />
             </View>

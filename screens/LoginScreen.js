@@ -65,7 +65,7 @@ class LoginScreen extends Component {
                 hasNext
                 onChangeText={username => {
                   this.setState({ username: username });
-                  console.log(this.state.username);
+                  // console.log(this.state.username);
                 }}
                 onSubmitEditing={() => passwordInputRef._root.focus()}
               />
@@ -74,7 +74,7 @@ class LoginScreen extends Component {
                 ref={(input) => passwordInputRef = input}
                 onChangeText={password => {
                   this.setState({ password: password });
-                  console.log(this.state.password);
+                  // console.log(this.state.password);
                 }}
               />
             </View>
