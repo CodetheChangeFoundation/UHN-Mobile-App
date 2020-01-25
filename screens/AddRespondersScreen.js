@@ -38,6 +38,12 @@ class AddRespondersScreen extends Component {
     };
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.searchQuery !== prevState.searchQuery) {
+      this.searchForUsername();
+    }
+  }
+
   onCheckboxPress = (username) => {
     let responderSelectionMap = this.state.responderSelectionMap;
     let oldValue = responderSelectionMap.get(username);
@@ -88,7 +94,7 @@ class AddRespondersScreen extends Component {
               enableClearButton
               onChangeText={(searchQuery) => this.setState({searchQuery})}
               onClearButtonPress={() => this.setState({searchQuery: ""})}
-              onSubmitEditing={() => this.searchForUsername()} 
+              onSubmitEditing={() => this.searchForUsername()}
             />
           </View>
 
