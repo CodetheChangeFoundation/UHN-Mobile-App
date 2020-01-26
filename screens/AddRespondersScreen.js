@@ -8,7 +8,7 @@ import { Button } from "../components/buttons";
 import theme from "../styles/base";
 
 // fake data
-const fakeResponders = [
+const fakeUsernames = [
   "a",
   "aa",
   "ab",
@@ -25,16 +25,18 @@ const fakeResponders = [
 class AddRespondersScreen extends Component {
   constructor(props) {
     super(props);
-    // TODO: fetch all responders (& put in alphabetical order)
-    let responderSelectionMap = new Map();
-    for (username of fakeResponders) {
-      responderSelectionMap.set(username, false);
+    // TODO: fetch all responder usernames and store in allUsernames
+    const allUsernames = fakeUsernames;
+
+    let usernameSelectionMap = new Map();
+    for (username of allUsernames) {
+      usernameSelectionMap.set(username, false);
     }
     this.state = {
       searchQuery: "",
-      responderSelectionMap: responderSelectionMap,
-      allResponders: fakeResponders,
-      queriedResponders: fakeResponders
+      usernameSelectionMap: usernameSelectionMap,
+      allUsernames: allUsernames,
+      queriedUsernames: allUsernames
     };
   }
 
@@ -45,38 +47,49 @@ class AddRespondersScreen extends Component {
   }
 
   onCheckboxPress = (username) => {
-    let responderSelectionMap = this.state.responderSelectionMap;
-    let oldValue = responderSelectionMap.get(username);
-    responderSelectionMap.set(username, !oldValue);
-    this.setState({responderSelectionMap});
+    let usernameSelectionMap = this.state.usernameSelectionMap;
+    let oldValue = usernameSelectionMap.get(username);
+    usernameSelectionMap.set(username, !oldValue);
+    this.setState({usernameSelectionMap});
   }
 
-  regexEscape = (str) => {
+  escapeRegex = (str) => {
     return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
   }
 
   searchForUsername = () => {
-    const searchQuery = this.regexEscape(this.state.searchQuery);
+    const searchQuery = this.escapeRegex(this.state.searchQuery);
     const regex = new RegExp("^" + searchQuery, "i");
-    let queriedResponders = [];
-    for (username of this.state.allResponders) {
+    let queriedUsernames = [];
+    for (username of this.state.allUsernames) {
       if (regex.test(username)) {
-        queriedResponders.push(username);
+        queriedUsernames.push(username);
       }
     }
-    this.setState({queriedResponders});
+    this.setState({queriedUsernames});
   }
 
-  addSelectedResponders = () => {
-    let selectedResponders = [];
-    for (let [username, isSelected] of this.state.responderSelectionMap) {
+  addSelectedUsernames = () => {
+    let selectedUsernames = [];
+    for (let [username, isSelected] of this.state.usernameSelectionMap) {
       if (isSelected) {
-        selectedResponders.push(username);
+        selectedUsernames.push(username);
       }
     }
-    // TODO: ping backend to add the usernames in selectedResponders as responders for this user
+    // TODO: ping backend to add the usernames in selectedUsernames as responders for this user
+    // response should contain the responders (username + online status) just added. store in addedResponders
+    let fakeResponse = [];
+    for (username of selectedUsernames) {
+      fakeResponse.push({username: username, available: username.includes("a")});
+    }
     
+    const addedResponders = fakeResponse;
     Actions.pop();
+    setTimeout(() => {
+      Actions.refresh({
+        addedResponders
+      });
+    }, 0);
   }
 
   render() {
@@ -100,16 +113,16 @@ class AddRespondersScreen extends Component {
 
           <List style={styles.list}>
             {
-              (this.state.queriedResponders.length == 0) ?
+              (this.state.queriedUsernames.length == 0) ?
               
                 <Text>No results found.</Text>
               
               :
               
-                this.state.queriedResponders.map((username, index) => {
+                this.state.queriedUsernames.map((username, index) => {
                   return (
                     <View style={styles.row} key={index}>
-                      <Checkbox checked={this.state.responderSelectionMap.get(username)}
+                      <Checkbox checked={this.state.usernameSelectionMap.get(username)}
                         onPress={() => this.onCheckboxPress(username)} />
                       <ListItem
                         leftText={username}
@@ -123,7 +136,7 @@ class AddRespondersScreen extends Component {
 
           <View style={styles.addButton}>
             <Button variant="primary" style={{backgroundColor: theme.colors.green}}
-            onPress={() => this.addSelectedResponders()}>add selected</Button>
+            onPress={() => this.addSelectedUsernames()}>add selected</Button>
           </View>
         </Content>
       </Container>
