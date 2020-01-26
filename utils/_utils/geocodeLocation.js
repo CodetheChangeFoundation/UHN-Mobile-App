@@ -18,7 +18,7 @@ export const convertToCoordinates = (address, success) => {
 export const convertToAddress = (coordinates, success) => {
 
     let coords = {coordinates}
-    if (coordinates && coordinates.lon || coordinates.lng) {
+    if (coordinates && coordinates.lat || coordinates.lng) {
         coords = { latitude: coordinates.lat, longitude: coordinates.lng }
     }
     else coords = { latitude: coordinates.latitude, longitude: coordinates.longitude }

@@ -22,7 +22,7 @@ const INITIAL_COORDINATES = {
 
 const TEMPLATE_ADDRESSES = [
     '4070 West 38th Ave, Vancouver',
-    'Kemang Pratama 3 Bekasi, Indonesia'
+    '100 Universal City Plaza, Universal City, California'
 ]
 
 const openStreetMapLayer = {
@@ -44,13 +44,11 @@ const LocationScreen = (props) => {
     const [notes, changeNotes] = useState(null)
 
     const [registeredAddress, setRegisteredAddress] = useState(null)
-
-    const [recentAddresses, setRecentAddresses] = useState(TEMPLATE_ADDRESSES)
     
     useEffect(() => {
         getCurrentLocation((coords) => {
-            const { latitude, longitude } = coords
-            convertToAddress({ latitude, longitude }, setAddress)
+            convertToAddress({ latitude: coords.lat, longitude: coords.lng }, setAddress)
+            setLocation(coords)
         })
 
         getUserLocation({id: props.userId, token: props.token})
@@ -79,20 +77,21 @@ const LocationScreen = (props) => {
         // console.log("App Recieved", message)
     }
 
-    const pickRecent = (num) => {
-        convertToCoordinates(recentAddresses[num], setLocation)
+    const pickRegistered = () => {
+        convertToCoordinates(registeredAddress, setLocation)
         setAddressConfirm(true)
     }
 
-    const handleSave = () => {
+    const handleSearch = () => {
         if(addressConfirm) {
             /***
              * Need a way to update database with:
              * (a) current address
-             * (b) most recent addresses
-             * (c) note
+             * (b) note
              */
             Actions.using()
+        } else if(!address) {   // check if address form is filled
+            return
         } else {
             convertToCoordinates(address, setLocation)
             setAddressConfirm(true)
@@ -131,23 +130,17 @@ const LocationScreen = (props) => {
                 value={notes}
             />
 
-            <Text style={{marginVertical: 20, width: "80%", height: 20}}>Recent Locations:</Text>
-            <TouchableOpacity onPress={() => {pickRecent(0)}}>
+            <Text style={{marginVertical: 20, width: "80%", height: 20}}>Registered Location:</Text>
+            <TouchableOpacity onPress={pickRegistered}>
                 <TextInput  editable={false}
                             style={styles.clickableText}
                             pointerEvents="none"
-                >{recentAddresses[0]}</TextInput>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => {pickRecent(1)}}>
-                <TextInput  editable={false}
-                            style={styles.clickableText}
-                            pointerEvents="none"
-                >{recentAddresses[1]}</TextInput>
+                >{registeredAddress}</TextInput>
             </TouchableOpacity>
         </Form>
 
-        <View style={styles.saveButton}>
-            <Button variant="alarm" onPress={handleSave}>{addressConfirm ? 'confirm' : 'save'}</Button>
+        <View style={styles.searchButton}>
+            <Button variant="alarm" onPress={handleSearch}>{addressConfirm ? 'confirm' : 'search'}</Button>
          </View>
     </Content>
     </Container>
@@ -175,7 +168,7 @@ const styles = StyleSheet.create({
     fontSize: theme.fontSizes.medium,
     color: theme.colors.darkGrey,
   },
-  saveButton: {
+  searchButton: {
     flex: 3,
   },
 });

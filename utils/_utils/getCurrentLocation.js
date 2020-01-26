@@ -5,8 +5,10 @@ export const getCurrentLocation = (success) => {
     .then(() => {
         Location.getCurrentPositionAsync()
         .then((location) => {
-            if (success) success(location.coords)
-            return location.coords
+            const coordinates = { lat: location.coords.latitude, lng: location.coords.longitude }
+
+            if (success) success(coordinates)
+            return coordinates
         })
         .catch((error) => {
             console.error('cannot get location!', {error})
