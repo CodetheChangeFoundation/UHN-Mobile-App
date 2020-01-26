@@ -13,14 +13,14 @@ export const getUserLocation = (payload) => {
     )
 }
 
-export const updateUserLocation = (credential) => {
+export const updateUserLocation = (payload) => {
 
-    const accessToken = {
+    const config = {
         headers: { 'x-access-token': 'Bearer ' + payload.token }
     }
     
     return (
-      axios.get(SERVER_ROOT + '/users/' + payload.id + '/location', accessToken)
+      axios.post(SERVER_ROOT + '/users/' + payload.id + '/location', payload.data, config)
         .then(response => { return response.data })
         .catch(error => { console.error(error) })
     )

@@ -10,7 +10,7 @@ import { Form, Input } from "../components/forms"
 import { Text } from "../components/typography"
 import theme from '../styles/base'
 import { getCurrentLocation, convertToCoordinates, convertToAddress } from '../utils/index'
-import { getUserLocation } from '../store/actions';
+import { getUserLocation, updateUserLocation } from '../store/actions';
 
 import mapMarkerIcon from '../components/icons/mapMarker'
 
@@ -53,6 +53,7 @@ const LocationScreen = (props) => {
 
         getUserLocation({id: props.userId, token: props.token})
             .then( (res) => {
+                if(!res.location.lat || !res.location.lng) return
                 convertToAddress(res.location, setRegisteredAddress) })
             .catch( (err) => { console.error(err) })
     }, [])
@@ -78,6 +79,7 @@ const LocationScreen = (props) => {
     }
 
     const pickRegistered = () => {
+        if(!registeredAddress) return
         convertToCoordinates(registeredAddress, setLocation)
         setAddressConfirm(true)
     }
@@ -89,6 +91,20 @@ const LocationScreen = (props) => {
              * (a) current address
              * (b) note
              */
+
+            const params = {
+                data: '',
+                id: props.userId,
+                token: props.token
+            }
+
+            convertToCoordinates(address, (coords) => {
+                params.data = coords
+                updateUserLocation(params)
+            })
+
+            updateUserLocation(params)
+
             Actions.using()
         } else if(!address) {   // check if address form is filled
             return
@@ -159,7 +175,7 @@ const styles = StyleSheet.create({
   },
   clickableText: {
     height: 40,
-    width: "80%",
+    width: "100%",
     borderBottomColor: 'lightgrey',
     borderBottomWidth: 1,
     padding: 10,
