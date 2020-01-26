@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux'
 import { WebViewLeaflet } from 'react-native-webview-leaflet'
 
 import { Actions } from "react-native-router-flux";
@@ -8,9 +9,21 @@ import { Button } from "../components/buttons";
 import { Form, Input } from "../components/forms"
 import { Text } from "../components/typography"
 import theme from '../styles/base'
-import { getLocation, convertToCoordinates } from '../utils/index'
+import { getCurrentLocation, convertToCoordinates, convertToAddress } from '../utils/index'
+import { getUserLocation } from '../store/actions';
 
 import mapMarkerIcon from '../components/icons/mapMarker'
+
+const INITIAL_COORDINATES = {
+     // Default location is set to Vancouver
+     lat: 49.2827,
+     lng: -123.1207
+}
+
+const TEMPLATE_ADDRESSES = [
+    '4070 West 38th Ave, Vancouver',
+    'Kemang Pratama 3 Bekasi, Indonesia'
+]
 
 const openStreetMapLayer = {
     attribution:'&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
@@ -19,29 +32,31 @@ const openStreetMapLayer = {
     url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 }
 
-const LocationScreen = () => {
+const LocationScreen = (props) => {
     const [webViewLeafletRef, setWebViewLeafletRef] = useState(null)
-    const [mapCenterPosition, setMapCenterPosition] = useState({
-        // Default location is set to Vancouver
-        lat: 49.2827,
-        lng: -123.1207
-    })
+    const [mapCenterPosition, setMapCenterPosition] = useState(INITIAL_COORDINATES)
     const [mapZoom, setMapZoom] = useState(7)
     const [mapLayers, setMapLayers] = useState(null)
     const [mapMarkers, setMapMarkers] = useState([])
 
-    const [address, changeAddress] = useState(null)
+    const [address, setAddress] = useState(null)
     const [addressConfirm, setAddressConfirm] = useState(false) 
     const [notes, changeNotes] = useState(null)
 
-    const [recentAddresses, setRecentAddresses] = useState([])
+    const [registeredAddress, setRegisteredAddress] = useState(null)
+
+    const [recentAddresses, setRecentAddresses] = useState(TEMPLATE_ADDRESSES)
     
     useEffect(() => {
-        setRecentAddresses([
-            "3087 West 38th Ave Vancouver",
-            "Vancouver, V6T 1Z4"
-        ])
-        getLocation(setLocation)
+        getCurrentLocation((coords) => {
+            const { latitude, longitude } = coords
+            convertToAddress({ latitude, longitude }, setAddress)
+        })
+
+        getUserLocation({id: props.userId, token: props.token})
+            .then( (res) => {
+                convertToAddress(res.location, setRegisteredAddress) })
+            .catch( (err) => { console.error(err) })
     }, [])
 
     const mapLoad = () => {
@@ -49,13 +64,13 @@ const LocationScreen = () => {
     }
 
     const setLocation = (location) => {
-        const { latitude, longitude } = location
+        const { lat, lng } = location
         // Set new location and map zoom
-        setMapCenterPosition({ lat: latitude, lng: longitude })
+        setMapCenterPosition({ lat, lng })
         setMapZoom(18)
         setMapMarkers([{
             icon: mapMarkerIcon,
-            position: { lat: latitude, lng: longitude },
+            position: { lat, lng },
             name: "Current Location"
         }])
     }
@@ -105,7 +120,7 @@ const LocationScreen = () => {
         <Form style={styles.inputWrapper}>
             <Input label=""
                 variant="text"
-                onChangeText={text => { setAddressConfirm(false); changeAddress(text) }}
+                onChangeText={text => { setAddressConfirm(false); setAddress(text) }}
                 placeholder="Enter Address"
                 value={address}
             />
@@ -165,4 +180,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LocationScreen;
+const mapStateToProps = (state, currentProps) => {
+    const { token, userId } = state.auth;
+    return { ...currentProps, token, userId }
+}
+
+export default connect(mapStateToProps)(LocationScreen);
