@@ -1,4 +1,3 @@
-import { Platform } from 'react-native'
 import * as Location from 'expo-location';
 
 export const getCurrentLocation = (success) => {
@@ -6,7 +5,8 @@ export const getCurrentLocation = (success) => {
     .then(() => {
         Location.getCurrentPositionAsync()
         .then((location) => {
-            success(location.coords)
+            if (success) success(location.coords)
+            return location.coords
         })
         .catch((error) => {
             console.error('cannot get location!', {error})
