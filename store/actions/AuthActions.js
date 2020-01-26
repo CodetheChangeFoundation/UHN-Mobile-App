@@ -53,7 +53,6 @@ export const loginHandler = (credential, rememberMe) => {
 }
 
 export const signupHandler = (userData) => {
-  console.log('http://' + SERVER_ROOT + '/signup', userData)
   return (dispatch) => {
     axios.post(SERVER_ROOT + '/signup', userData)
     .then(response => {
