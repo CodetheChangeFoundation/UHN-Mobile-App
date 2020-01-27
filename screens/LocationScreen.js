@@ -145,14 +145,20 @@ const LocationScreen = (props) => {
                 placeholder="notes"
                 value={notes}
             />
-
-            <Text style={{marginVertical: 20, width: "80%", height: 20}}>Registered Location:</Text>
-            <TouchableOpacity onPress={pickRegistered}>
-                <TextInput  editable={false}
-                            style={styles.clickableText}
-                            pointerEvents="none"
-                >{registeredAddress}</TextInput>
-            </TouchableOpacity>
+            { registeredAddress ? (
+            <React.Fragment>
+                <Text style={{marginVertical: 20, width: "80%", height: 20}}>Registered Location:</Text>
+                <TouchableOpacity onPress={pickRegistered}>
+                    <TextInput  editable={false}
+                                style={styles.clickableText}
+                                pointerEvents="none"
+                    >{registeredAddress}</TextInput>
+                </TouchableOpacity>
+            </React.Fragment>
+            ) : (
+                <Text style={{marginVertical: 20, width: "80%", height: 20}}>No Registered Location Found!</Text>
+            )
+        }
         </Form>
 
         <View style={styles.searchButton}>
