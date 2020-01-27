@@ -5,6 +5,8 @@ import { Container, Content, Header, View, List, ListItem } from "../components/
 import { Text } from "../components/typography";
 import { Button } from "../components/buttons";
 import theme from "../styles/base";
+import { getMyResponders } from '../store/actions';
+import { connect } from 'react-redux';
 
 // fake data
 const fakeResponders = [
@@ -128,4 +130,10 @@ const styles = StyleSheet.create({
   }
 });
 
-export default MyRespondersScreen;
+const mapStateToProps = (state) => {
+  return {
+    responders: state.responders
+  }
+}
+
+export default connect(mapStateToProps, { getMyResponders })(MyRespondersScreen);
