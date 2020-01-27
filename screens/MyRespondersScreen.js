@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 // fake data
 const fakeResponders = [
   { username: "alpha", available: true },
-  { username: "beta", available: false },
+  { username: "bravo", available: false },
   { username: "charlie", available: false },
   { username: "delta", available: true },
   { username: "echo", available: false },

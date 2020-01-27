@@ -8,7 +8,7 @@ const fakeResponders = [
   { username: "delta", available: true },
   { username: "echo", available: false },
   { username: "foxtrot", available: false },
-  { username: "georgia", available: false },
+  { username: "golf", available: false },
   { username: "hotel", available: true },
   { username: "india", available: true },
   { username: "juliet", available: false },
