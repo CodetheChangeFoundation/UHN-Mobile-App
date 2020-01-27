@@ -7,6 +7,7 @@ import { Text } from "../components/typography";
 import { Button } from "../components/buttons";
 import { Modal } from "../components/popups";
 import theme from "../styles/base";
+import { connect } from 'react-redux';
 
 // fake data
 const fakeResponders = [
@@ -134,4 +135,10 @@ const styles = StyleSheet.create({
   }
 });
 
-export default RemoveRespondersScreen;
+const mapStateToProps = (state) => {
+  return {
+    responders: state.responders
+  }
+}
+
+export default connect(mapStateToProps)(RemoveRespondersScreen);
