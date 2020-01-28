@@ -1,4 +1,4 @@
-import { GET_MY_RESPONDERS } from "./Types"
+import { GET_MY_RESPONDERS, REMOVE_RESPONDERS } from "./Types"
 
 // fake data
 const fakeResponders = [
@@ -18,7 +18,8 @@ const fakeResponders = [
 ];
 
 export const getMyResponders = () => {
-  // TODO: fetch list of responders (username + availability) for this user
+  // TODO: fetch list of responders (username + availability) for this user and store in myResponders
+
   const myResponders = fakeResponders;
   return {
     type: GET_MY_RESPONDERS,
@@ -26,4 +27,22 @@ export const getMyResponders = () => {
       myResponders
     }
   };
+}
+
+export const removeResponders = (usernamesToRemove, myResponders) => {
+  // TODO: ping backend to remove usernames in usernamesToRemove from this user's profile
+
+  let respondersToKeep = [];
+  for (responder of myResponders) {
+    if (!usernamesToRemove.includes(responder.username)) {
+      respondersToKeep.push(responder);
+    }
+  }
+
+  return {
+    type: REMOVE_RESPONDERS,
+    data: {
+      myResponders: respondersToKeep
+    }
+  }
 }

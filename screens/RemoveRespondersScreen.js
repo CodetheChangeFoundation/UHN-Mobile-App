@@ -7,7 +7,8 @@ import { Text } from "../components/typography";
 import { Button } from "../components/buttons";
 import { Modal } from "../components/popups";
 import theme from "../styles/base";
-import { connect } from 'react-redux';
+import { removeResponders } from "../store/actions";
+import { connect } from "react-redux";
 
 class RemoveRespondersScreen extends Component {
   constructor(props) {
@@ -18,10 +19,10 @@ class RemoveRespondersScreen extends Component {
     for (responder of myResponders) {
       responderSelectionMap.set(responder.username, false);
     }
-    
+
     this.state = {
       responderSelectionMap: responderSelectionMap,
-      selectedResponders: [],
+      selectedUsernames: [],
       modalVisible: false
     };
   }
@@ -34,8 +35,7 @@ class RemoveRespondersScreen extends Component {
   }
 
   removeSelectedResponders = () => {
-    // TODO: ping backend to remove the usernames in this.state.selectedResponders from this user's profile
-    console.log(this.state.selectedResponders)
+    this.props.removeResponders(this.state.selectedUsernames, this.props.responders.myResponders);
     Actions.pop();
   }
 
@@ -43,19 +43,19 @@ class RemoveRespondersScreen extends Component {
   modalFooterLeft = (<Button variant="secondary" onPress={() => this.setState({modalVisible: false})}>Cancel</Button>);
   modalFooterRight = (<Button variant="primary" style={{backgroundColor: theme.colors.red}} onPress={() => this.removeSelectedResponders()}>Remove</Button>);
 
-  gatherSelectedResponders = () => {
-    let selectedResponders = [];
+  gatherSelectedUsernames = () => {
+    let selectedUsernames = [];
     for (let [username, isSelected] of this.state.responderSelectionMap) {
       if (isSelected) {
-        selectedResponders.push(username);
+        selectedUsernames.push(username);
       }
     }
-    return selectedResponders;
+    return selectedUsernames;
   }
 
   renderModalBody = () => {
     let modalBody = [];
-    for (username of this.state.selectedResponders) {
+    for (username of this.state.selectedUsernames) {
       modalBody.push(<ListItem key={username} leftText={username} />);
     }
     return (<List style={styles.list}>
@@ -106,7 +106,7 @@ class RemoveRespondersScreen extends Component {
           <View style={styles.removeButton}>
             <Button variant="primary" style={{backgroundColor: theme.colors.red}}
               onPress={() => {
-                this.setState({modalVisible: true, selectedResponders: this.gatherSelectedResponders()});
+                this.setState({modalVisible: true, selectedUsernames: this.gatherSelectedUsernames()});
               }}
             >
               remove selected
@@ -137,4 +137,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(RemoveRespondersScreen);
+export default connect(mapStateToProps, { removeResponders })(RemoveRespondersScreen);

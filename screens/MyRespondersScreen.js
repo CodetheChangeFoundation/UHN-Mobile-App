@@ -5,8 +5,8 @@ import { Container, Content, Header, View, List, ListItem } from "../components/
 import { Text } from "../components/typography";
 import { Button } from "../components/buttons";
 import theme from "../styles/base";
-import { getMyResponders } from '../store/actions';
-import { connect } from 'react-redux';
+import { getMyResponders } from "../store/actions";
+import { connect } from "react-redux";
 
 // fake data
 const fakeResponders = [
@@ -28,7 +28,7 @@ const fakeResponders = [
 class MyRespondersScreen extends Component {
   constructor(props) {
     super(props);
-    // Update myResponders every time this page is mounted
+    // Updates myResponders every time this page is mounted
     this.props.getMyResponders();
     const myResponders = this.props.responders.myResponders;
 
@@ -41,7 +41,7 @@ class MyRespondersScreen extends Component {
         unavailableUsernames.push(responder.username);
       }
     }
-    // here we can sort availableUsernames and unavailableUsernames by alphabetical order, recently added, distance away, etc
+    // Here we can sort availableUsernames and unavailableUsernames by alphabetical order, recently added, distance away, etc
     this.state = {
       availableUsernames,
       unavailableUsernames
@@ -59,7 +59,7 @@ class MyRespondersScreen extends Component {
           unavailableUsernames.push(responder.username);
         }
       }
-      // sort availableUsernames and unavailableUsernames if desired
+      // Sort availableUsernames and unavailableUsernames if desired
       this.setState({availableUsernames, unavailableUsernames});
     }
   }
