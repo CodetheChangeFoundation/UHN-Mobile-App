@@ -15,7 +15,7 @@ const Header = (props) => {
 
   const bodyCombinedStyles = {
     ...headerStyles.body,
-    marginLeft: (props.leftButton)? 16 : 0
+    marginLeft: (props.leftButton)? theme.layout.margin : 0
   }
 
   return (
@@ -47,7 +47,7 @@ const iconName = {
 
 const headerProps = {
   leftButton: {
-    size: 28,
+    size: theme.iconSizes.header,
     color: theme.colors.white,
   }
 };

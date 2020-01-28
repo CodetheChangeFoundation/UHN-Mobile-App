@@ -61,9 +61,9 @@ const RespondingScreen = () => {
 
       <List style={styles.list}>
         {
-          usernames.map((username, index) => {
+          usernames.map((username) => {
             return (
-              <ListItem key={index}
+              <ListItem key={username}
                 leftText={username}
               />
             );
