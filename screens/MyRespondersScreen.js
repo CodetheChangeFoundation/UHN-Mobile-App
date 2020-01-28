@@ -76,9 +76,9 @@ class MyRespondersScreen extends Component {
         <Content>
           <List style={styles.list}>
             {
-              this.state.availableUsernames.map((username, index) => {
+              this.state.availableUsernames.map((username) => {
                 return (
-                  <ListItem key={index}
+                  <ListItem key={username}
                     leftText={username}
                     rightText="available"
                     rightTextStyle={styles.available}
@@ -87,9 +87,9 @@ class MyRespondersScreen extends Component {
               })
             }
             {
-              this.state.unavailableUsernames.map((username, index) => {
+              this.state.unavailableUsernames.map((username) => {
                 return (
-                  <ListItem key={index}
+                  <ListItem key={username}
                     leftText={username}
                     rightText="unavailable"
                     rightTextStyle={styles.unavailable}

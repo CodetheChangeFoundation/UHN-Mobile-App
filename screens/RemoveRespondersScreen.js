@@ -43,16 +43,6 @@ class RemoveRespondersScreen extends Component {
   modalFooterLeft = (<Button variant="secondary" onPress={() => this.setState({modalVisible: false})}>Cancel</Button>);
   modalFooterRight = (<Button variant="primary" style={{backgroundColor: theme.colors.red}} onPress={() => this.removeSelectedResponders()}>Remove</Button>);
 
-  gatherSelectedUsernames = () => {
-    let selectedUsernames = [];
-    for (let [username, isSelected] of this.state.responderSelectionMap) {
-      if (isSelected) {
-        selectedUsernames.push(username);
-      }
-    }
-    return selectedUsernames;
-  }
-
   renderModalBody = () => {
     let modalBody = [];
     for (username of this.state.selectedUsernames) {
@@ -61,6 +51,16 @@ class RemoveRespondersScreen extends Component {
     return (<List style={styles.list}>
             {modalBody}
             </List>);
+  }
+
+  gatherSelectedUsernames = () => {
+    let selectedUsernames = [];
+    for (let [username, isSelected] of this.state.responderSelectionMap) {
+      if (isSelected) {
+        selectedUsernames.push(username);
+      }
+    }
+    return selectedUsernames;
   }
 
   renderRespondersList = () => {
