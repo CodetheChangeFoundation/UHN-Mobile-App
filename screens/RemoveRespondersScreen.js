@@ -9,32 +9,19 @@ import { Modal } from "../components/popups";
 import theme from "../styles/base";
 import { connect } from 'react-redux';
 
-// fake data
-const fakeResponders = [
-  "a",
-  "aa",
-  "ab",
-  "b",
-  "ba",
-  "bb",
-  "bc",
-  "c",
-  "ca",
-  "cb",
-  "cc",
-];
-
 class RemoveRespondersScreen extends Component {
   constructor(props) {
     super(props);
-    // TODO: fetch all responders for this user
+    const myResponders = this.props.responders.myResponders; 
+
     let responderSelectionMap = new Map();
-    for (username of fakeResponders) {
-      responderSelectionMap.set(username, false);
+    for (responder of myResponders) {
+      responderSelectionMap.set(responder.username, false);
     }
+    
     this.state = {
       responderSelectionMap: responderSelectionMap,
-      allResponders: fakeResponders,
+      selectedResponders: [],
       modalVisible: false
     };
   }
@@ -47,14 +34,8 @@ class RemoveRespondersScreen extends Component {
   }
 
   removeSelectedResponders = () => {
-    let selectedResponders = [];
-    for (let [username, isSelected] of this.state.responderSelectionMap) {
-      if (isSelected) {
-        selectedResponders.push(username);
-      }
-    }
-    // TODO: ping backend to remove the usernames in selectedResponders from this user's profile
-    
+    // TODO: ping backend to remove the usernames in this.state.selectedResponders from this user's profile
+    console.log(this.state.selectedResponders)
     Actions.pop();
   }
 
@@ -62,26 +43,49 @@ class RemoveRespondersScreen extends Component {
   modalFooterLeft = (<Button variant="secondary" onPress={() => this.setState({modalVisible: false})}>Cancel</Button>);
   modalFooterRight = (<Button variant="primary" style={{backgroundColor: theme.colors.red}} onPress={() => this.removeSelectedResponders()}>Remove</Button>);
 
-  render() {
-  modalBody = (<List style={styles.list}>
-                {
-                  (this.state.modalVisible) &&
-                    this.state.allResponders.map((username, index) => {
-                      if (this.state.responderSelectionMap.get(username)) {
-                        return (
-                          <ListItem key={index} leftText={username} />
-                        );
-                      }
-                    })
-                }
-              </List>);
+  gatherSelectedResponders = () => {
+    let selectedResponders = [];
+    for (let [username, isSelected] of this.state.responderSelectionMap) {
+      if (isSelected) {
+        selectedResponders.push(username);
+      }
+    }
+    return selectedResponders;
+  }
 
+  renderModalBody = () => {
+    let modalBody = [];
+    for (username of this.state.selectedResponders) {
+      modalBody.push(<ListItem key={username} leftText={username} />);
+    }
+    return (<List style={styles.list}>
+            {modalBody}
+            </List>);
+  }
+
+  renderRespondersList = () => {
+    let respondersList = []
+    for (let [username, isSelected] of this.state.responderSelectionMap) {
+      respondersList.push(
+        <View style={styles.row} key={username}>
+          <Checkbox checked={isSelected}
+            onPress={() => this.onCheckboxPress(username)} />
+          <ListItem
+            leftText={username}
+          />
+        </View>
+      );
+    }
+    return respondersList;
+  }
+
+  render() {
     return (
       <Container>
         <Modal
           modalVisible={this.state.modalVisible}
           modalHeader={this.modalHeader}
-          modalBody={modalBody}
+          modalBody={this.renderModalBody()}
           modalFooterLeft={this.modalFooterLeft}
           modalFooterRight={this.modalFooterRight}
           onBackdropPress={() => this.setState({modalVisible: false})}
@@ -95,26 +99,18 @@ class RemoveRespondersScreen extends Component {
         </Header>
 
         <Content>
-
           <List style={styles.list}>
-            {
-                this.state.allResponders.map((username, index) => {
-                  return (
-                    <View style={styles.row} key={index}>
-                      <Checkbox checked={this.state.responderSelectionMap.get(username)}
-                        onPress={() => this.onCheckboxPress(username)} />
-                      <ListItem
-                        leftText={username}
-                      />
-                    </View>
-                  );
-                })
-            }
+            {this.renderRespondersList()}
           </List>
 
           <View style={styles.removeButton}>
             <Button variant="primary" style={{backgroundColor: theme.colors.red}}
-            onPress={() => this.setState({modalVisible: true})}>remove selected</Button>
+              onPress={() => {
+                this.setState({modalVisible: true, selectedResponders: this.gatherSelectedResponders()});
+              }}
+            >
+              remove selected
+            </Button>
           </View>
         </Content>
       </Container>

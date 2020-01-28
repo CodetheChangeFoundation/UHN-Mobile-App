@@ -1,7 +1,7 @@
 import { GET_MY_RESPONDERS } from "../actions/Types"
 
 const initialState = {
-  myResponders = []
+  myResponders: []
 };
 
 export default (state = initialState, action) => {
