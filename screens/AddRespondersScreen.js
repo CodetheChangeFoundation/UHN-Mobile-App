@@ -6,6 +6,8 @@ import { Checkbox, SearchBar, Input } from "../components/forms";
 import { Text } from "../components/typography";
 import { Button } from "../components/buttons";
 import theme from "../styles/base";
+import { addResponders } from "../store/actions";
+import { connect } from "react-redux";
 
 // fake data
 const fakeUsernames = [
@@ -25,18 +27,28 @@ const fakeUsernames = [
 class AddRespondersScreen extends Component {
   constructor(props) {
     super(props);
+
+    let myUsernames = this.props.responders.myResponders.map((responder) => {
+      return responder.username;
+    })
+
     // TODO: fetch all responder usernames and store in allUsernames
     const allUsernames = fakeUsernames;
 
+    let allUsernamesNoDup = [];
     let usernameSelectionMap = new Map();
     for (username of allUsernames) {
-      usernameSelectionMap.set(username, false);
+      if (!myUsernames.includes(username)) {
+        allUsernamesNoDup.push(username);
+        usernameSelectionMap.set(username, false);
+      }
     }
+
     this.state = {
       searchQuery: "",
       usernameSelectionMap: usernameSelectionMap,
-      allUsernames: allUsernames,
-      queriedUsernames: allUsernames
+      allUsernames: allUsernamesNoDup,
+      queriedUsernames: allUsernamesNoDup
     };
   }
 
@@ -69,27 +81,25 @@ class AddRespondersScreen extends Component {
     this.setState({queriedUsernames});
   }
 
-  addSelectedUsernames = () => {
+  gatherSelectedUsernames = () => {
     let selectedUsernames = [];
     for (let [username, isSelected] of this.state.usernameSelectionMap) {
       if (isSelected) {
         selectedUsernames.push(username);
       }
     }
-    // TODO: ping backend to add the usernames in selectedUsernames as responders for this user
-    // response should contain the responders (username + online status) just added. store in addedResponders
-    let fakeResponse = [];
-    for (username of selectedUsernames) {
-      fakeResponse.push({username: username, available: username.includes("a")});
-    }
-    
-    const addedResponders = fakeResponse;
+    return selectedUsernames;
+  }
+
+  addSelectedUsernames = () => {
+    let selectedUsernames = this.gatherSelectedUsernames();
+    this.props.addResponders(selectedUsernames, this.props.responders.myResponders);
     Actions.pop();
-    setTimeout(() => {
-      Actions.refresh({
-        addedResponders
-      });
-    }, 0);
+    // setTimeout(() => {
+    //   Actions.refresh({
+    //     addedResponders
+    //   });
+    // }, 0);
   }
 
   render() {
@@ -162,4 +172,10 @@ const styles = StyleSheet.create({
   }
 });
 
-export default AddRespondersScreen;
+const mapStateToProps = (state) => {
+  return {
+    responders: state.responders
+  }
+}
+
+export default connect(mapStateToProps, { addResponders })(AddRespondersScreen);
