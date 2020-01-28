@@ -28,8 +28,9 @@ const fakeResponders = [
 class MyRespondersScreen extends Component {
   constructor(props) {
     super(props);
-    // TODO: fetch user's responders (username + status) and store in myResponders
-    const myResponders = fakeResponders;
+    // Update myResponders every time this page is mounted
+    this.props.getMyResponders();
+    const myResponders = this.props.responders.myResponders;
 
     let availableUsernames = [];
     let unavailableUsernames = [];
@@ -48,21 +49,17 @@ class MyRespondersScreen extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.addedResponders !== prevProps.addedResponders) {
-      let availableUsernames = this.state.availableUsernames;
-      let unavailableUsernames = this.state.unavailableUsernames;
-      for (responder of this.props.addedResponders) {
+    if (this.props.responders.myResponders !== prevProps.responders.myResponders) {
+      let availableUsernames = [];
+      let unavailableUsernames = [];
+      for (responder of this.props.responders.myResponders) {
         if (responder.available) {
-          if (!availableUsernames.includes(responder.username)) {
-            availableUsernames.push(responder.username);
-          }
+          availableUsernames.push(responder.username);
         } else {
-          if (!unavailableUsernames.includes(responder.username)) {
-            unavailableUsernames.push(responder.username);
-          }
+          unavailableUsernames.push(responder.username);
         }
       }
-      // re-sort availableUsernames and unavailableUsernames if desired
+      // sort availableUsernames and unavailableUsernames if desired
       this.setState({availableUsernames, unavailableUsernames});
     }
   }
