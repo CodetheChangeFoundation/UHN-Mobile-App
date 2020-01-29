@@ -41,20 +41,22 @@ const LocationScreen = (props) => {
 
     const [address, setAddress] = useState(null)
     const [addressConfirm, setAddressConfirm] = useState(false) 
-    const [notes, changeNotes] = useState(null)
+    const [note, setNote] = useState(null)
 
     const [registeredAddress, setRegisteredAddress] = useState(null)
     
     useEffect(() => {
         getCurrentLocation((coords) => {
             convertToAddress({ latitude: coords.lat, longitude: coords.lng }, setAddress)
-            setLocation(coords)
+            setLocation({ lat: coords.lat, lng: coords.lng })
         })
 
         getUserLocation({id: props.userId, token: props.token})
             .then( (res) => {
                 if(!res.location.lat || !res.location.lng) return
-                convertToAddress(res.location, setRegisteredAddress) })
+                convertToAddress(res.location, setRegisteredAddress)
+                setNote(res.note)
+            })
             .catch( (err) => { console.error(err) })
     }, [])
 
@@ -80,34 +82,30 @@ const LocationScreen = (props) => {
 
     const pickRegistered = () => {
         if(!registeredAddress) return
-        convertToCoordinates(registeredAddress, setLocation)
+        setAddress(registeredAddress)
+        convertToCoordinates(address, setLocation)
         setAddressConfirm(true)
     }
 
     const handleSearch = () => {
         if(addressConfirm) {
-            /***
-             * Need a way to update database with:
-             * (a) current address
-             * (b) note
-             */
 
             const params = {
-                data: '',
+                data: {
+                    note: note && note
+                },
                 id: props.userId,
-                token: props.token
+                token: props.token,
             }
 
             convertToCoordinates(address, (coords) => {
-                params.data = coords
+                params.data.lat = coords.lat
+                params.data.lng = coords.lng
+
                 updateUserLocation(params)
             })
 
-            updateUserLocation(params)
-
             Actions.using()
-        } else if(!address) {   // check if address form is filled
-            return
         } else {
             convertToCoordinates(address, setLocation)
             setAddressConfirm(true)
@@ -141,9 +139,9 @@ const LocationScreen = (props) => {
             />
             <Input label=""
                 variant="text"
-                onChangeText={text => changeNotes(text)}
-                placeholder="notes"
-                value={notes}
+                onChangeText={text => setNote(text)}
+                placeholder="note"
+                value={note}
             />
             { registeredAddress ? (
             <React.Fragment>
