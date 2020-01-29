@@ -142,6 +142,62 @@ return(
 );
 ```
 
+**SearchBar**
+
+```
+const [searchBarValue, setSearchBarValue] = useState("");
+
+return (
+  <SearchBar 
+    placeholder="Search for a username"
+    enableClearButton
+    onChangeText={(newText) => setSearchBarValue(newText)}
+    onClearButtonPress={() => setSearchBarValue("")}
+    onSubmitEditing={() => console.log("Searched for", searchBarValue)} 
+  />
+);
+```
+
+Props:
+
+- placeholder: the text shown when the SearchBar is empty
+  - optional
+  - type: string
+- enableClearButton: set to true to enable a clear button that appears on focus
+  - optional
+  - type: boolean
+  - default: true
+- onChangeText: when the text is edited, captures the new value
+  - required
+  - type: func
+- onClearButtonPress: when the clear button is pressed, the search bar text will be cleared. Use this to reset whatever variable you're using to capture the text
+  - optional
+  - type: func
+- onSubmitEditing: callback for when the user enters text then presses the enter key
+  - required
+  - type: func
+
+**Checkbox**
+
+```
+const [checkboxValue, setCheckboxValue] = useState(false);
+
+<Checkbox 
+  checked={checkboxValue}
+  onPress={() => setCheckboxValue(!checkboxValue)} 
+/>
+</Form>
+```
+
+Props:
+
+- checked: true if the checkbox is currently checked
+  - required
+  - type: bool
+- onPress: callback for when the checkbox is pressed
+  - required
+  - type: func
+
 ## Layout
 
 Layout is based on NativeBase's structure.

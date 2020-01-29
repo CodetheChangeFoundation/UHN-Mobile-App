@@ -9,7 +9,7 @@ import { Text } from "../typography";
 const DrawerContent = () => {
   const [modalVisible, setModalVisible] = useState(false);
 
-  const modalHeader="Logout";
+  const modalHeader = "Logout";
   const modalBody = (<Text>Are you sure?</Text>);
   const modalFooterLeft = (<Button variant="secondary" onPress={() => setModalVisible(false)}>Cancel</Button>);
   const modalFooterRight = (<Button variant="primary" onPress={() => Actions.auth()}>Logout</Button>);
