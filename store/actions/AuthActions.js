@@ -39,17 +39,16 @@ const signupFailed = (error) => {
 
 export const loginHandler = (credential, rememberMe) => {
   return (dispatch) => {
-    Actions.main();
-    // axios.post(SERVER_ROOT + '/login', credential)
-    //   .then(response => {
-    //     dispatch(setLoading(false));
-    //     dispatch(login(response.data, rememberMe));
-    //     Actions.main();
-    //   })
-    //   .catch(error => {
-    //     dispatch(setLoading(false));
-    //     dispatch(loginFailed(error));
-    //   })
+    axios.post(SERVER_ROOT + '/login', credential)
+      .then(response => {
+        dispatch(setLoading(false));
+        dispatch(login(response.data, rememberMe));
+        Actions.main();
+      })
+      .catch(error => {
+        dispatch(setLoading(false));
+        dispatch(loginFailed(error));
+      })
   }
 }
 
