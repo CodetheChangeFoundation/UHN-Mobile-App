@@ -10,6 +10,7 @@ import * as axios from 'axios';
 import { SERVER_ROOT } from 'react-native-dotenv';
 import { signupHandler, setLoading } from '../store/actions';
 import { connect } from 'react-redux';
+import accountRules from "../constants/accountRules";
 
 
 class SignupScreen extends Component {
@@ -21,13 +22,40 @@ class SignupScreen extends Component {
       username: "",
       password: "",
     }
-    this.state = this.initialState;
-    this.renderSignUpButtonOrSpinner = this.renderSignUpButtonOrSpinner.bind(this);
-    this.onSignUpButtonPress = this.onSignUpButtonPress.bind(this);
+    this.state = {
+      accountInfo: {...this.initialState},
+      inputIsValid: {
+        email: true,
+        phoneNumber: true,
+        username: true,
+        password: true
+      }
+    };
+    // this.renderSignUpButtonOrSpinner = this.renderSignUpButtonOrSpinner.bind(this);
+    // this.onSignUpButtonPress = this.onSignUpButtonPress.bind(this);
   }
 
-  onSignUpButtonPress() {
-    const { email, phoneNumber, username, password } = this.state;
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.accountInfo != prevState.accountInfo) {
+      this.checkIfInputValid();
+    }
+  }
+
+  checkIfInputValid = () => {
+    const {email, phoneNumber, username, password} = this.state.accountInfo;
+    let inputIsValid = {
+      email: email && (accountRules.email.regex.test(email)),
+      phoneNumber: phoneNumber && (accountRules.phoneNumber.regex.test(phoneNumber)),
+      username: username && (accountRules.username.regex.test(username)),
+      password: password && (accountRules.password.regex.test(password)),
+    };
+    console.log(inputIsValid)
+    // console.log("username:", username, ", regex:", accountRules.username.regex, ", matches:", accountRules.username.regex.test(username))
+    this.setState({inputIsValid});
+  }
+
+  onSignUpButtonPress = () => {
+    const { email, phoneNumber, username, password } = this.state.accountInfo;
     console.log("[DEBUG] SignUp Button pressed.");
     console.log("[DEBUG] username is " + username + ", password is " + password + "\n email is " + email + " phoneNum is " + phoneNumber);
     // TODO: generate error if username or password is empty string
@@ -40,7 +68,7 @@ class SignupScreen extends Component {
     });
   }
 
-  renderSignUpButtonOrSpinner() {
+  renderSignUpButtonOrSpinner = () => {
     return (this.props.auth.loading) ?
       (<Spinner />)
       :
@@ -67,8 +95,7 @@ class SignupScreen extends Component {
                 label="Email"
                 hasNext
                 onChangeText={email => {
-                  this.setState({ email: email });
-                  // console.log(this.state.email);
+                  this.setState({ accountInfo: {email} });
                 }}
                 onSubmitEditing={() => phoneNumberInputRef._root.focus()}
               />
@@ -77,8 +104,7 @@ class SignupScreen extends Component {
                 ref={(input) => phoneNumberInputRef = input}
                 hasNext
                 onChangeText={phoneNumber => {
-                  this.setState({ phoneNumber: phoneNumber });
-                  // console.log(this.state.phoneNumber);
+                  this.setState({ accountInfo: {phoneNumber} });
                 }}
                 onSubmitEditing={() => usernameInputRef._root.focus()}
               />
@@ -87,8 +113,7 @@ class SignupScreen extends Component {
                 ref={(input) => usernameInputRef = input}
                 hasNext
                 onChangeText={username => {
-                  this.setState({ username: username });
-                  // console.log(this.state.username);
+                  this.setState({ accountInfo: {username} });
                 }}
                 onSubmitEditing={() => passwordInputRef._root.focus()}
               />
@@ -96,8 +121,7 @@ class SignupScreen extends Component {
                 label="Password"
                 ref={(input) => passwordInputRef = input}
                 onChangeText={password => {
-                  this.setState({ password: password });
-                  // console.log(this.state.password);
+                  this.setState({ accountInfo: {password} });
                 }}
               />
             </View>

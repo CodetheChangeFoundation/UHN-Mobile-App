@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import theme from "../../styles/base";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 import { Item, Input as NBInput, Label } from "native-base";
 
 const Input = React.forwardRef((props, ref) => {
@@ -46,7 +46,7 @@ const inputProps = {
   },
   number: {
     ...baseProps,
-    keyboardType: "phone-pad",
+    keyboardType: (Platform.OS == "ios")? "numbers-and-punctuation" : "phone-pad",
   },
 };
 
