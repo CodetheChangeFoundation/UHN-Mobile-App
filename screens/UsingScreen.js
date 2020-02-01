@@ -4,7 +4,6 @@ import {
 } from "react-native";
 import { Actions } from "react-native-router-flux";
 import Timer from "../components/Timer/Timer";
-import NewTimer from "../components/Timer/NewTimer"
 import { Container, Content, Header, View, Segment, Banner } from "../components/layout";
 import { Button, IconButton } from "../components/buttons";
 import { Text } from "../components/typography";
@@ -27,8 +26,7 @@ const UsingScreen = () => {
       </Banner>
     
       <View style={styles.timer}>
-        {/* <Timer isUsing={false}/> */}
-        <NewTimer isUsing={false}/>
+        <Timer isUsing={false}/>
       </View>
 
       <View style={styles.startButton}>

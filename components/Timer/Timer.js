@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import { View } from "react-native";
-import ProgressCircle from "./ProgressCircle"
+import { Text, View } from "react-native";
+//import ProgressCircle from "./ProgressCircle"
 import { connect } from 'react-redux';
 import { increaseTime, decreaseTime, countdown, clearTime, resetTime } from '../../store/actions';
+import ProgressCircle from 'react-native-progress-circle';
+import SetTimeButton from "./SetTimeButton";
 
 class Timer extends Component {
 
@@ -41,6 +43,19 @@ class Timer extends Component {
     }
   };
 
+  convertSeconds = (seconds) => {
+    let second = Math.floor(seconds % 3600 % 60);
+    if (second <= 9) {
+      second = "0" + second;
+    }
+    return second;
+  };
+
+  convertSecondsToMinutes = (seconds) => {
+    let minute = Math.floor(seconds % 3600 / 60);
+    return minute;
+  };
+
   componentDidMount() {
     if (this.props.isUsing) {
       this.interval = setInterval(this.countdown, 1000);
@@ -55,12 +70,24 @@ class Timer extends Component {
 
   render() {
     const { time, timeRemaining } = this.props.time;
+
     return (
-      <View>
-        <ProgressCircle percentage={(1 - timeRemaining / time) * 100}
-          seconds={timeRemaining} increaseTimeHandler={this.incrementTimer} decreaseTimeHandler={this.decrementTimer} />
-      </View>
-    );
+      <ProgressCircle
+        percent={(1 - timeRemaining / time) * 100}
+        radius={127.5}
+        borderWidth={8}
+        color="#999b9e"
+        shadowColor="#60a781"
+        bgColor="#ffffff"
+      >
+        <SetTimeButton changeTimeHandler={this.incrementTimer}>+15</SetTimeButton>
+        <Text style={{ fontSize: 72, fontWeight: "bold", color: "#67686B" }}>
+          {this.convertSecondsToMinutes(timeRemaining)}:{this.convertSeconds(timeRemaining)}
+        </Text>
+        <SetTimeButton changeTimeHandler={this.decrementTimer}>-15</SetTimeButton>
+
+      </ProgressCircle>
+    )
   }
 };
 

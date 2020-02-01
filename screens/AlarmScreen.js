@@ -5,7 +5,6 @@ import {
 } from "react-native";
 import { Actions } from "react-native-router-flux";
 import Timer from "../components/Timer/Timer"
-import NewTimer from "../components/Timer/NewTimer"
 import { Container, Content, Header, View, Banner } from "../components/layout";
 import { Text } from "../components/typography";
 
@@ -19,8 +18,7 @@ const AlarmScreen = () => {
       <Banner />
       
       <View style={styles.container}>
-        {/* <Timer isUsing={true}/> */}
-        <NewTimer isUsing={true}/>
+        <Timer isUsing={true}/>
         <Text style={styles.welcome}>
           Alarm Screen
         </Text>
