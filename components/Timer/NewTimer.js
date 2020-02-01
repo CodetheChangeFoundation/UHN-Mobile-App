@@ -1,10 +1,12 @@
 import React, { Component } from "react";
-import { View } from "react-native";
-import ProgressCircle from "./ProgressCircle"
+import { Text, View } from "react-native";
+//import ProgressCircle from "./ProgressCircle"
 import { connect } from 'react-redux';
 import { increaseTime, decreaseTime, countdown, clearTime, resetTime } from '../../store/actions';
+import ProgressCircle from 'react-native-progress-circle';
 
-class Timer extends Component {
+
+class NewTimer extends Component {
 
   constructor(props) {
     super(props);
@@ -41,6 +43,20 @@ class Timer extends Component {
     }
   };
 
+  convertSeconds = (seconds) => {
+    let second = Math.floor(seconds % 3600 % 60);
+    if (second <= 9) {
+      second = "0" + second;
+    }
+    return second;
+  };
+
+  convertSecondsToMinutes = (seconds) => {
+    let minute = Math.floor(seconds % 3600 / 60);
+    return minute;
+
+  };
+
   componentDidMount() {
     if (this.props.isUsing) {
       this.interval = setInterval(this.countdown, 1000);
@@ -54,13 +70,29 @@ class Timer extends Component {
   }
 
   render() {
+    console.log("$$$$$$$$$$$$$$$$$$$ NEWTIMER COMPONENT RENDERED $$$$$$$$$$$$$$$$$$$$")
     const { time, timeRemaining } = this.props.time;
+    // return <Text>New Timer</Text>
+
     return (
-      <View>
-        <ProgressCircle percentage={(1 - timeRemaining / time) * 100}
-          seconds={timeRemaining} increaseTimeHandler={this.incrementTimer} decreaseTimeHandler={this.decrementTimer} />
-      </View>
-    );
+      <ProgressCircle
+        percent={(1 - timeRemaining / time) * 100}
+        radius={127.5}
+        borderWidth={8}
+        color="#999b9e"
+        shadowColor="#60a781"
+        bgColor="#ffffff"
+      >
+        <Text style={{ fontSize: 72, fontWeight: "bold", color: "#67686B" }}>{convertSecondsToMinutes(timeRemaining)}:{convertSeconds(timeRemaining)}</Text>
+      </ProgressCircle>
+    )
+
+    // return (
+    //   <View>
+    //     <ProgressCircle percentage={(1 - timeRemaining / time) * 100}
+    //       seconds={timeRemaining} increaseTimeHandler={this.incrementTimer} decreaseTimeHandler={this.decrementTimer} />
+    //   </View>
+    // );
   }
 };
 
@@ -70,4 +102,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, { increaseTime, decreaseTime, countdown, clearTime, resetTime })(Timer);
+export default connect(mapStateToProps, { increaseTime, decreaseTime, countdown, clearTime, resetTime })(NewTimer);
