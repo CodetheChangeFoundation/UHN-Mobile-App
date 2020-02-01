@@ -95,11 +95,6 @@ class AddRespondersScreen extends Component {
     let selectedUsernames = this.gatherSelectedUsernames();
     this.props.addResponders(selectedUsernames, this.props.responders.myResponders);
     Actions.pop();
-    // setTimeout(() => {
-    //   Actions.refresh({
-    //     addedResponders
-    //   });
-    // }, 0);
   }
 
   render() {

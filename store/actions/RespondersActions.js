@@ -57,7 +57,7 @@ export const removeResponders = (usernamesToRemove, myResponders) => {
 export const addResponders = (usernamesToAdd, myResponders) => {
   // TODO: ping backend to add usernames in usernamesToAdd to this user's profile
   // Should receive a response containing the users we just added (username + availability).
-  // Store that response in addedResponders and delete this loop (it's just to create fake data)
+  // Store that response in addedResponders and delete getFakeResponse
   const addedResponders = getFakeResponse(usernamesToAdd);
 
   return {

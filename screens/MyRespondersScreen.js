@@ -8,23 +8,6 @@ import theme from "../styles/base";
 import { getMyResponders } from "../store/actions";
 import { connect } from "react-redux";
 
-// fake data
-const fakeResponders = [
-  { username: "alpha", available: true },
-  { username: "bravo", available: false },
-  { username: "charlie", available: false },
-  { username: "delta", available: true },
-  { username: "echo", available: false },
-  { username: "foxtrot", available: false },
-  { username: "golf", available: false },
-  { username: "hotel", available: true },
-  { username: "india", available: false },
-  { username: "juliet", available: false },
-  { username: "kilo", available: true },
-  { username: "lima", available: false },
-  { username: "mike", available: false },
-];
-
 class MyRespondersScreen extends Component {
   constructor(props) {
     super(props);
@@ -75,6 +58,13 @@ class MyRespondersScreen extends Component {
 
         <Content>
           <List style={styles.list}>
+            {
+              (this.state.availableUsernames.length == 0 && this.state.unavailableUsernames.length == 0)
+              && 
+              <View>
+                <Text>You currently have no responders.</Text>
+              </View>
+            }
             {
               this.state.availableUsernames.map((username) => {
                 return (
