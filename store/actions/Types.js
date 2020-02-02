@@ -14,4 +14,5 @@ export const SET_LOADING = "SET_LOADING";
 
 // RespondersActions types
 export const GET_MY_RESPONDERS = "GET_MY_RESPONDERS";
+export const ADD_RESPONDERS = "ADD_RESPONDERS";
 export const REMOVE_RESPONDERS = "REMOVE_RESPONDERS";

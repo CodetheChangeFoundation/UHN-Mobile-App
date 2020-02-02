@@ -26,7 +26,7 @@ const UsingScreen = () => {
       </Banner>
     
       <View style={styles.timer}>
-        <Timer using={false}/>
+        <Timer isUsing={false}/>
       </View>
 
       <View style={styles.startButton}>
