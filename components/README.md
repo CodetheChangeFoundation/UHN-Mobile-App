@@ -362,8 +362,8 @@ Props:
 **Timer**
 
 ```
-<Timer using={true}/>
-<Timer using={false}/>
+<Timer isUsing={true}/>
+<Timer isUsing={false}/>
 ```
 
 Props:
