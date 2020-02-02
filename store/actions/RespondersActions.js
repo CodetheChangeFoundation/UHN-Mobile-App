@@ -1,4 +1,4 @@
-import { GET_MY_RESPONDERS, REMOVE_RESPONDERS } from "./Types"
+import { GET_MY_RESPONDERS, ADD_RESPONDERS, REMOVE_RESPONDERS } from "./Types"
 
 // fake data
 const fakeResponders = [
@@ -17,9 +17,16 @@ const fakeResponders = [
   { username: "mike", available: false },
 ];
 
-export const getMyResponders = () => {
-  // TODO: fetch list of responders (username + availability) for this user and store in myResponders
+const getFakeResponse = (usernamesToAdd) => {
+  let addedResponders = [];
+  for (username of usernamesToAdd) {
+    addedResponders.push({username: username, available: username.includes('a')});
+  }
+  return addedResponders;
+}
 
+export const getMyResponders = () => {
+  // TODO: fetch list of responders (username + availability) for this user
   const myResponders = fakeResponders;
   return {
     type: GET_MY_RESPONDERS,
@@ -43,6 +50,20 @@ export const removeResponders = (usernamesToRemove, myResponders) => {
     type: REMOVE_RESPONDERS,
     data: {
       myResponders: respondersToKeep
+    }
+  }
+}
+
+export const addResponders = (usernamesToAdd, myResponders) => {
+  // TODO: ping backend to add usernames in usernamesToAdd to this user's profile
+  // Should receive a response containing the users we just added (username + availability).
+  // Store that response in addedResponders and delete getFakeResponse
+  const addedResponders = getFakeResponse(usernamesToAdd);
+
+  return {
+    type: ADD_RESPONDERS,
+    data: {
+      myResponders: [...myResponders, ...addedResponders]
     }
   }
 }
