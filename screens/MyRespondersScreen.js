@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet } from "react-native";
-import { Actions, Scene } from "react-native-router-flux";
+import { Actions } from "react-native-router-flux";
 import { Container, Content, Header, View, List, ListItem } from "../components/layout";
 import { Text } from "../components/typography";
 import { Button } from "../components/buttons";
