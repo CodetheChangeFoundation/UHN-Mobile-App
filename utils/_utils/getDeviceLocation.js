@@ -1,6 +1,6 @@
 import * as Location from 'expo-location';
 
-export const getCurrentLocation = (success) => {
+export const getDeviceLocation = (success) => {
     Location.requestPermissionsAsync()
     .then(() => {
         Location.getCurrentPositionAsync()

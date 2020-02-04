@@ -9,8 +9,13 @@ import { Button } from "../components/buttons";
 import { Form, Input } from "../components/forms"
 import { Text } from "../components/typography"
 import theme from '../styles/base'
-import { getCurrentLocation, convertToCoordinates, convertToAddress } from '../utils/index'
-import { getUserLocation, updateUserLocation } from '../store/actions';
+import {
+    getDeviceLocation,
+    convertToCoordinates,
+    convertToAddress,
+    getUserLocation,
+    updateUserLocation
+} from '../utils/index'
 
 import mapMarkerIcon from '../components/icons/mapMarker'
 
@@ -41,7 +46,7 @@ const LocationScreen = (props) => {
     const [registeredAddress, setRegisteredAddress] = useState(null)
     
     useEffect(() => {
-        getCurrentLocation((coords) => {
+        getDeviceLocation((coords) => {
             convertToAddress({ latitude: coords.lat, longitude: coords.lng }, setAddress)
             setLocation({ lat: coords.lat, lng: coords.lng })
         })
