@@ -20,11 +20,6 @@ const INITIAL_COORDINATES = {
      lng: -123.1207
 }
 
-const TEMPLATE_ADDRESSES = [
-    '4070 West 38th Ave, Vancouver',
-    '100 Universal City Plaza, Universal City, California'
-]
-
 const openStreetMapLayer = {
     attribution:'&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
     baseLayerIsChecked: true,
@@ -53,9 +48,10 @@ const LocationScreen = (props) => {
 
         getUserLocation({id: props.userId, token: props.token})
             .then( (res) => {
-                if(!res.location.lat || !res.location.lng) return
-                convertToAddress(res.location, setRegisteredAddress)
-                setNote(res.note)
+                if(res.location && res.location.lat && res.location.lng) {
+                    convertToAddress(res.location, setRegisteredAddress)
+                    setNote(res.note)
+                }
             })
             .catch( (err) => { console.error(err) })
     }, [])
