@@ -112,6 +112,10 @@ const LocationScreen = (props) => {
         }
     }
 
+    let addressInputRef = React.createRef()
+    let notesInputRef = React.createRef()
+
+
   return (
     <Container>
     <Header leftButton="menu" onLeftButtonPress={() => Actions.drawerOpen()}>Location</Header>
@@ -132,16 +136,20 @@ const LocationScreen = (props) => {
         </View>
         <Form style={styles.inputWrapper}>
             <Input label=""
+                ref={(input) => addressInputRef = input}
                 variant="text"
                 onChangeText={text => { setAddressConfirm(false); setAddress(text) }}
                 placeholder="Enter Address"
                 value={address}
+                onSubmitEditing={() => notesInputRef._root.focus()}
             />
             <Input label=""
+                ref={(input) => notesInputRef = input}
                 variant="text"
                 onChangeText={text => setNote(text)}
                 placeholder="note"
                 value={note}
+                onSubmitEditing={handleSearch}
             />
             { registeredAddress ? (
             <React.Fragment>
