@@ -23,39 +23,39 @@ class SignupScreen extends Component {
       password: "",
     }
     this.state = {
-      accountInfo: {...this.initialState},
+      ...this.initialState,
       inputIsValid: {
-        email: true,
-        phoneNumber: true,
-        username: true,
-        password: true
+        email: false,
+        phoneNumber: false,
+        username: false,
+        password: false
       }
     };
-    // this.renderSignUpButtonOrSpinner = this.renderSignUpButtonOrSpinner.bind(this);
-    // this.onSignUpButtonPress = this.onSignUpButtonPress.bind(this);
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.accountInfo != prevState.accountInfo) {
+    if (   (this.state.email !== prevState.email)
+        || (this.state.phoneNumber !== prevState.phoneNumber)
+        || (this.state.username !== prevState.username)
+        || (this.state.password != prevState.password)   ) {
       this.checkIfInputValid();
     }
   }
 
   checkIfInputValid = () => {
-    const {email, phoneNumber, username, password} = this.state.accountInfo;
+    const {email, phoneNumber, username, password} = this.state;
     let inputIsValid = {
-      email: email && (accountRules.email.regex.test(email)),
-      phoneNumber: phoneNumber && (accountRules.phoneNumber.regex.test(phoneNumber)),
-      username: username && (accountRules.username.regex.test(username)),
-      password: password && (accountRules.password.regex.test(password)),
+      email: (typeof email !== "undefined") && (accountRules.email.regex.test(email)),
+      phoneNumber: (typeof phoneNumber !== "undefined") && (accountRules.phoneNumber.regex.test(phoneNumber)),
+      username: (typeof username !== "undefined") && (accountRules.username.regex.test(username)),
+      password: (typeof password !== "undefined") && (accountRules.password.regex.test(password)),
     };
     console.log(inputIsValid)
-    // console.log("username:", username, ", regex:", accountRules.username.regex, ", matches:", accountRules.username.regex.test(username))
     this.setState({inputIsValid});
   }
 
   onSignUpButtonPress = () => {
-    const { email, phoneNumber, username, password } = this.state.accountInfo;
+    const { email, phoneNumber, username, password } = this.state;
     console.log("[DEBUG] SignUp Button pressed.");
     console.log("[DEBUG] username is " + username + ", password is " + password + "\n email is " + email + " phoneNum is " + phoneNumber);
     // TODO: generate error if username or password is empty string
@@ -95,7 +95,7 @@ class SignupScreen extends Component {
                 label="Email"
                 hasNext
                 onChangeText={email => {
-                  this.setState({ accountInfo: {email} });
+                  this.setState({ email });
                 }}
                 onSubmitEditing={() => phoneNumberInputRef._root.focus()}
               />
@@ -104,7 +104,7 @@ class SignupScreen extends Component {
                 ref={(input) => phoneNumberInputRef = input}
                 hasNext
                 onChangeText={phoneNumber => {
-                  this.setState({ accountInfo: {phoneNumber} });
+                  this.setState({ phoneNumber });
                 }}
                 onSubmitEditing={() => usernameInputRef._root.focus()}
               />
@@ -113,7 +113,7 @@ class SignupScreen extends Component {
                 ref={(input) => usernameInputRef = input}
                 hasNext
                 onChangeText={username => {
-                  this.setState({ accountInfo: {username} });
+                  this.setState({ username });
                 }}
                 onSubmitEditing={() => passwordInputRef._root.focus()}
               />
@@ -121,7 +121,7 @@ class SignupScreen extends Component {
                 label="Password"
                 ref={(input) => passwordInputRef = input}
                 onChangeText={password => {
-                  this.setState({ accountInfo: {password} });
+                  this.setState({ password });
                 }}
               />
             </View>
