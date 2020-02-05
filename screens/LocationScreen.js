@@ -104,14 +104,15 @@ const LocationScreen = (props) => {
             convertToCoordinates(address, (coords) => {
                 params.data.coords.lat = coords.lat
                 params.data.coords.lng = coords.lng
+                updateUserLocation(params)
+                props.setLocalLocation(params)
             })
-
-            updateUserLocation(params)
-            props.setLocalLocation(params)
             Actions.using()
+            
         } else {
-            convertToCoordinates(address, setLocation)
-            setAddressConfirm(true)
+            const result = convertToCoordinates(address, setLocation)
+            if (result == null) setAddressConfirm(false)
+            else setAddressConfirm(true)
         }
     }
 
