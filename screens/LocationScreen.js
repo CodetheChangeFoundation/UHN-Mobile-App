@@ -105,7 +105,7 @@ const LocationScreen = (props) => {
                 params.data.coords.lng = coords.lng
 
                 updateUserLocation(params)
-                console.log(params)
+                saveLocation(params)
             })
 
             Actions.using()
