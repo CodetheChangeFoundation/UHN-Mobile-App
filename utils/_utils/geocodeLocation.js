@@ -26,8 +26,8 @@ export const convertToAddress = (coordinates, success) => {
     Location.reverseGeocodeAsync(coords)
     .then((results) => {
         // street, name, city, region, country, postalCode, name
-        const { name, city, region, country } = results[0]
-        const address = `${name}, ${city} ${region}, ${country}`
+        const { name, street, city, country } = results[0]
+        const address = `${name} ${street}, ${city}, ${country}`
 
         // accepts a success callback, otherwise just returns the value
         if(success) success(address)

@@ -16,6 +16,7 @@ import {
     getUserLocation,
     updateUserLocation
 } from '../utils/index'
+import { setLocalLocation } from '../store/actions'
 
 import mapMarkerIcon from '../components/icons/mapMarker'
 
@@ -103,11 +104,10 @@ const LocationScreen = (props) => {
             convertToCoordinates(address, (coords) => {
                 params.data.coords.lat = coords.lat
                 params.data.coords.lng = coords.lng
-
-                updateUserLocation(params)
-                saveLocation(params)
             })
 
+            updateUserLocation(params)
+            props.setLocalLocation(params)
             Actions.using()
         } else {
             convertToCoordinates(address, setLocation)
@@ -144,7 +144,9 @@ const LocationScreen = (props) => {
                 onChangeText={text => { setAddressConfirm(false); setAddress(text) }}
                 placeholder="Enter Address"
                 value={address}
-                onSubmitEditing={() => notesInputRef._root.focus()}
+                onSubmitEditing={() => {
+                    if(!addressConfirm) handleSearch()
+                    notesInputRef._root.focus() }}
             />
             <Input label=""
                 ref={(input) => notesInputRef = input}
@@ -210,10 +212,4 @@ const mapStateToProps = (state, currentProps) => {
     return { ...currentProps, token, userId, location }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        saveLocation: (location) => {dispatch(setLocation(location)) }
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(LocationScreen);
+export default connect(mapStateToProps, { setLocalLocation })(LocationScreen);
