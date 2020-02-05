@@ -53,9 +53,9 @@ const LocationScreen = (props) => {
 
         getUserLocation({id: props.userId, token: props.token})
             .then( (res) => {
-                if(res.location && res.location.lat && res.location.lng) {
-                    convertToAddress(res.location, setRegisteredAddress)
-                    setNote(res.note)
+                if(res.location && res.location.coords && res.location.coords.lat && res.location.coords.lng) {
+                    convertToAddress(res.location.coords, setRegisteredAddress)
+                    setNote(res.location.note)
                 }
             })
             .catch( (err) => { console.error(err) })
@@ -93,6 +93,7 @@ const LocationScreen = (props) => {
 
             const params = {
                 data: {
+                    coords: {},
                     note: note && note
                 },
                 id: props.userId,
@@ -100,10 +101,11 @@ const LocationScreen = (props) => {
             }
 
             convertToCoordinates(address, (coords) => {
-                params.data.lat = coords.lat
-                params.data.lng = coords.lng
+                params.data.coords.lat = coords.lat
+                params.data.coords.lng = coords.lng
 
                 updateUserLocation(params)
+                console.log(params)
             })
 
             Actions.using()
@@ -204,7 +206,14 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state, currentProps) => {
     const { token, userId } = state.auth;
-    return { ...currentProps, token, userId }
+    const { location } = state.userData;
+    return { ...currentProps, token, userId, location }
 }
 
-export default connect(mapStateToProps)(LocationScreen);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        saveLocation: (location) => {dispatch(setLocation(location)) }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LocationScreen);
