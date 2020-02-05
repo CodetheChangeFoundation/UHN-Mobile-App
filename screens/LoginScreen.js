@@ -7,7 +7,6 @@ import { Text } from "../components/typography";
 import { Button, Switch } from "../components/buttons";
 import { Form, Input } from "../components/forms";
 import { connect } from 'react-redux';
-import { SERVER_ROOT } from 'react-native-dotenv';
 import { loginHandler, setLoading } from '../store/actions';
 
 class LoginScreen extends Component {
