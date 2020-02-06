@@ -12,6 +12,7 @@ import ResourceScreen from "./screens/ResourceScreen";
 import MyRespondersScreen from "./screens/MyRespondersScreen";
 import AddRespondersScreen from "./screens/AddRespondersScreen";
 import RemoveRespondersScreen from "./screens/RemoveRespondersScreen";
+import DirectionsScreen from "./screens/DirectionsScreen";
 import DrawerContent from "./components/drawer/DrawerContent";
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware} from 'redux';
@@ -58,6 +59,10 @@ export default function App() {
             <Scene key="resource"
               component={ResourceScreen}
               title="Resource"
+            />
+            <Scene key="directions"
+              component={DirectionsScreen}
+              title="Directions"
             />
           </Scene>
           <Scene key="alarm" type="reset" hideNavBar duration={0}>
