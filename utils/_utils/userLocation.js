@@ -15,7 +15,7 @@ export const getUserLocation = (payload) => {
     )
 }
 
-// POST Request to db, returns promise
+// PUT Request to db, returns promise
 // payload --> location: { coords: { lat, lng }, note }
 export const updateUserLocation = (payload) => {
 
@@ -24,7 +24,7 @@ export const updateUserLocation = (payload) => {
     }
     
     return (
-      axios.post(SERVER_ROOT + '/users/' + payload.id + '/location', payload.data, config)
+      axios.put(SERVER_ROOT + '/users/' + payload.id + '/location', payload.data, config)
         .then(response => { return response.data })
         .catch(error => { console.error(error) })
     )
