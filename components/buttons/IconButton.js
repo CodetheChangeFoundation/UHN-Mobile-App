@@ -36,8 +36,6 @@ const IconButton = (props) => {
   buttonStyle.height = props.size || iconProps.size
   buttonStyle.borderRadius = props.size || iconProps.size
 
-  console.log({buttonStyle})
-
   return (
     <TouchableOpacity {...combinedProps} onPress={props.onPress} style={[iconButtonStyles.touchableOpacity, props.style]}>
       <View style={buttonStyle}>

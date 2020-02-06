@@ -5,7 +5,7 @@ import { WebViewLeaflet } from 'react-native-webview-leaflet'
 
 import { Actions } from "react-native-router-flux";
 import { Container, Content, Header, View } from "../components/layout";
-import { Button } from "../components/buttons";
+import { Button, IconButton } from "../components/buttons";
 import { Form, Input } from "../components/forms"
 import { Text } from "../components/typography"
 import theme from '../styles/base'
@@ -47,10 +47,8 @@ const LocationScreen = (props) => {
     const [registeredAddress, setRegisteredAddress] = useState(null)
     
     useEffect(() => {
-        getDeviceLocation((coords) => {
-            convertToAddress({ latitude: coords.lat, longitude: coords.lng }, setAddress)
-            setLocation({ lat: coords.lat, lng: coords.lng })
-        })
+        
+        refreshDeviceLocation()
 
         getUserLocation({id: props.userId, token: props.token})
             .then( (res) => {
@@ -61,6 +59,13 @@ const LocationScreen = (props) => {
             })
             .catch( (err) => { console.error(err) })
     }, [])
+
+    const refreshDeviceLocation = () => {
+        getDeviceLocation((coords) => {
+            convertToAddress({ latitude: coords.lat, longitude: coords.lng }, setAddress)
+            setLocation({ lat: coords.lat, lng: coords.lng })
+        })
+    }
 
     const mapLoad = () => {
         setMapLayers([openStreetMapLayer])
@@ -131,7 +136,10 @@ const LocationScreen = (props) => {
     <Header leftButton="menu" onLeftButtonPress={() => Actions.drawerOpen()}>Location</Header>
 
     <Content>
-        <Text style={{margin: 10}}>Please confirm your location</Text>
+        <View style={styles.rowFlex}>
+            <Text style={{margin: 10}}>Please confirm your location</Text>
+            <IconButton variant="icon" name="md-refresh" size={20} onPress={refreshDeviceLocation}/>
+        </View>
         <View style={styles.map}>
             <WebViewLeaflet
                 doShowDebugMessages={false}
@@ -211,6 +219,10 @@ const styles = StyleSheet.create({
   searchButton: {
     flex: 3,
   },
+  rowFlex: {
+      display: 'flex',
+      flexDirection: 'row',
+  }
 });
 
 const mapStateToProps = (state, currentProps) => {
