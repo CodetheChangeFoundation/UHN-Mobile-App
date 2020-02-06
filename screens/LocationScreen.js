@@ -54,9 +54,9 @@ const LocationScreen = (props) => {
 
         getUserLocation({id: props.userId, token: props.token})
             .then( (res) => {
-                if(res.location && res.location.coords && res.location.coords.lat && res.location.coords.lng) {
-                    convertToAddress(res.location.coords, setRegisteredAddress)
-                    setNote(res.location.note)
+                if(res.location && res.location.coords) {
+                    res.location.coords.lat && res.location.coords.lng && convertToAddress(res.location.coords, setRegisteredAddress)
+                    res.location.note && setNote(res.location.note)
                 }
             })
             .catch( (err) => { console.error(err) })
@@ -85,13 +85,16 @@ const LocationScreen = (props) => {
     const pickRegistered = () => {
         if(!registeredAddress) return
         setAddress(registeredAddress)
-        convertToCoordinates(address, setLocation)
-        setAddressConfirm(true)
+        convertToCoordinates(address, (coords) => {
+            setLocation(coords)
+            setAddressConfirm(true)
+        }, () => {
+            setAddressConfirm(false)
+        })
     }
 
     const handleSearch = () => {
         if(addressConfirm) {
-
             const params = {
                 data: {
                     coords: {},
@@ -110,9 +113,12 @@ const LocationScreen = (props) => {
             Actions.using()
             
         } else {
-            const result = convertToCoordinates(address, setLocation)
-            if (result == null) setAddressConfirm(false)
-            else setAddressConfirm(true)
+            convertToCoordinates(address, (coords) => {
+                setLocation(coords)
+                setAddressConfirm(true)
+            }, () => {
+                setAddressConfirm(false)
+            })
         }
     }
 
