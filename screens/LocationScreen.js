@@ -45,21 +45,27 @@ const LocationScreen = (props) => {
     const [note, setNote] = useState(null)
 
     const [registeredAddress, setRegisteredAddress] = useState(null)
+    const [registeredNote, setRegisteredNote] = useState(null)
     
     useEffect(() => {
-        
-        refreshDeviceLocation()
+        // Gets location data from redux (device location on log in)
+        convertToAddress({ latitude: props.location.coords.lat, longitude: props.location.coords.lng }, setAddress)
+        setLocation(props.location.coords)
 
+        // Get registered data from the database
         getUserLocation({id: props.userId, token: props.token})
             .then( (res) => {
                 if(res.location && res.location.coords) {
                     res.location.coords.lat && res.location.coords.lng && convertToAddress(res.location.coords, setRegisteredAddress)
-                    res.location.note && setNote(res.location.note)
+                    // Simply saves the note to be used later
+                    res.location.note && setRegisteredNote(res.location.note)
                 }
             })
             .catch( (err) => { console.error(err) })
     }, [])
 
+    // Function to get device location
+    // Sets map coordinates
     const refreshDeviceLocation = () => {
         getDeviceLocation((coords) => {
             convertToAddress({ latitude: coords.lat, longitude: coords.lng }, setAddress)
@@ -67,10 +73,12 @@ const LocationScreen = (props) => {
         })
     }
 
+    // Function to setup map layers
     const mapLoad = () => {
         setMapLayers([openStreetMapLayer])
     }
 
+    // Function to set map location
     const setLocation = (location) => {
         const { lat, lng } = location
         // Set new location and map zoom
@@ -87,9 +95,23 @@ const LocationScreen = (props) => {
         // console.log("App Recieved", message)
     }
 
+    // Handler for when the registered location is picked
+    // Sets map coordinates and note
     const pickRegistered = () => {
         if(!registeredAddress) return
         setAddress(registeredAddress)
+        convertToCoordinates(address, (coords) => {
+            setLocation(coords)
+            setNote(registeredNote)
+            setAddressConfirm(true)
+        }, () => {
+            setAddressConfirm(false)
+        })
+    }
+
+    // Handler for when user searches for an address
+    // Converts string address to coordinates and sets map coordinates
+    const handleSearch = () => {
         convertToCoordinates(address, (coords) => {
             setLocation(coords)
             setAddressConfirm(true)
@@ -98,33 +120,25 @@ const LocationScreen = (props) => {
         })
     }
 
-    const handleSearch = () => {
-        if(addressConfirm) {
-            const params = {
-                data: {
-                    coords: {},
-                    note: note && note
-                },
-                id: props.userId,
-                token: props.token,
-            }
-
-            convertToCoordinates(address, (coords) => {
-                params.data.coords.lat = coords.lat
-                params.data.coords.lng = coords.lng
-                updateUserLocation(params)
-                props.setLocalLocation(params)
-            })
-            Actions.using()
-            
-        } else {
-            convertToCoordinates(address, (coords) => {
-                setLocation(coords)
-                setAddressConfirm(true)
-            }, () => {
-                setAddressConfirm(false)
-            })
+    // Submit handler
+    // Converts string address to coordinates and updates online and redux db
+    const handleConfirm = () => {
+        const params = {
+            data: {
+                coords: {},
+                note: note && note
+            },
+            id: props.userId,
+            token: props.token,
         }
+
+        convertToCoordinates(address, (coords) => {
+            params.data.coords.lat = coords.lat
+            params.data.coords.lng = coords.lng
+            updateUserLocation(params)
+            props.setLocalLocation(params.data)
+        })
+        Actions.using()
     }
 
     let addressInputRef = React.createRef()
@@ -169,7 +183,7 @@ const LocationScreen = (props) => {
                 onChangeText={text => setNote(text)}
                 placeholder="note"
                 value={note}
-                onSubmitEditing={handleSearch}
+                onSubmitEditing={addressConfirm ? handleConfirm : handleSearch}
             />
             { registeredAddress ? (
             <React.Fragment>
@@ -188,7 +202,10 @@ const LocationScreen = (props) => {
         </Form>
 
         <View style={styles.searchButton}>
-            <Button variant="alarm" onPress={handleSearch}>{addressConfirm ? 'confirm' : 'search'}</Button>
+            { addressConfirm ? 
+                (<Button variant="alarm" onPress={handleConfirm}>confirm</Button>)
+                : (<Button variant="alarm" onPress={handleSearch}>search</Button>)
+            }
          </View>
     </Content>
     </Container>

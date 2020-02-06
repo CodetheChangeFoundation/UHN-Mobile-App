@@ -7,7 +7,8 @@ import { Text } from "../components/typography";
 import { Button, Switch } from "../components/buttons";
 import { Form, Input } from "../components/forms";
 import { connect } from 'react-redux';
-import { loginHandler, setLoading } from '../store/actions';
+import { loginHandler, setLoading, setLocalLocation } from '../store/actions';
+import { getDeviceLocation } from '../utils/index'
 
 class LoginScreen extends Component {
 
@@ -35,6 +36,7 @@ class LoginScreen extends Component {
     const { username, password, rememberMe } = this.state;
     console.log("[DEBUG] LOGIN Button pressed.");
     console.log("[DEBUG] username is " + username + ", password is " + password);
+    getDeviceLocation((coords) => { this.props.setLocalLocation({ coords }) })
     this.props.setLoading(true);
     this.props.loginHandler({ username: username, password: password }, rememberMe);
   }
@@ -124,4 +126,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { loginHandler, setLoading })(LoginScreen);
+export default connect(mapStateToProps, { loginHandler, setLoading, setLocalLocation })(LoginScreen);

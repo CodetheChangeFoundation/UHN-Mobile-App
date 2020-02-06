@@ -8,8 +8,10 @@ import { SET_LOCATION } from "../actions/Types"
 
 const initialState = {
   location: {
-        lat: 0,
-        lng: 0,
+        coords: {
+          lat: 0,
+          lng: 0,
+        },
         note: ''
   }
 };
