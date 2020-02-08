@@ -1,10 +1,48 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import theme from "../../styles/base";
-import { StyleSheet, Platform } from "react-native";
+import { Animated, StyleSheet, Platform } from "react-native";
 import { Item, Input as NBInput, Label } from "native-base";
 import { Text } from "../typography";
-import { View } from "../layout";
+
+const AnimatedView = (props) => {
+  const [animatedHeight] = useState(new Animated.Value(0));
+
+  useEffect(() => {
+    if (props.isVisible) {
+      Animated.timing(
+        animatedHeight,
+        {
+          toValue: 30,
+          duration: 300,
+        }
+      ).start();
+    } else {
+      Animated.timing(
+        animatedHeight,
+        {
+          toValue: 0,
+          duration: 300,
+        }
+      ).start();
+    }
+  }, [props.isVisible]);
+
+  return (
+    <Animated.View
+      style={{...props.style, height: animatedHeight}}
+      // style={{...props.style, zIndex: -1, transform: [{
+      //   translateY: animatedHeight.interpolate({
+      //     inputRange: [0, 1],
+      //     outputRange: [-30, 0]
+      //   })
+      // }]}}
+    >
+      {props.children}
+    </Animated.View>
+  );
+}
+
 
 const Input = React.forwardRef((props, ref) => {
   const combinedProps = {
@@ -13,8 +51,8 @@ const Input = React.forwardRef((props, ref) => {
     blurOnSubmit: props.hasNext? false : true,
     ...props,
   };
-
-  const combinedStyles = (props.hasError)? errorInputStyles : inputStyles;
+  // const combinedStyles = (props.hasError)? errorInputStyles : inputStyles;
+  const combinedStyles = inputStyles;
 
   return (
     <Fragment>
@@ -22,9 +60,9 @@ const Input = React.forwardRef((props, ref) => {
       <Label style={combinedStyles.label}>{props.label}</Label>
       <NBInput {...combinedProps} style={[combinedStyles.input, props.style]} getRef={ref}/>
     </Item>
-    <View style={combinedStyles.view}>
-    <Text style={combinedStyles.text}>{props.errorText}</Text>
-    </View>
+    <AnimatedView style={combinedStyles.view} isVisible={props.hasError}>
+      <Text style={combinedStyles.text}>{props.errorText}</Text>
+    </AnimatedView>
     </Fragment>
   );
 });
@@ -82,6 +120,7 @@ const inputStyles = StyleSheet.create({
   item: {
     ...baseStyles,
     marginTop: theme.layout.margin,
+    backgroundColor: theme.colors.white,
   },
   label: {
     ...baseStyles,
@@ -95,6 +134,7 @@ const inputStyles = StyleSheet.create({
     alignSelf: "stretch",
     marginLeft: 2,      // to align with NativeBase Input
     paddingLeft: 2,
+    backgroundColor: theme.colors.lightRed,
   },
   text: {
     ...baseStyles,
@@ -103,7 +143,7 @@ const inputStyles = StyleSheet.create({
     alignSelf: "stretch",
     justifyContent: "flex-start",
     padding: theme.layout.padding,
-    height: 0,
+    // height: 0,
   }
 });
 
@@ -119,7 +159,6 @@ const errorInputStyles = StyleSheet.create({
   },
   text: {
     ...inputStyles.text,
-    color: theme.colors.darkGrey,
     height: "auto"
   }
 });
