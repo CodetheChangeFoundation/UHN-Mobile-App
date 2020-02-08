@@ -8,17 +8,15 @@ import { Container, Content, Header, View } from "../components/layout";
 import { Button } from "../components/buttons";
 import { Text } from "../components/typography"
 import theme from '../styles/base'
-// import {
-//     getDeviceLocation,
-//     convertToCoordinates,
-//     convertToAddress,
-//     getUserLocation
-// } from '../utils/index'
+import {
+    convertToCoordinates,
+    convertToAddress,
+    getUserLocation,
+} from '../utils/index'
 
 import mapMarkerIcon from '../components/icons/mapMarker'
 
 const DEFAULT_CLIENT = 'Pho'
-const DEFAULT_ADDRESS = 'Robson Square, Vancouver'
 const DEFAULT_COORDINATES = { lat: 49.2827, lng: -123.1207 }
 const DEFAULT_INFORMATION = 'There is a key under the mat'
 
@@ -43,7 +41,7 @@ const DirectionsScreen = (props) => {
     useEffect(() => {
 
         setLocation(DEFAULT_COORDINATES)
-        setAddress(DEFAULT_ADDRESS)
+        convertToAddress(DEFAULT_COORDINATES, setAddress)
         setNote(DEFAULT_INFORMATION)
 
         // getUserLocation({id: props.userId, token: props.token})
@@ -76,6 +74,10 @@ const DirectionsScreen = (props) => {
         // console.log("App Recieved", message)
     }
 
+    const arrived  = () => {
+      Actions.using()
+    }
+
   return (
     <Container>
     <Header leftButton="menu" onLeftButtonPress={() => Actions.drawerOpen()}>Directions</Header>
@@ -105,7 +107,7 @@ const DirectionsScreen = (props) => {
         </View>
 
         <View style={styles.arrivedButton}>
-            <Button variant="alarm" onPress={() => {console.log('Arrived Pressed!')}}>I've arrived</Button>
+            <Button variant="alarm" onPress={arrived}>I've arrived</Button>
          </View>
     </Content>
     </Container>
@@ -129,7 +131,7 @@ const styles = StyleSheet.create({
   },
   addressText: {
     textAlign: 'center',
-    height: 40,
+    height: 50,
     width: "100%",
     padding: 10,
     margin: 5,

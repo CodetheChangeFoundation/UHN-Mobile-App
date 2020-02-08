@@ -96,6 +96,12 @@ export default function App() {
               title="Remove Responders"
             />
           </Scene>
+          <Scene key="responding" type="reset" hideNavBar>
+            <Scene key="directions"
+              component={DirectionsScreen}
+              title="Directions"
+            />
+          </Scene>
         </Scene>
       </Router>
     </Provider>
