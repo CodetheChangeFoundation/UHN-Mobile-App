@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, AsyncStorage } from "react-native";
 import { Actions } from "react-native-router-flux";
 import * as Font from "expo-font";

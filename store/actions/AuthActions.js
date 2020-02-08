@@ -3,6 +3,7 @@ import { LOGIN, LOGIN_FAILED, SIGNUP, SET_LOADING } from "./Types"
 import { SERVER_ROOT } from 'react-native-dotenv';
 import { Actions } from "react-native-router-flux";
 import { AsyncStorage } from "react-native";
+import { sendPushToken } from "../../services/push-token.service";
 
 
 const login = (data, rememberMe) => {
@@ -44,6 +45,7 @@ export const loginHandler = (credential, rememberMe) => {
       .then(async (response) => {
         dispatch(setLoading(false));
         dispatch(login(response.data, rememberMe));
+        sendPushToken(response.data.id)
         await AsyncStorage.setItem("token", response.data.token)
         Actions.main();
       })
