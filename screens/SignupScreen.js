@@ -25,11 +25,12 @@ class SignupScreen extends Component {
     this.state = {
       ...this.initialState,
       inputIsValid: {
-        email: false,
-        phoneNumber: false,
-        username: false,
-        password: false
-      }
+        email: true,
+        phoneNumber: true,
+        username: true,
+        password: true
+      },
+      signupAttempted: false
     };
   }
 
@@ -37,35 +38,44 @@ class SignupScreen extends Component {
     if (   (this.state.email !== prevState.email)
         || (this.state.phoneNumber !== prevState.phoneNumber)
         || (this.state.username !== prevState.username)
-        || (this.state.password != prevState.password)   ) {
-      this.checkIfInputValid();
+        || (this.state.password !== prevState.password)
+        || (this.state.signupAttempted != prevState.signupAttempted)) {
+      this.setState({inputIsValid: this.checkIfInputIsValid(this.state.signupAttempted)});
     }
   }
 
-  checkIfInputValid = () => {
+  checkIfInputIsValid = (signupAttempted) => {
     const {email, phoneNumber, username, password} = this.state;
     let inputIsValid = {
-      email: (typeof email !== "undefined") && (accountRules.email.regex.test(email)),
-      phoneNumber: (typeof phoneNumber !== "undefined") && (accountRules.phoneNumber.regex.test(phoneNumber)),
-      username: (typeof username !== "undefined") && (accountRules.username.regex.test(username)),
-      password: (typeof password !== "undefined") && (accountRules.password.regex.test(password)),
+      email: (!signupAttempted && email === "") || ((typeof email !== "undefined") && (accountRules.email.regex.test(email))),
+      phoneNumber: (!signupAttempted && phoneNumber === "") || ((typeof phoneNumber !== "undefined") && (accountRules.phoneNumber.regex.test(phoneNumber))),
+      username: (!signupAttempted && username === "") || ((typeof username !== "undefined") && (accountRules.username.regex.test(username))),
+      password: (!signupAttempted && password === "") || ((typeof password !== "undefined") && (accountRules.password.regex.test(password))),
     };
-    console.log(inputIsValid)
-    this.setState({inputIsValid});
+    return inputIsValid;
   }
 
   onSignUpButtonPress = () => {
+    if (this.state.signupAttempted == false) {
+      this.setState({signupAttempted: true});
+    }
     const { email, phoneNumber, username, password } = this.state;
     console.log("[DEBUG] SignUp Button pressed.");
-    console.log("[DEBUG] username is " + username + ", password is " + password + "\n email is " + email + " phoneNum is " + phoneNumber);
-    // TODO: generate error if username or password is empty string
-    this.props.setLoading(true);
-    this.props.signupHandler({
-      email: email,
-      phone: phoneNumber,
-      username: username,
-      password: password,
-    });
+    console.log("\tEmail: " + email + "\n\tPhoneNumber: " + phoneNumber + "\n\tUsername: " + username + "\n\tPassword: " + password);
+    const inputIsValidAndFilled = this.checkIfInputIsValid(true);
+    if (!inputIsValidAndFilled.email || !inputIsValidAndFilled.phoneNumber || !inputIsValidAndFilled.username || !inputIsValidAndFilled.password) {
+      console.log("Signup rejected");
+      this.setState({inputIsValid: inputIsValidAndFilled});
+    } else {
+      console.log("Signp accepted");
+      this.props.setLoading(true);
+      this.props.signupHandler({
+        email: email,
+        phone: phoneNumber,
+        username: username,
+        password: password,
+      });
+    }
   }
 
   renderSignUpButtonOrSpinner = () => {
@@ -83,7 +93,11 @@ class SignupScreen extends Component {
     let passwordInputRef = React.createRef();
     return (
       <Container>
-        <Header>Sign Up</Header>
+        <Header leftButton="arrow" 
+        onLeftButtonPress={() => Actions.pop()}
+        >
+          Sign Up
+        </Header>
 
         <Content>
           <Form>
@@ -91,9 +105,10 @@ class SignupScreen extends Component {
               <Text variant="title">Create your account</Text>
             </View>
             <View style={styles.loginInfo}>
-              <Input variant="text"
+              <Input variant="email"
                 label="Email"
-                hasNext
+                hasNext hasError={!this.state.inputIsValid.email}
+                errorText="Email format is invalid."
                 onChangeText={email => {
                   this.setState({ email });
                 }}
@@ -102,7 +117,8 @@ class SignupScreen extends Component {
               <Input variant="number"
                 label="Phone Number"
                 ref={(input) => phoneNumberInputRef = input}
-                hasNext
+                hasNext hasError={!this.state.inputIsValid.phoneNumber}
+                errorText="Phone number format is invalid."
                 onChangeText={phoneNumber => {
                   this.setState({ phoneNumber });
                 }}
@@ -111,7 +127,8 @@ class SignupScreen extends Component {
               <Input variant="text"
                 label="Username"
                 ref={(input) => usernameInputRef = input}
-                hasNext
+                hasNext hasError={!this.state.inputIsValid.username}
+                errorText="Must be 5-20 characters."
                 onChangeText={username => {
                   this.setState({ username });
                 }}
@@ -119,10 +136,13 @@ class SignupScreen extends Component {
               />
               <Input variant="text"
                 label="Password"
+                hasError={!this.state.inputIsValid.password}
+                errorText="Must be 5-20 characters."
                 ref={(input) => passwordInputRef = input}
                 onChangeText={password => {
                   this.setState({ password });
                 }}
+                onSubmitEditing={() => this.onSignUpButtonPress()}
               />
             </View>
             <View style={styles.signupButton}>
@@ -148,10 +168,10 @@ const styles = StyleSheet.create({
     flex: 0,
   },
   signupButton: {
-    flex: 2,
+    flex: 1,
   },
   message: {
-    flex: 3,
+    flex: 0,
     justifyContent: "flex-start",
   },
 });

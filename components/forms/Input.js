@@ -1,8 +1,9 @@
-import React from "react";
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import theme from "../../styles/base";
 import { StyleSheet, Platform } from "react-native";
 import { Item, Input as NBInput, Label } from "native-base";
+import { Text } from "../typography";
 
 const Input = React.forwardRef((props, ref) => {
   const combinedProps = {
@@ -12,20 +13,30 @@ const Input = React.forwardRef((props, ref) => {
     ...props,
   };
 
+  let combinedStyles = inputStyles;
+  if (props.hasError) {
+    combinedStyles = {...inputStyles, ...errorInputStyles}
+  }
+
   return (
-    <Item floatingLabel last={props.last} style={inputStyles.item}>
-      <Label style={inputStyles.label}>{props.label}</Label>
-      <NBInput {...combinedProps} style={[inputStyles.input, props.style]} getRef={ref}/>
+    <Fragment>
+    <Item floatingLabel {...combinedProps.item} last={props.last} style={combinedStyles.item}>
+      <Label style={combinedStyles.label}>{props.label}</Label>
+      <NBInput {...combinedProps} style={[combinedStyles.input, props.style]} getRef={ref}/>
     </Item>
+    <Text style={combinedStyles.text}>{props.errorText}</Text>
+    </Fragment>
   );
 });
 
 /* Prop Types */
 
 Input.propTypes = {
-  variant: PropTypes.oneOf([ "text", "number"]),
+  variant: PropTypes.oneOf([ "text", "email", "number"]),
   label: PropTypes.string.isRequired,
   hasNext: PropTypes.bool,
+  hasError: PropTypes.bool,
+  errorText: PropTypes.string
 };
 
 Input.defaultProps = {
@@ -36,6 +47,9 @@ Input.defaultProps = {
 /* Props */
 
 const baseProps = {
+  item: {
+    placeholderTextColor: theme.colors.darkGrey,
+  }
 };
 
 const inputProps = {
@@ -43,6 +57,10 @@ const inputProps = {
     ...baseProps,
     autoCapitalize: "none",
     autoCorrect: false,
+  },
+  email: {
+    ...baseProps,
+    keyboardType: "email-address",
   },
   number: {
     ...baseProps,
@@ -70,6 +88,29 @@ const inputStyles = StyleSheet.create({
   input: {
     ...baseStyles,
   },
+  text: {
+    ...baseStyles,
+    fontSize: theme.fontSizes.xsmall,
+    flex: 0,
+    alignSelf: "stretch",
+    justifyContent: "flex-start",
+    marginLeft: 2,
+    paddingLeft: 2,
+    height: 0,
+  }
+});
+
+const errorInputStyles = StyleSheet.create({
+  item: {
+    ...inputStyles.item,
+    borderBottomColor: theme.colors.red,
+  },
+  text: {
+    ...inputStyles.text,
+    backgroundColor: "rgb(255, 230, 230)",
+    color: theme.colors.darkGrey,
+    height: "auto"
+  }
 });
 
 export default Input;
