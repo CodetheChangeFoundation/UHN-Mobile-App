@@ -4,6 +4,7 @@ import theme from "../../styles/base";
 import { StyleSheet, Platform } from "react-native";
 import { Item, Input as NBInput, Label } from "native-base";
 import { Text } from "../typography";
+import { View } from "../layout";
 
 const Input = React.forwardRef((props, ref) => {
   const combinedProps = {
@@ -13,10 +14,7 @@ const Input = React.forwardRef((props, ref) => {
     ...props,
   };
 
-  let combinedStyles = inputStyles;
-  if (props.hasError) {
-    combinedStyles = {...inputStyles, ...errorInputStyles}
-  }
+  const combinedStyles = (props.hasError)? errorInputStyles : inputStyles;
 
   return (
     <Fragment>
@@ -24,7 +22,9 @@ const Input = React.forwardRef((props, ref) => {
       <Label style={combinedStyles.label}>{props.label}</Label>
       <NBInput {...combinedProps} style={[combinedStyles.input, props.style]} getRef={ref}/>
     </Item>
+    <View style={combinedStyles.view}>
     <Text style={combinedStyles.text}>{props.errorText}</Text>
+    </View>
     </Fragment>
   );
 });
@@ -90,26 +90,35 @@ const inputStyles = StyleSheet.create({
   input: {
     ...baseStyles,
   },
+  view: {
+    flex: 0,
+    alignSelf: "stretch",
+    marginLeft: 2,      // to align with NativeBase Input
+    paddingLeft: 2,
+  },
   text: {
     ...baseStyles,
     fontSize: theme.fontSizes.xsmall,
     flex: 0,
     alignSelf: "stretch",
     justifyContent: "flex-start",
-    marginLeft: 2,
-    paddingLeft: 2,
+    padding: theme.layout.padding,
     height: 0,
   }
 });
 
 const errorInputStyles = StyleSheet.create({
+  ...inputStyles,
   item: {
     ...inputStyles.item,
     borderBottomColor: theme.colors.red,
   },
+  view: {
+    ...inputStyles.view,
+    backgroundColor: theme.colors.lightRed,
+  },
   text: {
     ...inputStyles.text,
-    backgroundColor: "rgb(255, 230, 230)",
     color: theme.colors.darkGrey,
     height: "auto"
   }
