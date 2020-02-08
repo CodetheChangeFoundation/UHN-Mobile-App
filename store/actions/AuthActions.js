@@ -2,6 +2,7 @@ import * as axios from 'axios';
 import { LOGIN, LOGIN_FAILED, SIGNUP_FAILED, SET_LOADING } from "./Types"
 import { SERVER_ROOT } from 'react-native-dotenv';
 import { Actions } from "react-native-router-flux";
+import { AsyncStorage } from "react-native";
 
 
 const login = (data, rememberMe) => {
@@ -37,12 +38,19 @@ const signupFailed = (error) => {
   }
 }
 
+export const tokenRedirect = (userid, token, rememberMe) => {
+  return (dispatch) => {
+    dispatch(login({ id: userid, token: token }, rememberMe))
+  }
+}
+
 export const loginHandler = (credential, rememberMe) => {
   return (dispatch) => {
     axios.post(SERVER_ROOT + '/login', credential)
-      .then(response => {
+      .then(async (response) => {
         dispatch(setLoading(false));
         dispatch(login(response.data, rememberMe));
+        await AsyncStorage.setItem("token", response.data.token)
         Actions.main();
       })
       .catch(error => {

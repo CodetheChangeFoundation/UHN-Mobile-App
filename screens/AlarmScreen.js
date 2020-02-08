@@ -18,7 +18,7 @@ const AlarmScreen = () => {
       <Banner />
       
       <View style={styles.container}>
-        <Timer using={true}/>
+        <Timer isUsing={true}/>
         <Text style={styles.welcome}>
           Alarm Screen
         </Text>

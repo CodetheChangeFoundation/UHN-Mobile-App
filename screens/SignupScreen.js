@@ -142,7 +142,7 @@ class SignupScreen extends Component {
                 onChangeText={password => {
                   this.setState({ password });
                 }}
-                onSubmitEditing={() => this.onSignUpButtonPress()}
+                onSubmitEditing={this.onSignUpButtonPress}
               />
             </View>
             <View style={styles.signupButton}>

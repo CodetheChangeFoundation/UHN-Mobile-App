@@ -21,6 +21,10 @@ export const theme = {
     large: 24,
     xlarge: 72,
   },
+  iconSizes: {
+    header: 28,
+    body: 24,
+  },
   layout: {
     padding: 4,
     margin: 16,

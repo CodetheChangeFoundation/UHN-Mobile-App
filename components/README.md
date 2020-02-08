@@ -7,6 +7,7 @@ import { Container, Content, Header, View } from "../components/layout";
 import { Text } from "../components/typography";
 import { Button, Switch } from "../components/buttons";
 import { Form, Input } from "../components/forms";
+import Timer from "../components/Timer/Timer";
 ```
 
 Note: if you add a new file to the components/ folder, Expo might give you an error like
@@ -150,6 +151,62 @@ return(
   </Form>
 );
 ```
+
+**SearchBar**
+
+```
+const [searchBarValue, setSearchBarValue] = useState("");
+
+return (
+  <SearchBar 
+    placeholder="Search for a username"
+    enableClearButton
+    onChangeText={(newText) => setSearchBarValue(newText)}
+    onClearButtonPress={() => setSearchBarValue("")}
+    onSubmitEditing={() => console.log("Searched for", searchBarValue)} 
+  />
+);
+```
+
+Props:
+
+- placeholder: the text shown when the SearchBar is empty
+  - optional
+  - type: string
+- enableClearButton: set to true to enable a clear button that appears on focus
+  - optional
+  - type: boolean
+  - default: true
+- onChangeText: when the text is edited, captures the new value
+  - required
+  - type: func
+- onClearButtonPress: when the clear button is pressed, the search bar text will be cleared. Use this to reset whatever variable you're using to capture the text
+  - optional
+  - type: func
+- onSubmitEditing: callback for when the user enters text then presses the enter key
+  - required
+  - type: func
+
+**Checkbox**
+
+```
+const [checkboxValue, setCheckboxValue] = useState(false);
+
+<Checkbox 
+  checked={checkboxValue}
+  onPress={() => setCheckboxValue(!checkboxValue)} 
+/>
+</Form>
+```
+
+Props:
+
+- checked: true if the checkbox is currently checked
+  - required
+  - type: bool
+- onPress: callback for when the checkbox is pressed
+  - required
+  - type: func
 
 ## Layout
 
@@ -309,3 +366,55 @@ Props:
     - "primary", "secondary", "alarm", "urgent" (used in the Button component)
     - "label" (used in the IconButton component)
   - default: "body"
+
+## Timer
+
+**Timer**
+
+```
+<Timer isUsing={true}/>
+<Timer isUsing={false}/>
+```
+
+Props:
+
+- using: specifies weather the Timer is in "using" mode (i.e. when the Timer is activated and starts counting)
+  - required
+  - type: boolean
+   
+**ProgressCircle**
+
+```
+<ProgressCircle 
+  percentage={(1 - timeRemaining / time) * 100}
+  seconds={timeRemaining} 
+  increaseTimeHandler={this.incrementTimer} 
+  decreaseTimeHandler={this.decrementTimer} 
+/>
+```
+
+Props: 
+- percentage: the percentage of the time remaining over the initial start time
+  - required
+  - type: number
+- seconds: the time remaining in seconds 
+  - required
+  - type: number
+- increaseTimeHandler: the function that increase the time remaining by 15 seconds
+  - required
+  - type: function
+- decreaseTimeHandler: the function that decrease the time reamining by 15 seconds
+  - required
+  - type: function
+
+
+**SetTimeButton**
+
+```
+<SetTimeButton changeTimeHandler={decreaseTimeHandler}>-15</SetTimeButton>
+```
+
+Props: 
+- changeTimeHandler: the function that modifies the time
+  - required
+  - type: function

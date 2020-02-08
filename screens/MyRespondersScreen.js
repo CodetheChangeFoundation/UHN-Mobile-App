@@ -5,34 +5,46 @@ import { Container, Content, Header, View, List, ListItem } from "../components/
 import { Text } from "../components/typography";
 import { Button } from "../components/buttons";
 import theme from "../styles/base";
-
-// fake data
-const fakeAvailableResponders = [
-  "a",
-  "b",
-  "c"
-];
-const fakeUnavailableResponders = [
-  "d",
-  "e",
-  "f",
-  "g",
-  "h",
-  "i",
-  "j",
-  "k",
-  "l",
-  "m",
-];
+import { getMyResponders } from "../store/actions";
+import { connect } from "react-redux";
 
 class MyRespondersScreen extends Component {
   constructor(props) {
     super(props);
-    // TODO: fetch user's responders and status
+    // Updates myResponders every time this page is mounted
+    this.props.getMyResponders();
+    const myResponders = this.props.responders.myResponders;
+
+    let availableUsernames = [];
+    let unavailableUsernames = [];
+    for (responder of myResponders) {
+      if (responder.available) {
+        availableUsernames.push(responder.username);
+      } else {
+        unavailableUsernames.push(responder.username);
+      }
+    }
+    // Here we can sort availableUsernames and unavailableUsernames by alphabetical order, recently added, distance away, etc
     this.state = {
-      availableResponders: fakeAvailableResponders,
-      unavailableResponders: fakeUnavailableResponders
+      availableUsernames,
+      unavailableUsernames
     };
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.responders.myResponders !== prevProps.responders.myResponders) {
+      let availableUsernames = [];
+      let unavailableUsernames = [];
+      for (responder of this.props.responders.myResponders) {
+        if (responder.available) {
+          availableUsernames.push(responder.username);
+        } else {
+          unavailableUsernames.push(responder.username);
+        }
+      }
+      // Sort availableUsernames and unavailableUsernames if desired
+      this.setState({availableUsernames, unavailableUsernames});
+    }
   }
 
   render() {
@@ -47,9 +59,16 @@ class MyRespondersScreen extends Component {
         <Content>
           <List style={styles.list}>
             {
-              this.state.availableResponders.map((username, index) => {
+              (this.state.availableUsernames.length == 0 && this.state.unavailableUsernames.length == 0)
+              && 
+              <View>
+                <Text>You currently have no responders.</Text>
+              </View>
+            }
+            {
+              this.state.availableUsernames.map((username) => {
                 return (
-                  <ListItem key={index}
+                  <ListItem key={username}
                     leftText={username}
                     rightText="available"
                     rightTextStyle={styles.available}
@@ -58,9 +77,9 @@ class MyRespondersScreen extends Component {
               })
             }
             {
-              this.state.unavailableResponders.map((username, index) => {
+              this.state.unavailableUsernames.map((username) => {
                 return (
-                  <ListItem key={index}
+                  <ListItem key={username}
                     leftText={username}
                     rightText="unavailable"
                     rightTextStyle={styles.unavailable}
@@ -71,8 +90,8 @@ class MyRespondersScreen extends Component {
           </List>
 
           <View style={styles.buttons}>
-            <Button variant="primary">remove</Button>
-            <Button variant="primary">add</Button>
+            <Button variant="primary" onPress={() => Actions.remove()}>remove</Button>
+            <Button variant="primary" onPress={() => Actions.add()}>add</Button>
           </View>
         </Content>
       </Container>
@@ -98,4 +117,10 @@ const styles = StyleSheet.create({
   }
 });
 
-export default MyRespondersScreen;
+const mapStateToProps = (state) => {
+  return {
+    responders: state.responders
+  }
+}
+
+export default connect(mapStateToProps, { getMyResponders })(MyRespondersScreen);

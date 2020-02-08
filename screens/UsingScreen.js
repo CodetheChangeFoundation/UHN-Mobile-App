@@ -6,7 +6,6 @@ import { Actions } from "react-native-router-flux";
 import Timer from "../components/Timer/Timer";
 import { Container, Content, Header, View, Segment, Banner } from "../components/layout";
 import { Button, IconButton } from "../components/buttons";
-import { Text } from "../components/typography";
 
 const UsingScreen = () => {
   return (
@@ -21,12 +20,12 @@ const UsingScreen = () => {
         />
       </Banner>
       <Banner>
-        <IconButton variant="icon" name="md-pin" label="current location" />
+        <IconButton variant="icon" name="md-pin" label="current location" onPress={() => Actions.location()}/>
         <IconButton variant="counter" counterValue={3} label="responders available" onPress={() => Actions.responders()} />
       </Banner>
     
       <View style={styles.timer}>
-        <Timer using={false}/>
+        <Timer isUsing={false}/>
       </View>
 
       <View style={styles.startButton}>

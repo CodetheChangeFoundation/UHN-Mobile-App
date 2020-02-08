@@ -15,6 +15,7 @@ const IconButton = (props) => {
   const combinedIconProps = {
     ...iconProps,
     name: props.name,
+    size: props.size || iconProps.size
   };
 
   const iconButtonContent = {
@@ -29,9 +30,15 @@ const IconButton = (props) => {
   };
   const content = iconButtonContent[props.variant];
 
+  // Make button size dynamic
+  const buttonStyle = {...iconButtonStyles.view}
+  buttonStyle.width = props.size || iconProps.size
+  buttonStyle.height = props.size || iconProps.size
+  buttonStyle.borderRadius = props.size || iconProps.size
+
   return (
     <TouchableOpacity {...combinedProps} onPress={props.onPress} style={[iconButtonStyles.touchableOpacity, props.style]}>
-      <View style={iconButtonStyles.view}>
+      <View style={buttonStyle}>
           {content}
       </View>
       <Text variant="label">{props.label}</Text>
@@ -46,6 +53,7 @@ IconButton.propTypes = {
   label: PropTypes.string,
   name: PropTypes.string,
   counterValue: PropTypes.number,
+  size: PropTypes.number,
   onPress: PropTypes.func,
 };
 
@@ -75,9 +83,9 @@ const iconButtonStyles = StyleSheet.create({
   },
   view: {
     flex: 0,
-    width: 40,
-    height: 40,
-    borderRadius: 40,
+    width: 0,
+    height: 0,
+    borderRadius: 0,
     alignItems: "center", 
     justifyContent: "center", 
     overflow: "hidden",
