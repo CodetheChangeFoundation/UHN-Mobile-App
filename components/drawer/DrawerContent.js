@@ -10,7 +10,7 @@ const DrawerContent = () => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const modalHeader = "Logout";
-  const modalBody = <Text>Are you sure?</Text>;
+  const modalBody = (<Text>Are you sure?</Text>);
   const modalFooterLeft = (<Button variant="secondary" onPress={() => setModalVisible(false)}>Cancel</Button>);
   const modalFooterRight = (
     <Button
