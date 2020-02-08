@@ -118,7 +118,7 @@ class SignupScreen extends Component {
                 label="Phone Number"
                 ref={(input) => phoneNumberInputRef = input}
                 hasNext hasError={!this.state.inputIsValid.phoneNumber}
-                errorText="Phone number format is invalid."
+                errorText="Invalid. Example format: 4163403131"
                 onChangeText={phoneNumber => {
                   this.setState({ phoneNumber });
                 }}

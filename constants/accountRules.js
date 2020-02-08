@@ -9,6 +9,7 @@ export const accountRules = {
     regex: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/, 
   },
   phoneNumber: {
+    // TODO: This might need to be change to fit well with Twillio implementation
     regex: /^[0-9]{10}$/
   },
   username: {
