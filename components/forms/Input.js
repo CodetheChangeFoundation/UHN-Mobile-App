@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import theme from "../../styles/base";
 import { Animated, StyleSheet, Platform } from "react-native";
-import { Item, Input as NBInput, Label } from "native-base";
+import { Item, Input as NBInput, Label, Icon } from "native-base";
 import { Text } from "../typography";
 
 const AnimatedView = (props) => {
@@ -49,10 +49,12 @@ const AnimatedView = (props) => {
 
 
 const Input = React.forwardRef((props, ref) => {
+  const [passwordHidden, setPasswordHidden] = useState(true);
   const combinedProps = {
     ...inputProps[props.variant],
     returnKeyType: props.hasNext? "next" : "done",
     blurOnSubmit: props.hasNext? false : true,
+    secureTextEntry: (props.variant == "password" && passwordHidden),
     ...props,
   };
   const combinedStyles = (props.hasError)? errorInputStyles : inputStyles;
@@ -62,6 +64,10 @@ const Input = React.forwardRef((props, ref) => {
     <Item floatingLabel {...combinedProps.item} last={props.last} style={combinedStyles.item}>
       <Label style={combinedStyles.label}>{props.label}</Label>
       <NBInput {...combinedProps} style={[combinedStyles.input, props.style]} getRef={ref}/>
+        {(props.variant == "password") && ((passwordHidden)? 
+        <Icon active style={combinedStyles.icon} name="md-eye" onPress={() => setPasswordHidden(false)} /> 
+        : 
+        <Icon active style={combinedStyles.icon} name="md-eye-off" onPress={() => setPasswordHidden(true)} />)}
     </Item>
     <AnimatedView style={combinedStyles.view} isVisible={props.hasError}>
       <Text style={combinedStyles.text}>{props.errorText}</Text>
@@ -73,7 +79,7 @@ const Input = React.forwardRef((props, ref) => {
 /* Prop Types */
 
 Input.propTypes = {
-  variant: PropTypes.oneOf([ "text", "email", "number"]),
+  variant: PropTypes.oneOf([ "text", "email", "password", "number"]),
   label: PropTypes.string.isRequired,
   hasNext: PropTypes.bool,
   hasError: PropTypes.bool,
@@ -146,6 +152,9 @@ const inputStyles = StyleSheet.create({
     alignSelf: "stretch",
     justifyContent: "flex-start",
     padding: theme.layout.padding,
+  },
+  icon: {
+    color: theme.colors.darkGrey
   }
 });
 

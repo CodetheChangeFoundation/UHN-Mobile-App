@@ -116,7 +116,7 @@ Props:
   - type: string
 - variant: changes the keyboard type
   - optional
-  - type: one of "text", "number"
+  - type: one of "text", "email", "password", "number"
   - default: "text"
 - hasError: set to true if the current input value is invalid
   - optional

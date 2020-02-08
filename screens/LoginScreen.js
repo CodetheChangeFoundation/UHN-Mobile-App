@@ -66,7 +66,7 @@ class LoginScreen extends Component {
                 }}
                 onSubmitEditing={() => passwordInputRef._root.focus()}
               />
-              <Input variant="text"
+              <Input variant="password"
                 label="Password"
                 ref={(input) => passwordInputRef = input}
                 onChangeText={password => {

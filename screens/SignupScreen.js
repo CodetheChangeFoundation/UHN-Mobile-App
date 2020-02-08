@@ -134,7 +134,7 @@ class SignupScreen extends Component {
                 }}
                 onSubmitEditing={() => passwordInputRef._root.focus()}
               />
-              <Input variant="text"
+              <Input variant="password"
                 label="Password"
                 hasError={!this.state.inputIsValid.password}
                 errorText="Must be 5-20 characters."
