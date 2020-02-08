@@ -13,8 +13,9 @@ const AnimatedView = (props) => {
       Animated.timing(
         animatedHeight,
         {
-          toValue: 30,
-          duration: 300,
+          toValue: 1,
+          duration: theme.animation.fast,
+          useNativeDriver: true,
         }
       ).start();
     } else {
@@ -22,7 +23,8 @@ const AnimatedView = (props) => {
         animatedHeight,
         {
           toValue: 0,
-          duration: 300,
+          duration: theme.animation.fast,
+          useNativeDriver: true,
         }
       ).start();
     }
@@ -30,18 +32,20 @@ const AnimatedView = (props) => {
 
   return (
     <Animated.View
-      style={{...props.style, height: animatedHeight}}
-      // style={{...props.style, zIndex: -1, transform: [{
-      //   translateY: animatedHeight.interpolate({
-      //     inputRange: [0, 1],
-      //     outputRange: [-30, 0]
-      //   })
-      // }]}}
+      style={{...props.style, zIndex: -1, transform: [{
+        translateY: animatedHeight.interpolate({
+          inputRange: [0, 1],
+          outputRange: [-27, 0]     // May need to change if error message fontSize is changed
+        })
+      }]}}
     >
       {props.children}
     </Animated.View>
   );
 }
+
+
+///////////////////////////////////////////
 
 
 const Input = React.forwardRef((props, ref) => {
@@ -51,8 +55,7 @@ const Input = React.forwardRef((props, ref) => {
     blurOnSubmit: props.hasNext? false : true,
     ...props,
   };
-  // const combinedStyles = (props.hasError)? errorInputStyles : inputStyles;
-  const combinedStyles = inputStyles;
+  const combinedStyles = (props.hasError)? errorInputStyles : inputStyles;
 
   return (
     <Fragment>
@@ -120,7 +123,7 @@ const inputStyles = StyleSheet.create({
   item: {
     ...baseStyles,
     marginTop: theme.layout.margin,
-    backgroundColor: theme.colors.white,
+    backgroundColor: theme.colors.white,    // Match the background color
   },
   label: {
     ...baseStyles,
@@ -132,7 +135,7 @@ const inputStyles = StyleSheet.create({
   view: {
     flex: 0,
     alignSelf: "stretch",
-    marginLeft: 2,      // to align with NativeBase Input
+    marginLeft: 2,                          // To align with NativeBase Input
     paddingLeft: 2,
     backgroundColor: theme.colors.lightRed,
   },
@@ -143,7 +146,6 @@ const inputStyles = StyleSheet.create({
     alignSelf: "stretch",
     justifyContent: "flex-start",
     padding: theme.layout.padding,
-    // height: 0,
   }
 });
 
@@ -153,14 +155,6 @@ const errorInputStyles = StyleSheet.create({
     ...inputStyles.item,
     borderBottomColor: theme.colors.red,
   },
-  view: {
-    ...inputStyles.view,
-    backgroundColor: theme.colors.lightRed,
-  },
-  text: {
-    ...inputStyles.text,
-    height: "auto"
-  }
 });
 
 export default Input;

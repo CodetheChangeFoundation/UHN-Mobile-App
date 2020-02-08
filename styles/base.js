@@ -31,6 +31,9 @@ export const theme = {
   buttons: {
     buttonPressOpacity: 0.5
   },
+  animation: {
+    fast: 300,
+  }
 }
 
 export default theme;
