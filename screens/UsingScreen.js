@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   StyleSheet
 } from "react-native";
@@ -6,7 +6,6 @@ import { Actions } from "react-native-router-flux";
 import Timer from "../components/Timer/Timer";
 import { Container, Content, Header, View, Segment, Banner } from "../components/layout";
 import { Button, IconButton } from "../components/buttons";
-import { Text } from "../components/typography";
 
 const UsingScreen = () => {
   return (

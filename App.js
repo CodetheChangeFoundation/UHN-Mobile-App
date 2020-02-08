@@ -2,6 +2,7 @@ import React from "react";
 import { Router, Scene } from "react-native-router-flux";
 import LoginScreen from "./screens/LoginScreen";
 import SignupScreen from "./screens/SignupScreen";
+import InitialScreen from "./screens/InitialScreen";
 import LoadingScreen from "./screens/LoadingScreen";
 import UsingScreen from "./screens/UsingScreen";
 import RespondingScreen from "./screens/RespondingScreen";
@@ -12,11 +13,12 @@ import ResourceScreen from "./screens/ResourceScreen";
 import MyRespondersScreen from "./screens/MyRespondersScreen";
 import AddRespondersScreen from "./screens/AddRespondersScreen";
 import RemoveRespondersScreen from "./screens/RemoveRespondersScreen";
+import ResponderHelpRequestModal from "./screens/modals/ResponderHelpRequestModal";
 import DrawerContent from "./components/drawer/DrawerContent";
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware} from 'redux';
+import { Provider } from "react-redux";
+import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
-import reducers from './store/reducers'
+import reducers from "./store/reducers";
 
 const store = createStore(reducers, applyMiddleware(thunk));
 
@@ -25,67 +27,71 @@ export default function App() {
     <Provider store={store}>
       <Router>
         <Scene key="root">
-          <Scene key="loading"
-            component={LoadingScreen}
-            title="Loading"
+          <Scene
+            key="initial"
+            component={InitialScreen}
             hideNavBar
             initial
           />
+          <Scene
+            key="loading"
+            component={LoadingScreen}
+            title="Loading"
+            hideNavBar
+          />
           <Scene key="auth" type="reset" hideNavBar duration={0}>
-            <Scene key="login"
-              component={LoginScreen}
-              title="Login"
-            />
-            <Scene key="signup"
-              component={SignupScreen}
-              title="Signup"
-            />
+            <Scene key="login" component={LoginScreen} title="Login" />
+            <Scene key="signup" component={SignupScreen} title="Signup" />
           </Scene>
-          <Scene key="main" drawer type="reset" hideNavBar contentComponent={DrawerContent} headerMode="none">
-            <Scene key="using"
-              component={UsingScreen}
-              title="Using"
-              initial
-            />
-            <Scene key="responding"
+          <Scene
+            key="main"
+            drawer
+            type="reset"
+            hideNavBar
+            contentComponent={DrawerContent}
+            headerMode="none"
+          >
+            <Scene key="using" component={UsingScreen} title="Using" initial />
+            <Scene
+              key="responding"
               component={RespondingScreen}
               title="Responding"
             />
-            <Scene key="profile"
-              component={ProfileScreen}
-              title="Profile"
-            />
-            <Scene key="resource"
-              component={ResourceScreen}
-              title="Resource"
-            />
+            <Scene key="profile" component={ProfileScreen} title="Profile" />
+            <Scene key="resource" component={ResourceScreen} title="Resource" />
           </Scene>
           <Scene key="alarm" type="reset" hideNavBar duration={0}>
-            <Scene key="start"
+            <Scene
+              key="start"
               component={AlarmScreen}
               title="Alarm Start"
               initial
             />
-            <Scene key="snooze"
-              component={SnoozeScreen}
-              title="Snooze"
-            />
+            <Scene key="snooze" component={SnoozeScreen} title="Snooze" />
           </Scene>
           <Scene key="responders" type="reset" hideNavBar>
-            <Scene key="list"
+            <Scene
+              key="list"
               component={MyRespondersScreen}
               title="My Responders"
               initial
             />
-            <Scene key="add"
+            <Scene
+              key="add"
               component={AddRespondersScreen}
               title="Add Responders"
             />
-            <Scene key="remove"
+            <Scene
+              key="remove"
               component={RemoveRespondersScreen}
               title="Remove Responders"
             />
           </Scene>
+          <Scene
+            key="responderHelpRequestModal"
+            component={ResponderHelpRequestModal}
+            hideNavBar
+          />
         </Scene>
       </Router>
     </Provider>
