@@ -11,11 +11,7 @@ const DrawerContent = () => {
 
   const modalHeader = "Logout";
   const modalBody = <Text>Are you sure?</Text>;
-  const modalFooterLeft = (
-    <Button variant="secondary" onPress={() => setModalVisible(false)}>
-      Cancel
-    </Button>
-  );
+  const modalFooterLeft = (<Button variant="secondary" onPress={() => setModalVisible(false)}>Cancel</Button>);
   const modalFooterRight = (
     <Button
       variant="primary"
