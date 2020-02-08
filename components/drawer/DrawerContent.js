@@ -1,5 +1,5 @@
 import React, { useState, Fragment } from "react";
-import { StyleSheet, Button as RNButton } from "react-native";
+import { StyleSheet, Button as RNButton, AsyncStorage } from "react-native";
 import { Actions } from "react-native-router-flux";
 import { Modal } from "../popups";
 import { View } from "../layout";
@@ -12,8 +12,18 @@ const DrawerContent = () => {
   const modalHeader = "Logout";
   const modalBody = (<Text>Are you sure?</Text>);
   const modalFooterLeft = (<Button variant="secondary" onPress={() => setModalVisible(false)}>Cancel</Button>);
-  const modalFooterRight = (<Button variant="primary" onPress={() => Actions.auth()}>Logout</Button>);
-  
+  const modalFooterRight = (
+    <Button
+      variant="primary"
+      onPress={async () => {
+        Actions.auth();
+        await AsyncStorage.removeItem("token");
+      }}
+    >
+      Logout
+    </Button>
+  );
+
   return (
     <Fragment>
       <Modal
@@ -37,8 +47,8 @@ const DrawerContent = () => {
         <RNButton title="Logout" onPress={() => setModalVisible(true)} />
       </View>
     </Fragment>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   topContainer: {
@@ -50,6 +60,6 @@ const styles = StyleSheet.create({
   bottomContainer: {
     flex: 2
   }
-})
+});
 
 export default DrawerContent;
