@@ -54,8 +54,8 @@ export const convertToAddress = (coordinates, success, fail) => {
         } else {
             // street, name, city, region, country, postalCode, name
             const { name, street, city, country } = results[0]
-            let address = `${name}, ${street}, ${city}, ${country}`
-            if (name.includes(street)) address = `${name}, ${city}, ${country}`
+            let address = `${name} ${street}, ${city}`
+            if (name.includes(street)) address = `${name}, ${city}`
     
             // accepts a success callback, otherwise just returns the value
             success && success(address)

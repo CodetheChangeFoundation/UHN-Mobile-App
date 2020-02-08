@@ -182,7 +182,7 @@ const LocationScreen = (props) => {
                 variant="text"
                 onChangeText={text => setNote(text)}
                 placeholder="note"
-                value={note}
+                value={registeredNote}
                 onSubmitEditing={addressConfirm ? handleConfirm : handleSearch}
             />
             { registeredAddress ? (
