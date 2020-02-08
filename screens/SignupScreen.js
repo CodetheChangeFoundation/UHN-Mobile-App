@@ -99,6 +99,7 @@ class SignupScreen extends Component {
                   this.setState({ password: password });
                   console.log(this.state.password);
                 }}
+                onSubmitEditing={this.onSignUpButtonPress}
               />
             </View>
             <View style={styles.signupButton}>

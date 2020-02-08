@@ -38,6 +38,12 @@ const signupFailed = (error) => {
   }
 }
 
+export const tokenRedirect = (userid, token, rememberMe) => {
+  return (dispatch) => {
+    dispatch(login({ id: userid, token: token }, rememberMe))
+  }
+}
+
 export const loginHandler = (credential, rememberMe) => {
   return (dispatch) => {
     axios.post(SERVER_ROOT + '/login', credential)
@@ -55,7 +61,6 @@ export const loginHandler = (credential, rememberMe) => {
 }
 
 export const signupHandler = (userData) => {
-  console.log('http://' + SERVER_ROOT + '/signup', userData)
   return (dispatch) => {
     axios.post(SERVER_ROOT + '/signup', userData)
     .then(response => {
