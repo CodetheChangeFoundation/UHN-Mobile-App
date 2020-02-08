@@ -5,12 +5,18 @@ import { WebViewLeaflet } from 'react-native-webview-leaflet'
 
 import { Actions } from "react-native-router-flux";
 import { Container, Content, Header, View } from "../components/layout";
-import { Button } from "../components/buttons";
+import { Button, IconButton } from "../components/buttons";
 import { Form, Input } from "../components/forms"
 import { Text } from "../components/typography"
 import theme from '../styles/base'
-import { getCurrentLocation, convertToCoordinates, convertToAddress } from '../utils/index'
-import { getUserLocation, updateUserLocation } from '../store/actions';
+import {
+    getDeviceLocation,
+    convertToCoordinates,
+    convertToAddress,
+    getUserLocation,
+    updateUserLocation
+} from '../utils/index'
+import { setLocalLocation } from '../store/actions'
 
 import mapMarkerIcon from '../components/icons/mapMarker'
 
@@ -19,11 +25,6 @@ const INITIAL_COORDINATES = {
      lat: 49.2827,
      lng: -123.1207
 }
-
-const TEMPLATE_ADDRESSES = [
-    '4070 West 38th Ave, Vancouver',
-    '100 Universal City Plaza, Universal City, California'
-]
 
 const openStreetMapLayer = {
     attribution:'&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
@@ -44,26 +45,40 @@ const LocationScreen = (props) => {
     const [note, setNote] = useState(null)
 
     const [registeredAddress, setRegisteredAddress] = useState(null)
+    const [registeredNote, setRegisteredNote] = useState(null)
     
     useEffect(() => {
-        getCurrentLocation((coords) => {
-            convertToAddress({ latitude: coords.lat, longitude: coords.lng }, setAddress)
-            setLocation({ lat: coords.lat, lng: coords.lng })
-        })
+        // Gets location data from redux (device location on log in)
+        convertToAddress({ latitude: props.location.coords.lat, longitude: props.location.coords.lng }, setAddress)
+        setLocation(props.location.coords)
 
+        // Get registered data from the database
         getUserLocation({id: props.userId, token: props.token})
             .then( (res) => {
-                if(!res.location.lat || !res.location.lng) return
-                convertToAddress(res.location, setRegisteredAddress)
-                setNote(res.note)
+                if(res.location && res.location.coords) {
+                    res.location.coords.lat && res.location.coords.lng && convertToAddress(res.location.coords, setRegisteredAddress)
+                    // Simply saves the note to be used later
+                    res.location.note && setRegisteredNote(res.location.note)
+                }
             })
             .catch( (err) => { console.error(err) })
     }, [])
 
+    // Function to get device location
+    // Sets map coordinates
+    const refreshDeviceLocation = () => {
+        getDeviceLocation((coords) => {
+            convertToAddress({ latitude: coords.lat, longitude: coords.lng }, setAddress)
+            setLocation({ lat: coords.lat, lng: coords.lng })
+        })
+    }
+
+    // Function to setup map layers
     const mapLoad = () => {
         setMapLayers([openStreetMapLayer])
     }
 
+    // Function to set map location
     const setLocation = (location) => {
         const { lat, lng } = location
         // Set new location and map zoom
@@ -80,44 +95,65 @@ const LocationScreen = (props) => {
         // console.log("App Recieved", message)
     }
 
+    // Handler for when the registered location is picked
+    // Sets map coordinates and note
     const pickRegistered = () => {
         if(!registeredAddress) return
         setAddress(registeredAddress)
-        convertToCoordinates(address, setLocation)
-        setAddressConfirm(true)
-    }
-
-    const handleSearch = () => {
-        if(addressConfirm) {
-
-            const params = {
-                data: {
-                    note: note && note
-                },
-                id: props.userId,
-                token: props.token,
-            }
-
-            convertToCoordinates(address, (coords) => {
-                params.data.lat = coords.lat
-                params.data.lng = coords.lng
-
-                updateUserLocation(params)
-            })
-
-            Actions.using()
-        } else {
-            convertToCoordinates(address, setLocation)
+        convertToCoordinates(address, (coords) => {
+            setLocation(coords)
+            setNote(registeredNote)
             setAddressConfirm(true)
-        }
+        }, () => {
+            setAddressConfirm(false)
+        })
     }
+
+    // Handler for when user searches for an address
+    // Converts string address to coordinates and sets map coordinates
+    const handleSearch = () => {
+        convertToCoordinates(address, (coords) => {
+            setLocation(coords)
+            setAddressConfirm(true)
+        }, () => {
+            setAddressConfirm(false)
+        })
+    }
+
+    // Submit handler
+    // Converts string address to coordinates and updates online and redux db
+    const handleConfirm = () => {
+        const params = {
+            data: {
+                coords: {},
+                note: note && note
+            },
+            id: props.userId,
+            token: props.token,
+        }
+
+        convertToCoordinates(address, (coords) => {
+            params.data.coords.lat = coords.lat
+            params.data.coords.lng = coords.lng
+            updateUserLocation(params)
+            props.setLocalLocation(params.data)
+        })
+        Actions.using()
+    }
+
+    let addressInputRef = React.createRef()
+    let notesInputRef = React.createRef()
+
 
   return (
     <Container>
     <Header leftButton="menu" onLeftButtonPress={() => Actions.drawerOpen()}>Location</Header>
 
     <Content>
-        <Text style={{margin: 10}}>Please confirm your location</Text>
+        <View style={styles.rowFlex}>
+            <Text style={{margin: 10}}>Please confirm your location</Text>
+            <IconButton variant="icon" name="md-refresh" size={20} onPress={refreshDeviceLocation}/>
+        </View>
         <View style={styles.map}>
             <WebViewLeaflet
                 doShowDebugMessages={false}
@@ -132,16 +168,22 @@ const LocationScreen = (props) => {
         </View>
         <Form style={styles.inputWrapper}>
             <Input label=""
+                ref={(input) => addressInputRef = input}
                 variant="text"
                 onChangeText={text => { setAddressConfirm(false); setAddress(text) }}
                 placeholder="Enter Address"
                 value={address}
+                onSubmitEditing={() => {
+                    if(!addressConfirm) handleSearch()
+                    notesInputRef._root.focus() }}
             />
             <Input label=""
+                ref={(input) => notesInputRef = input}
                 variant="text"
                 onChangeText={text => setNote(text)}
                 placeholder="note"
                 value={note}
+                onSubmitEditing={addressConfirm ? handleConfirm : handleSearch}
             />
             { registeredAddress ? (
             <React.Fragment>
@@ -160,7 +202,10 @@ const LocationScreen = (props) => {
         </Form>
 
         <View style={styles.searchButton}>
-            <Button variant="alarm" onPress={handleSearch}>{addressConfirm ? 'confirm' : 'search'}</Button>
+            { addressConfirm ? 
+                (<Button variant="alarm" onPress={handleConfirm}>confirm</Button>)
+                : (<Button variant="alarm" onPress={handleSearch}>search</Button>)
+            }
          </View>
     </Content>
     </Container>
@@ -191,11 +236,16 @@ const styles = StyleSheet.create({
   searchButton: {
     flex: 3,
   },
+  rowFlex: {
+      display: 'flex',
+      flexDirection: 'row',
+  }
 });
 
 const mapStateToProps = (state, currentProps) => {
     const { token, userId } = state.auth;
-    return { ...currentProps, token, userId }
+    const { location } = state.userData;
+    return { ...currentProps, token, userId, location }
 }
 
-export default connect(mapStateToProps)(LocationScreen);
+export default connect(mapStateToProps, { setLocalLocation })(LocationScreen);
