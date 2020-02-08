@@ -10,6 +10,7 @@ import SnoozeScreen from "./screens/SnoozeScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import ResourceScreen from "./screens/ResourceScreen";
 import MyRespondersScreen from "./screens/MyRespondersScreen";
+import LocationScreen from './screens/LocationScreen';
 import AddRespondersScreen from "./screens/AddRespondersScreen";
 import RemoveRespondersScreen from "./screens/RemoveRespondersScreen";
 import DirectionsScreen from "./screens/DirectionsScreen";
@@ -63,6 +64,10 @@ export default function App() {
             <Scene key="directions"
               component={DirectionsScreen}
               title="Directions"
+            />
+            <Scene key="location"
+              component={LocationScreen}
+              title="Location"
             />
           </Scene>
           <Scene key="alarm" type="reset" hideNavBar duration={0}>

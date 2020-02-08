@@ -1,43 +1,104 @@
-import React from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import theme from "../../styles/base";
-import { StyleSheet } from "react-native";
-import { Item, Input as NBInput, Label } from "native-base";
+import { Animated, StyleSheet, Platform } from "react-native";
+import { Item, Input as NBInput, Label, Icon } from "native-base";
+import { Text } from "../typography";
+
+const AnimatedView = (props) => {
+  const [animatedHeight] = useState(new Animated.Value(0));
+
+  useEffect(() => {
+    if (props.isVisible) {
+      Animated.timing(
+        animatedHeight,
+        {
+          toValue: 1,
+          duration: theme.animation.fast,
+          useNativeDriver: true,
+        }
+      ).start();
+    } else {
+      Animated.timing(
+        animatedHeight,
+        {
+          toValue: 0,
+          duration: theme.animation.fast,
+          useNativeDriver: true,
+        }
+      ).start();
+    }
+  }, [props.isVisible]);
+
+  return (
+    <Animated.View
+      style={{...props.style, zIndex: -1, transform: [{
+        translateY: animatedHeight.interpolate({
+          inputRange: [0, 1],
+          outputRange: [-27, 0]     // May need to change if error message fontSize is changed
+        })
+      }]}}
+    >
+      {props.children}
+    </Animated.View>
+  );
+}
+
+
+///////////////////////////////////////////
+
 
 const Input = React.forwardRef((props, ref) => {
+  const [passwordHidden, setPasswordHidden] = useState(true);
   const combinedProps = {
     ...inputProps[props.variant],
     returnKeyType: props.hasNext? "next" : "done",
     blurOnSubmit: props.hasNext? false : true,
+    secureTextEntry: (props.variant == "password" && passwordHidden),
     ...props,
   };
+  const combinedStyles = (props.hasError)? errorInputStyles : inputStyles;
 
   return (
-    <Item floatingLabel last={props.last} style={inputStyles.item}>
-      <Label style={inputStyles.label}>{props.label}</Label>
-      <NBInput {...combinedProps} style={[inputStyles.input, props.style]} getRef={ref}/>
+    <Fragment>
+    <Item floatingLabel {...combinedProps.item} last={props.last} style={combinedStyles.item}>
+      <Label style={combinedStyles.label}>{props.label}</Label>
+      <NBInput {...combinedProps} style={[combinedStyles.input, props.style]} getRef={ref}/>
+        {(props.variant == "password") && ((passwordHidden)? 
+        <Icon active style={combinedStyles.icon} name="md-eye" onPress={() => setPasswordHidden(false)} /> 
+        : 
+        <Icon active style={combinedStyles.icon} name="md-eye-off" onPress={() => setPasswordHidden(true)} />)}
     </Item>
+    <AnimatedView style={combinedStyles.view} isVisible={props.hasError}>
+      <Text style={combinedStyles.text}>{props.errorText}</Text>
+    </AnimatedView>
+    </Fragment>
   );
 });
 
 /* Prop Types */
 
 Input.propTypes = {
-  variant: PropTypes.oneOf([ "text", "number"]),
+  variant: PropTypes.oneOf([ "text", "email", "password", "number"]),
   label: PropTypes.string.isRequired,
   hasNext: PropTypes.bool,
-  onChangeText: PropTypes.func.isRequired,
-  onSubmitEditing: PropTypes.func.isRequired
+  hasError: PropTypes.bool,
+  errorText: PropTypes.string
 };
 
 Input.defaultProps = {
   variant: "text",
   hasNext: false,
+  hasError: false,
+  errorText: "Error detected.",
 };
 
 /* Props */
 
 const baseProps = {
+  item: {
+    placeholderTextColor: theme.colors.darkGrey,
+  }
 };
 
 const inputProps = {
@@ -46,9 +107,13 @@ const inputProps = {
     autoCapitalize: "none",
     autoCorrect: false,
   },
+  email: {
+    ...baseProps,
+    keyboardType: "email-address",
+  },
   number: {
     ...baseProps,
-    keyboardType: "phone-pad",
+    keyboardType: (Platform.OS == "ios")? "numbers-and-punctuation" : "phone-pad",
   },
 };
 
@@ -64,6 +129,7 @@ const inputStyles = StyleSheet.create({
   item: {
     ...baseStyles,
     marginTop: theme.layout.margin,
+    backgroundColor: theme.colors.white,    // Match the background color
   },
   label: {
     ...baseStyles,
@@ -71,6 +137,32 @@ const inputStyles = StyleSheet.create({
   },
   input: {
     ...baseStyles,
+  },
+  view: {
+    flex: 0,
+    alignSelf: "stretch",
+    marginLeft: 2,                          // To align with NativeBase Input
+    paddingLeft: 2,
+    backgroundColor: theme.colors.lightRed,
+  },
+  text: {
+    ...baseStyles,
+    fontSize: theme.fontSizes.xsmall,
+    flex: 0,
+    alignSelf: "stretch",
+    justifyContent: "flex-start",
+    padding: theme.layout.padding,
+  },
+  icon: {
+    color: theme.colors.darkGrey
+  }
+});
+
+const errorInputStyles = StyleSheet.create({
+  ...inputStyles,
+  item: {
+    ...inputStyles.item,
+    borderBottomColor: theme.colors.red,
   },
 });
 

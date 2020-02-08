@@ -7,6 +7,7 @@ export const theme = {
     fadedGrey: "#E5E5E6",
     white: "#FFFFFF",
     red: "#FF0000",
+    lightRed: "rgb(255, 230, 230)",
   }, 
   fonts: {
     body: "OpenSans-Regular",
@@ -34,6 +35,9 @@ export const theme = {
   buttons: {
     buttonPressOpacity: 0.5
   },
+  animation: {
+    fast: 300,
+  }
 }
 
 export default theme;
