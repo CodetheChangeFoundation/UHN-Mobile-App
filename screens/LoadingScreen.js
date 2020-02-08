@@ -7,9 +7,20 @@ import { AppLoading } from "expo";
 import { Container, Content, View } from "../components/layout";
 import { Text } from "../components/typography";
 var jwtDecode = require("jwt-decode");
+import { Notifications } from "expo";
 
 const LoadingScreen = () => {
   const fontsLoaded = false;
+
+  useEffect(() => {
+    this._notificationSubscription = Notifications.addListener(
+      this._handleNotification
+    );
+  });
+
+  _handleNotification = notification => {
+    Actions.responderHelpRequestModal({ notification: notification });
+  };
 
   _loadFonts = async () => {
     return Promise.all([
