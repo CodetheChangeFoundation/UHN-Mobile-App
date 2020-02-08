@@ -103,6 +103,8 @@ Every input should be wrapped in a Form element. This allows scrolling and keybo
   <Input
     label="Phone Number"
     variant="number"
+    hasError={false}
+    errorText="Format is invalid."
   />
 </Form>
 ```
@@ -116,6 +118,14 @@ Props:
   - optional
   - type: one of "text", "number"
   - default: "text"
+- hasError: set to true if the current input value is invalid
+  - optional
+  - type: boolean
+  - default: false
+- errorText: the message that shows whenever hasError is true
+  - optional
+  - type: string
+  - default: "Error detected."
 - hasNext: set to true if onSubmitEditing is linked to another Input (see below)
   - optional
   - type: boolean

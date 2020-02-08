@@ -42,6 +42,8 @@ Input.propTypes = {
 Input.defaultProps = {
   variant: "text",
   hasNext: false,
+  hasError: false,
+  errorText: "Error detected.",
 };
 
 /* Props */

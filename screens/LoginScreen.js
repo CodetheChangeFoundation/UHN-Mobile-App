@@ -9,6 +9,7 @@ import { Form, Input } from "../components/forms";
 import { connect } from 'react-redux';
 import { SERVER_ROOT } from 'react-native-dotenv';
 import { loginHandler, setLoading } from '../store/actions';
+import { bindActionCreators } from "redux";
 
 class LoginScreen extends Component {
 
@@ -19,12 +20,9 @@ class LoginScreen extends Component {
       password: "",
       rememberMe: false
     };
-    this.setRememberMe = this.setRememberMe.bind(this);
-    this.onLoginButtonPress = this.onLoginButtonPress.bind(this);
-    this.renderLoginButtonOrSpinner = this.renderLoginButtonOrSpinner.bind(this);
   }
 
-  setRememberMe() {
+  setRememberMe = () => {
     if (this.state.rememberMe) {
       this.setState({ rememberMe: false });
     } else {
@@ -32,7 +30,7 @@ class LoginScreen extends Component {
     }
   }
 
-  onLoginButtonPress() {
+  onLoginButtonPress = () => {
     const { username, password, rememberMe } = this.state;
     console.log("[DEBUG] LOGIN Button pressed.");
     console.log("[DEBUG] username is " + username + ", password is " + password);
@@ -40,7 +38,7 @@ class LoginScreen extends Component {
     this.props.loginHandler({ username: username, password: password }, rememberMe);
   }
 
-  renderLoginButtonOrSpinner() {
+  renderLoginButtonOrSpinner = () => {
     return (this.props.auth.loading) ?
       (<Spinner />)
       :
@@ -65,7 +63,6 @@ class LoginScreen extends Component {
                 hasNext
                 onChangeText={username => {
                   this.setState({ username: username });
-                  // console.log(this.state.username);
                 }}
                 onSubmitEditing={() => passwordInputRef._root.focus()}
               />
@@ -74,14 +71,17 @@ class LoginScreen extends Component {
                 ref={(input) => passwordInputRef = input}
                 onChangeText={password => {
                   this.setState({ password: password });
-                  // console.log(this.state.password);
                 }}
+                onSubmitEditing={() => this.onLoginButtonPress()}
               />
             </View>
 
             <View style={styles.rememberMe}>
               <Text variant="footnote">remember me</Text>
-              <Switch style={styles.rememberMeSwitch} value={this.state.rememberMe} onValueChange={this.setRememberMe} />
+              <Switch style={styles.rememberMeSwitch} 
+                value={this.state.rememberMe} 
+                onValueChange={() => this.setRememberMe()}
+              />
             </View>
 
             <View style={styles.loginButton}>
