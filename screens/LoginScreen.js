@@ -19,12 +19,9 @@ class LoginScreen extends Component {
       password: "",
       rememberMe: false
     };
-    this.setRememberMe = this.setRememberMe.bind(this);
-    this.onLoginButtonPress = this.onLoginButtonPress.bind(this);
-    this.renderLoginButtonOrSpinner = this.renderLoginButtonOrSpinner.bind(this);
   }
 
-  setRememberMe() {
+  setRememberMe = () => {
     if (this.state.rememberMe) {
       this.setState({ rememberMe: false });
     } else {
@@ -32,7 +29,7 @@ class LoginScreen extends Component {
     }
   }
 
-  onLoginButtonPress() {
+  onLoginButtonPress = () => {
     const { username, password, rememberMe } = this.state;
     console.log("[DEBUG] LOGIN Button pressed.");
     console.log("[DEBUG] username is " + username + ", password is " + password);
@@ -41,7 +38,7 @@ class LoginScreen extends Component {
     this.props.loginHandler({ username: username, password: password }, rememberMe);
   }
 
-  renderLoginButtonOrSpinner() {
+  renderLoginButtonOrSpinner = () => {
     return (this.props.auth.loading) ?
       (<Spinner />)
       :
@@ -69,7 +66,7 @@ class LoginScreen extends Component {
                 }}
                 onSubmitEditing={() => passwordInputRef._root.focus()}
               />
-              <Input variant="text"
+              <Input variant="password"
                 label="Password"
                 ref={(input) => passwordInputRef = input}
                 onChangeText={password => {
@@ -81,7 +78,10 @@ class LoginScreen extends Component {
 
             <View style={styles.rememberMe}>
               <Text variant="footnote">remember me</Text>
-              <Switch style={styles.rememberMeSwitch} value={this.state.rememberMe} onValueChange={this.setRememberMe} />
+              <Switch style={styles.rememberMeSwitch} 
+                value={this.state.rememberMe} 
+                onValueChange={() => this.setRememberMe()}
+              />
             </View>
 
             <View style={styles.loginButton}>

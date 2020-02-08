@@ -1,5 +1,5 @@
 import * as axios from 'axios';
-import { LOGIN, LOGIN_FAILED, SIGNUP, SET_LOADING } from "./Types"
+import { LOGIN, LOGIN_FAILED, SIGNUP_FAILED, SET_LOADING } from "./Types"
 import { SERVER_ROOT } from 'react-native-dotenv';
 import { Actions } from "react-native-router-flux";
 import { AsyncStorage } from "react-native";
