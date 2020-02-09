@@ -1,32 +1,8 @@
 import * as axios from 'axios';
 import { SERVER_ROOT } from 'react-native-dotenv';
-import { SET_MY_RESPONDERS, ADD_RESPONDERS, REMOVE_RESPONDERS } from "./Types"
+import { SET_MY_RESPONDERS } from "./Types"
 import { Actions } from 'react-native-router-flux';
 
-// fake data
-const fakeResponders = [
-  { username: "alpha", available: true },
-  { username: "bravo", available: false },
-  { username: "charlie", available: false },
-  { username: "delta", available: true },
-  { username: "echo", available: false },
-  { username: "foxtrot", available: false },
-  { username: "golf", available: false },
-  { username: "hotel", available: true },
-  { username: "india", available: true },
-  { username: "juliet", available: false },
-  { username: "kilo", available: false },
-  { username: "lima", available: false },
-  { username: "mike", available: false },
-];
-
-const getFakeResponse = (usernamesToAdd) => {
-  let addedResponders = [];
-  for (username of usernamesToAdd) {
-    addedResponders.push({username: username, available: username.includes('a')});
-  }
-  return addedResponders;
-}
 
 const setMyResponders = (myResponders) => {
   return {
@@ -38,9 +14,6 @@ const setMyResponders = (myResponders) => {
 }
 
 export const getMyResponders = (userId, token) => {
-  // TODO: fetch list of responders (username + availability) for this user
-  // console.log("running getMyResponders for", userId, "with", token);
-  // console.log(`URL: ${SERVER_ROOT}/users/${userId}/responders`);
   return (dispatch) => {
     axios.get(
       `${SERVER_ROOT}/users/${userId}/responders`, 
@@ -58,19 +31,7 @@ export const getMyResponders = (userId, token) => {
   }
 }
 
-// const addToMyResponders = (respondersToAdd) => {
-//   return {
-//     type: ADD_RESPONDERS,
-//     data: {
-//       respondersToAdd
-//     }
-//   };
-// }
-
 export const addResponders = (userId, token, respondersToAdd, myResponders) => {
-  // TODO: ping backend to add usernames in usernamesToAdd to this user's profile
-  // Should receive a response containing the users we just added (username + availability).
-  // Store that response in addedResponders and delete getFakeResponse
   console.log("AddResponders for", userId, "adding", respondersToAdd)
   return (dispatch) => {
     axios.post(
@@ -90,15 +51,6 @@ export const addResponders = (userId, token, respondersToAdd, myResponders) => {
     });
   }
 }
-
-// const removeFromMyResponders = (respondersToRemove) => {
-//   return {
-//     type: REMOVE_RESPONDERS,
-//     data: {
-//       respondersToRemove
-//     }
-//   }
-// }
 
 export const removeResponders = (userId, token, respondersToRemove, myResponders) => {
   console.log("RemoveResponders for", userId, "removing", respondersToRemove[0].id)

@@ -44,6 +44,7 @@ class AddRespondersScreen extends Component {
     const myUsernames = this.props.responders.myResponders.map((responder) => responder.username);
     let allRespondersNoDup = [];
     let idSelectionMap = new Map();
+    // TODO: in a future backend fix, the responder _id field will be changed to id
     for (responder of allResponders) {
       if (!myUsernames.includes(responder.username) && (responder._id != this.props.auth.userId)) {
         allRespondersNoDup.push({id: responder._id, username: responder.username});
@@ -89,7 +90,6 @@ class AddRespondersScreen extends Component {
         selectedResponderIds.push({id: userId});
       }
     }
-    console.log(selectedResponderIds)
     return selectedResponderIds;
   }
 
