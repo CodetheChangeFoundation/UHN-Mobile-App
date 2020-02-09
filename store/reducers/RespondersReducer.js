@@ -1,4 +1,4 @@
-import { SET_MY_RESPONDERS } from "../actions/Types"
+import { SET_MY_RESPONDERS, RESPONDERS_ERROR } from "../actions/Types"
 
 const initialState = {
   myResponders: []

@@ -17,3 +17,4 @@ export const SET_LOCATION = "SET_LOCATION";
 
 // RespondersActions types
 export const SET_MY_RESPONDERS = "SET_MY_RESPONDERS";
+export const RESPONDERS_ERROR = "RESPONDERS_ERROR";

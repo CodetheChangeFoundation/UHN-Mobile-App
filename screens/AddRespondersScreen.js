@@ -6,7 +6,7 @@ import { Checkbox, SearchBar, Input } from "../components/forms";
 import { Text } from "../components/typography";
 import { Button } from "../components/buttons";
 import theme from "../styles/base";
-import { addResponders } from "../store/actions";
+import { addResponders, respondersError } from "../store/actions";
 import { connect } from "react-redux";
 import * as axios from 'axios';
 import { SERVER_ROOT } from 'react-native-dotenv';
@@ -31,12 +31,12 @@ class AddRespondersScreen extends Component {
       }
     )
     .then((response) => {
-      console.log("getAllResponders response:", response.data);
       return response.data;
     })
     .catch((error) => {
-      console.log("getAllResponders error:", error);
-    })
+      respondersError(error);
+      return [];
+    });
   }
 
   async componentDidMount() {
@@ -176,4 +176,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { addResponders })(AddRespondersScreen);
+export default connect(mapStateToProps, { addResponders, respondersError })(AddRespondersScreen);

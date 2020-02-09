@@ -1,8 +1,15 @@
 import * as axios from 'axios';
 import { SERVER_ROOT } from 'react-native-dotenv';
-import { SET_MY_RESPONDERS } from "./Types"
+import { SET_MY_RESPONDERS, RESPONDERS_ERROR } from "./Types"
 import { Actions } from 'react-native-router-flux';
 
+
+export const respondersError = (error) => {
+  console.log("Responders Error:", error);
+  return {
+    type: RESPONDERS_ERROR
+  };
+}
 
 const setMyResponders = (myResponders) => {
   return {
@@ -22,38 +29,34 @@ export const getMyResponders = (userId, token) => {
       }
     )
     .then((response) => {
-      console.log("getMyResponders response:", response.data.responders);
       dispatch(setMyResponders(response.data.responders));
     })
     .catch((error) => {
-      console.log("getMyResponders error:", error);
+      dispatch(respondersError(error));
     });
   }
 }
 
 export const addResponders = (userId, token, respondersToAdd, myResponders) => {
-  console.log("AddResponders for", userId, "adding", respondersToAdd)
   return (dispatch) => {
     axios.post(
-      `${SERVER_ROOT}/users/${userId}/responders`, 
+      `${SERVER_ROOT}/users/${userId}/responders`,
       { respondersToAdd },
       {
         headers: { "Authorization": token },
       }
     )
     .then((response) => {
-      console.log("AddResponders response:", response.data.respondersAdded);
       const newMyResponders = [...myResponders, ...response.data.respondersAdded];
       dispatch(setMyResponders(newMyResponders));
     })
     .catch((error) => {
-      console.log("AddResponders error:", error);
+      dispatch(respondersError(error));
     });
   }
 }
 
 export const removeResponders = (userId, token, respondersToRemove, myResponders) => {
-  console.log("RemoveResponders for", userId, "removing", respondersToRemove[0].id)
   return (dispatch) => {
     axios.request({
 
@@ -64,13 +67,13 @@ export const removeResponders = (userId, token, respondersToRemove, myResponders
       // data: { respondersToRemove },
       
       // For deleting a single user -- DELETE /users/:id/responders/:responderid
+      // Note that this only deletes the first responder
       method: "delete",
       url: `${SERVER_ROOT}/users/${userId}/responders/${respondersToRemove[0].id}`, 
       headers: { "Authorization": token },
 
     })
     .then((response) => {
-      console.log("removeResponders response:", response.data);
 
       // For deleting a batch of users -- DELETE /users/:id/responders/
       // let removedUserIds = [];
@@ -91,7 +94,7 @@ export const removeResponders = (userId, token, respondersToRemove, myResponders
       Actions.pop();
     })
     .catch((error) => {
-      console.log("removeResponders error:", error);
+      dispatch(respondersError(error));
     });
   }
 }
