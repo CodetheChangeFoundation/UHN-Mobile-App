@@ -69,6 +69,12 @@ const textStyles = StyleSheet.create({
     fontSize: theme.fontSizes.large,
     color: theme.colors.white,
   },
+  snooze: {
+    ...regular,
+    fontSize: theme.fontSizes.large,
+    color: theme.colors.black,
+    fontWeight: "bold", 
+  },
   label: {
     ...regular,
     fontSize: theme.fontSizes.xsmall,
