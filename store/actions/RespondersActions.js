@@ -49,6 +49,7 @@ export const addResponders = (userId, token, respondersToAdd, myResponders) => {
     .then((response) => {
       const newMyResponders = [...myResponders, ...response.data.respondersAdded];
       dispatch(setMyResponders(newMyResponders));
+      Actions.pop();
     })
     .catch((error) => {
       dispatch(respondersError(error));

@@ -96,7 +96,6 @@ class AddRespondersScreen extends Component {
   addSelectedUserIds = () => {
     let selectedResponderIds = this.gatherSelectedResponderIds();
     this.props.addResponders(this.props.auth.userId, this.props.auth.token, selectedResponderIds, this.props.responders.myResponders);
-    Actions.pop();
   }
 
   render() {
