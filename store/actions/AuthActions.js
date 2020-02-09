@@ -65,7 +65,7 @@ export const signupHandler = (userData) => {
     axios.post(SERVER_ROOT + '/signup', userData)
     .then(response => {
       dispatch(setLoading(false));
-      console.log(response.data);
+      // console.log("received", response.data);
       Actions.login();
     })
     .catch(error => {

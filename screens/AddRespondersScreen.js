@@ -8,48 +8,49 @@ import { Button } from "../components/buttons";
 import theme from "../styles/base";
 import { addResponders } from "../store/actions";
 import { connect } from "react-redux";
+import * as axios from 'axios';
+import { SERVER_ROOT } from 'react-native-dotenv';
 
-// fake data
-const fakeUsernames = [
-  "a",
-  "aa",
-  "ab",
-  "b",
-  "ba",
-  "bb",
-  "bc",
-  "c",
-  "ca",
-  "cb",
-  "cc",
-];
 
 class AddRespondersScreen extends Component {
   constructor(props) {
     super(props);
-
-    let myUsernames = this.props.responders.myResponders.map((responder) => {
-      return responder.username;
-    })
-
-    // TODO: fetch all responder usernames and store in allUsernames
-    const allUsernames = fakeUsernames;
-
-    let allUsernamesNoDup = [];
-    let usernameSelectionMap = new Map();
-    for (username of allUsernames) {
-      if (!myUsernames.includes(username)) {
-        allUsernamesNoDup.push(username);
-        usernameSelectionMap.set(username, false);
-      }
-    }
-
     this.state = {
       searchQuery: "",
-      usernameSelectionMap: usernameSelectionMap,
-      allUsernames: allUsernamesNoDup,
-      queriedUsernames: allUsernamesNoDup
+      idSelectionMap: new Map(),
+      allResponders: [],
+      queriedResponders: []
     };
+  }
+
+  getAllResponders = async (token) => {
+    return await axios.get(
+      `${SERVER_ROOT}/users/search`, 
+      {
+        headers: {"Authorization": token},
+      }
+    )
+    .then((response) => {
+      console.log("getAllResponders response:", response.data);
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("getAllResponders error:", error);
+    })
+  }
+
+  async componentDidMount() {
+    const allResponders = await this.getAllResponders(this.props.auth.token);
+    const myUsernames = this.props.responders.myResponders.map((responder) => responder.username);
+    let allRespondersNoDup = [];
+    let idSelectionMap = new Map();
+    for (responder of allResponders) {
+      if (!myUsernames.includes(responder.username) && (responder._id != this.props.auth.userId)) {
+        allRespondersNoDup.push({id: responder._id, username: responder.username});
+        idSelectionMap.set(responder._id, false);
+      }
+    }
+    this.setState({idSelectionMap, allResponders: allRespondersNoDup, queriedResponders: allRespondersNoDup});
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -58,11 +59,11 @@ class AddRespondersScreen extends Component {
     }
   }
 
-  onCheckboxPress = (username) => {
-    let usernameSelectionMap = this.state.usernameSelectionMap;
-    let oldValue = usernameSelectionMap.get(username);
-    usernameSelectionMap.set(username, !oldValue);
-    this.setState({usernameSelectionMap});
+  onCheckboxPress = (userId) => {
+    let idSelectionMap = this.state.idSelectionMap;
+    let oldValue = idSelectionMap.get(userId);
+    idSelectionMap.set(userId, !oldValue);
+    this.setState({idSelectionMap});
   }
 
   escapeRegex = (str) => {
@@ -72,28 +73,29 @@ class AddRespondersScreen extends Component {
   searchForUsername = () => {
     const searchQuery = this.escapeRegex(this.state.searchQuery);
     const regex = new RegExp("^" + searchQuery, "i");
-    let queriedUsernames = [];
-    for (username of this.state.allUsernames) {
-      if (regex.test(username)) {
-        queriedUsernames.push(username);
+    let queriedResponders = [];
+    for (responder of this.state.allResponders) {
+      if (regex.test(responder.username)) {
+        queriedResponders.push(responder);
       }
     }
-    this.setState({queriedUsernames});
+    this.setState({queriedResponders});
   }
 
-  gatherSelectedUsernames = () => {
-    let selectedUsernames = [];
-    for (let [username, isSelected] of this.state.usernameSelectionMap) {
+  gatherSelectedResponderIds = () => {
+    let selectedResponderIds = [];
+    for (let [userId, isSelected] of this.state.idSelectionMap) {
       if (isSelected) {
-        selectedUsernames.push(username);
+        selectedResponderIds.push({id: userId});
       }
     }
-    return selectedUsernames;
+    console.log(selectedResponderIds)
+    return selectedResponderIds;
   }
 
-  addSelectedUsernames = () => {
-    let selectedUsernames = this.gatherSelectedUsernames();
-    this.props.addResponders(selectedUsernames, this.props.responders.myResponders);
+  addSelectedUserIds = () => {
+    let selectedResponderIds = this.gatherSelectedResponderIds();
+    this.props.addResponders(this.props.auth.userId, this.props.auth.token, selectedResponderIds, this.props.responders.myResponders);
     Actions.pop();
   }
 
@@ -118,19 +120,19 @@ class AddRespondersScreen extends Component {
 
           <List style={styles.list}>
             {
-              (this.state.queriedUsernames.length == 0) ?
+              (this.state.queriedResponders.length == 0) ?
               
                 <Text>No results found.</Text>
               
               :
               
-                this.state.queriedUsernames.map((username, index) => {
+                this.state.queriedResponders.map((responder, index) => {
                   return (
-                    <View style={styles.row} key={index}>
-                      <Checkbox checked={this.state.usernameSelectionMap.get(username)}
-                        onPress={() => this.onCheckboxPress(username)} />
+                    <View style={styles.row} key={responder.id}>
+                      <Checkbox checked={this.state.idSelectionMap.get(responder.id)}
+                        onPress={() => this.onCheckboxPress(responder.id)} />
                       <ListItem
-                        leftText={username}
+                        leftText={responder.username}
                       />
                     </View>
                   );
@@ -141,7 +143,7 @@ class AddRespondersScreen extends Component {
 
           <View style={styles.addButton}>
             <Button variant="primary" style={{backgroundColor: theme.colors.green}}
-            onPress={() => this.addSelectedUsernames()}>add selected</Button>
+            onPress={() => this.addSelectedUserIds()}>add selected</Button>
           </View>
         </Content>
       </Container>
@@ -169,6 +171,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
+    auth: state.auth,
     responders: state.responders
   }
 }
