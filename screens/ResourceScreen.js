@@ -25,7 +25,7 @@ const ResourceScreen = () => {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  button: {
     width: "100%",
     height: "12%"
   }
