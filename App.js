@@ -2,7 +2,6 @@ import React from "react";
 import { Router, Scene } from "react-native-router-flux";
 import LoginScreen from "./screens/LoginScreen";
 import SignupScreen from "./screens/SignupScreen";
-import InitialScreen from "./screens/InitialScreen";
 import LoadingScreen from "./screens/LoadingScreen";
 import UsingScreen from "./screens/UsingScreen";
 import RespondingScreen from "./screens/RespondingScreen";
@@ -27,12 +26,6 @@ export default function App() {
     <Provider store={store}>
       <Router>
         <Scene key="root">
-          {/* <Scene
-            key="initial"
-            component={InitialScreen}
-            hideNavBar
-            initial
-          /> */}
           <Scene
             key="loading"
             component={LoadingScreen}
