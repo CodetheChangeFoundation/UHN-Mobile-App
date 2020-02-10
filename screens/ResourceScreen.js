@@ -17,7 +17,7 @@ const ResourceScreen = () => {
         <Button variant = "secondary" style = {styles.container}>naloxone nasal spray instructions</Button>
         <Button variant = "secondary" style = {styles.container}>call 911</Button>
         <Button variant = "secondary"style = {styles.container}>your rights</Button>
-        <Button variant = "primary" style = {styles.container}>exit</Button>
+        <Button variant = "primary" style = {styles.container} onPress={() => Actions.main()}>exit</Button>
       </View>
     </Content>
     </Container>
