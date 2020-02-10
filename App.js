@@ -27,17 +27,18 @@ export default function App() {
     <Provider store={store}>
       <Router>
         <Scene key="root">
-          <Scene
+          {/* <Scene
             key="initial"
             component={InitialScreen}
             hideNavBar
             initial
-          />
+          /> */}
           <Scene
             key="loading"
             component={LoadingScreen}
             title="Loading"
             hideNavBar
+            initial
           />
           <Scene key="auth" type="reset" hideNavBar duration={0}>
             <Scene key="login" component={LoginScreen} title="Login" />
