@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Text, View } from "react-native";
-//import ProgressCircle from "./ProgressCircle"
+import { Actions } from "react-native-router-flux";
 import { connect } from 'react-redux';
 import { increaseTime, decreaseTime, countdown, clearTime, resetTime } from '../../store/actions';
 import ProgressCircle from 'react-native-progress-circle';
@@ -16,9 +16,9 @@ class Timer extends Component {
   }
 
   countdown() {
-    if (this.props.time.timeRemaining - 1 <= 0) {
-      this.props.clearTime();
+    if (this.props.time.timeRemaining - 1 <= 15) {
       clearInterval(this.interval);
+      Actions.snooze();
     } else {
       this.props.countdown(this.props.time.timeRemaining);
     }
@@ -70,7 +70,6 @@ class Timer extends Component {
 
   render() {
     const { time, timeRemaining } = this.props.time;
-
     return (
       <ProgressCircle
         percent={(1 - timeRemaining / time) * 100}
