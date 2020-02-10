@@ -10,6 +10,7 @@ import SnoozeScreen from "./screens/SnoozeScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import ResourceScreen from "./screens/ResourceScreen";
 import MyRespondersScreen from "./screens/MyRespondersScreen";
+import LocationScreen from './screens/LocationScreen';
 import AddRespondersScreen from "./screens/AddRespondersScreen";
 import RemoveRespondersScreen from "./screens/RemoveRespondersScreen";
 import ResponderHelpRequestModal from "./screens/modals/ResponderHelpRequestModal";
@@ -51,8 +52,18 @@ export default function App() {
               component={RespondingScreen}
               title="Responding"
             />
-            <Scene key="profile" component={ProfileScreen} title="Profile" />
-            <Scene key="resource" component={ResourceScreen} title="Resource" />
+            <Scene key="profile"
+              component={ProfileScreen}
+              title="Profile"
+            />
+            <Scene key="resource"
+              component={ResourceScreen}
+              title="Resource"
+            />
+            <Scene key="location"
+              component={LocationScreen}
+              title="Location"
+            />
           </Scene>
           <Scene key="alarm" type="reset" hideNavBar duration={0}>
             <Scene

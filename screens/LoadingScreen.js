@@ -8,8 +8,11 @@ import { Container, Content, View } from "../components/layout";
 import { Text } from "../components/typography";
 var jwtDecode = require("jwt-decode");
 import { Notifications } from "expo";
+import { tokenRedirect, setLocalLocation } from "../store/actions";
+import { connect } from "react-redux";
+import { getDeviceLocation } from "../utils/index";
 
-const LoadingScreen = () => {
+const LoadingScreen = props => {
   const fontsLoaded = false;
 
   useEffect(() => {
@@ -49,6 +52,11 @@ const LoadingScreen = () => {
       if (decodedToken.exp < currentTime) isExpired = true;
 
       if (!isExpired) {
+        // TODO: Set actual remember me
+        props.tokenRedirect(decodedToken.id, token, false);
+        getDeviceLocation(coords => {
+          props.setLocalLocation({ coords });
+        });
         Actions.main();
       } else {
         Actions.auth();
@@ -98,4 +106,13 @@ const styles = StyleSheet.create({
   }
 });
 
-export default LoadingScreen;
+mapStateToProps = state => {
+  return {
+    auth: state.auth,
+    userData: state.userData
+  };
+};
+
+export default connect(mapStateToProps, { tokenRedirect, setLocalLocation })(
+  LoadingScreen
+);
