@@ -40,18 +40,12 @@ const DirectionsScreen = (props) => {
     
     useEffect(() => {
 
+        // TODO: GET the assigned's location and note here
+
         setLocation(DEFAULT_COORDINATES)
         convertToAddress(DEFAULT_COORDINATES, setAddress)
         setNote(DEFAULT_INFORMATION)
 
-        // getUserLocation({id: props.userId, token: props.token})
-        //     .then( (res) => {
-        //         if(res.location && res.location.coords) {
-        //             res.location.coords.lat && res.location.coords.lng && convertToAddress(res.location.coords, setRegisteredAddress)
-        //             res.location.note && setNote(res.location.note)
-        //         }
-        //     })
-        //     .catch( (err) => { console.error(err) })
     }, [])
 
     const mapLoad = () => {
@@ -74,8 +68,9 @@ const DirectionsScreen = (props) => {
         // console.log("App Recieved", message)
     }
 
-    const arrived  = () => {
-      Actions.using()
+    const handleArrived  = () => {
+        // TODO: PUT to update the help request status to solved
+        Actions.using()
     }
 
   return (
@@ -107,7 +102,7 @@ const DirectionsScreen = (props) => {
         </View>
 
         <View style={styles.arrivedButton}>
-            <Button variant="alarm" onPress={arrived}>I've arrived</Button>
+            <Button variant="alarm" onPress={handleArrived}>I've arrived</Button>
          </View>
     </Content>
     </Container>
