@@ -13,7 +13,7 @@ const ResourceScreen = () => {
     <Header leftButton="menu" onLeftButtonPress={() => Actions.drawerOpen()}>Resources</Header>
     <Content>
       <View>
-        <Button variant = "secondary" style = {styles.container}>naloxone injection instructions</Button>
+        <Button variant="secondary" style={styles.button}>naloxone injection instructions</Button>
         <Button variant = "secondary" style = {styles.container}>naloxone nasal spray instructions</Button>
         <Button variant = "secondary" style = {styles.container}>call 911</Button>
         <Button variant = "secondary"style = {styles.container}>your rights</Button>
