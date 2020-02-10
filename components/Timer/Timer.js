@@ -77,7 +77,7 @@ class Timer extends Component {
         radius={127.5}
         borderWidth={8}
         color="#999b9e"
-        shadowColor="#60a781"
+        shadowColor={timeRemaining < 30 ? "#FF0000" : "#60a781"}
         bgColor="#ffffff"
       >
         <SetTimeButton changeTimeHandler={this.incrementTimer}>+15</SetTimeButton>
