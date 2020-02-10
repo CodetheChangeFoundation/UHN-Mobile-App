@@ -14,10 +14,10 @@ const ResourceScreen = () => {
     <Content>
       <View>
         <Button variant="secondary" style={styles.button}>naloxone injection instructions</Button>
-        <Button variant = "secondary" style = {styles.container}>naloxone nasal spray instructions</Button>
-        <Button variant = "secondary" style = {styles.container}>call 911</Button>
-        <Button variant = "secondary"style = {styles.container}>your rights</Button>
-        <Button variant = "primary" style = {styles.container} onPress={() => Actions.main()}>exit</Button>
+        <Button variant = "secondary" style = {styles.button}>naloxone nasal spray instructions</Button>
+        <Button variant = "secondary" style = {styles.button}>call 911</Button>
+        <Button variant = "secondary"style = {styles.button}> your rights</Button>
+        <Button variant = "primary" style = {styles.button} onPress={() => Actions.main()}>exit</Button>
       </View>
     </Content>
     </Container>
