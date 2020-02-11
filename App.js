@@ -61,10 +61,6 @@ export default function App() {
               component={ResourceScreen}
               title="Resource"
             />
-            <Scene key="directions"
-              component={DirectionsScreen}
-              title="Directions"
-            />
             <Scene key="location"
               component={LocationScreen}
               title="Location"
