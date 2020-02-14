@@ -73,7 +73,6 @@ export default function App() {
             />
             <Scene key="snooze"
               component={SnoozeScreen}
-              title="Snooze"
             />
           </Scene>
           <Scene key="responders" type="reset" hideNavBar>

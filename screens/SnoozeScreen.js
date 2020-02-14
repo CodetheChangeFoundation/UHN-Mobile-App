@@ -15,7 +15,6 @@ class SnoozeScreen extends Component {
   }
 
   countdown() {
-    console.log(this.props.time);
     if (this.props.time.timeRemaining - 1 <= 0) {
       this.props.clearTime();
       clearInterval(this.interval);
@@ -52,10 +51,10 @@ class SnoozeScreen extends Component {
   render() {
     const { timeRemaining } = this.props.time;
     return (
-      <Container>
+      <Container style={{backgroundColor: (timeRemaining % 2 === 0)? "#ff0000" : "#ffa500"}}>
         <Header>Snooze Mode</Header>
         <Content>
-          <View style={styles.container, {backgroundColor: (timeRemaining <= 12)? "#ff0000" : "#ffa500"}}>
+          <View style={styles.container, {backgroundColor: (timeRemaining % 2 === 0)? "#ff0000" : "#ffa500"}}>
             <Text style={styles.textStyle}> 
               your responders{"\n"}will be notified in:
             </Text>

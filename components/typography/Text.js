@@ -13,7 +13,7 @@ const Text = (props) => {
 /* Prop Types */
 
 Text.propTypes = {
-  variant: PropTypes.oneOf([ "body", "footnote", "title", "header", "primary", "secondary", "alarm", "urgent", "label"]),
+  variant: PropTypes.oneOf([ "body", "footnote", "title", "header", "primary", "secondary", "alarm", "urgent", "label", "snooze"]),
 };
 0
 Text.defaultProps = {
