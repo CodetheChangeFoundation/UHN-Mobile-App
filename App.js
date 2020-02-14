@@ -14,6 +14,7 @@ import LocationScreen from './screens/LocationScreen';
 import AddRespondersScreen from "./screens/AddRespondersScreen";
 import RemoveRespondersScreen from "./screens/RemoveRespondersScreen";
 import ResponderHelpRequestModal from "./screens/modals/ResponderHelpRequestModal";
+import DirectionsScreen from "./screens/DirectionsScreen";
 import DrawerContent from "./components/drawer/DrawerContent";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
@@ -97,6 +98,13 @@ export default function App() {
             component={ResponderHelpRequestModal}
             hideNavBar
           />
+          <Scene key="assignment" type="reset" hideNavBar>
+            <Scene key="directions"
+              component={DirectionsScreen}
+              title="Directions"
+              initial
+            />
+          </Scene>
         </Scene>
       </Router>
     </Provider>
