@@ -23,7 +23,6 @@ const AlarmScreen = () => {
           Alarm Screen
         </Text>
         <Button title="Exit" onPress={() => Actions.main()} />
-        <Button title="Out of Time" onPress={() => Actions.snooze()} />
       </View>
     </Content>
     </Container>
