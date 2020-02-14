@@ -15,7 +15,7 @@ const sendPushToken = async (userId) => {
   console.log("push token: ", token)
 
   return axios
-    .post(SERVER_ROOT + "/users/" + userId + "/notificationToken", {
+    .post(SERVER_ROOT + "/users/" + userId + "/notification-token", {
       pushToken: token
     })
     .then(response => {
