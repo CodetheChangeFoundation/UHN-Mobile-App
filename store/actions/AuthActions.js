@@ -40,8 +40,9 @@ const signupFailed = (error) => {
 }
 
 export const tokenRedirect = (userid, token, rememberMe) => {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(login({ id: userid, token: token }, rememberMe))
+    sendPushToken(userid);
   }
 }
 
@@ -51,8 +52,8 @@ export const loginHandler = (credential, rememberMe) => {
       .then(async (response) => {
         dispatch(setLoading(false));
         dispatch(login(response.data, rememberMe));
-        sendPushToken(response.data.id)
-        await AsyncStorage.setItem("token", response.data.token)
+        sendPushToken(response.data.id);
+        await AsyncStorage.setItem("token", response.data.token);
         Actions.main();
       })
       .catch(error => {

@@ -19,7 +19,7 @@ const LoadingScreen = props => {
     this._notificationSubscription = Notifications.addListener(
       this._handleNotification
     );
-  });
+  }, []);
 
   _handleNotification = notification => {
     Actions.responderHelpRequestModal({ notification: notification });
