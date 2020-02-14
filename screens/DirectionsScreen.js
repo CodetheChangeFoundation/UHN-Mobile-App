@@ -75,7 +75,7 @@ const DirectionsScreen = (props) => {
 
   return (
     <Container>
-    <Header leftButton="menu" onLeftButtonPress={() => Actions.drawerOpen()}>Directions</Header>
+    <Header onLeftButtonPress={() => Actions.drawerOpen()}>Directions</Header>
 
     <Content>
         <View style={styles.map}>
