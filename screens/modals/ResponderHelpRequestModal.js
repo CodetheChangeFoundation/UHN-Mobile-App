@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import {
   StyleSheet,
-  Button
+  Button,
+  AppState
 } from "react-native";
 import { Actions } from "react-native-router-flux";
 import { Container, Content, Header, View } from "../../components/layout";
@@ -9,8 +10,9 @@ import { Text } from "../../components/typography";
 
 const ResponderHelpRequestModal = (props) => {
 
+  if (AppState.currentState.match(/inactive|background/)) return null;
+
   useEffect(() => {
-    console.log("I got to the modal");
     console.log("notification received: ", JSON.stringify(props.notification))
   })
 
