@@ -3,7 +3,7 @@ import * as Permissions from "expo-permissions";
 import axios from "axios";
 import { SERVER_ROOT } from "react-native-dotenv";
 
-const sendPushToken = async (userId) => {
+const sendPushToken = async userId => {
   const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
 
   if (status !== "granted") {
@@ -12,7 +12,7 @@ const sendPushToken = async (userId) => {
   }
 
   let token = await Notifications.getExpoPushTokenAsync();
-  console.log("push token: ", token)
+  console.log("push token: ", token);
 
   return axios
     .post(SERVER_ROOT + "/users/" + userId + "/notification-token", {
@@ -24,6 +24,18 @@ const sendPushToken = async (userId) => {
     .catch(err => console.error(err));
 };
 
+const removePushToken = async userId => {
+  return axios
+    .post(SERVER_ROOT + "/users/" + userId + "/notification-token", {
+      pushToken: null
+    })
+    .then(response => {
+      return response;
+    })
+    .catch(err => console.error(err));
+};
+
 module.exports = {
-  sendPushToken
-} 
+  sendPushToken,
+  removePushToken
+};
