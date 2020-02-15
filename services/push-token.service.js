@@ -24,6 +24,7 @@ const sendPushToken = async userId => {
     .catch(err => console.error(err));
 };
 
+// TODO: Consider a DELETE endpoint
 const removePushToken = async userId => {
   return axios
     .post(SERVER_ROOT + "/users/" + userId + "/notification-token", {
