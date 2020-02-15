@@ -363,7 +363,7 @@ Props:
   - type: one of
     - "body", "footnote", "title" (used for displaying text on screen)
     - "header" (used in the Header component)
-    - "primary", "secondary", "alarm", "urgent" (used in the Button component)
+    - "primary", "secondary", "alarm", "urgent", "snooze" (used in the Button component)
     - "label" (used in the IconButton component)
   - default: "body"
 
