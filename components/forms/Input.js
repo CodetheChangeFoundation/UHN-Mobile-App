@@ -69,9 +69,12 @@ const Input = React.forwardRef((props, ref) => {
         : 
         <Icon active style={combinedStyles.icon} name="md-eye-off" onPress={() => setPasswordHidden(true)} />)}
     </Item>
-    <AnimatedView style={combinedStyles.view} isVisible={props.hasError}>
-      <Text style={combinedStyles.text}>{props.errorText}</Text>
-    </AnimatedView>
+    {
+      (props.errorText) &&
+      <AnimatedView style={combinedStyles.view} isVisible={props.hasError}>
+        <Text style={combinedStyles.text}>{props.errorText}</Text>
+      </AnimatedView>
+    }
     </Fragment>
   );
 });
@@ -89,8 +92,7 @@ Input.propTypes = {
 Input.defaultProps = {
   variant: "text",
   hasNext: false,
-  hasError: false,
-  errorText: "Error detected.",
+  hasError: false
 };
 
 /* Props */

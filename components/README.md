@@ -119,14 +119,13 @@ Props:
   - optional
   - type: one of "text", "email", "password", "number"
   - default: "text"
-- hasError: set to true if the current input value is invalid
+- hasError: set to true if the current input value is invalid. Invalid inputs have a red underline.
   - optional
   - type: boolean
   - default: false
-- errorText: the message that shows whenever hasError is true
+- errorText: the message that shows whenever hasError is true. If not specified, no error message will ever be shown (and the Input component will have a shorter height).
   - optional
   - type: string
-  - default: "Error detected."
 - hasNext: set to true if onSubmitEditing is linked to another Input (see below)
   - optional
   - type: boolean
