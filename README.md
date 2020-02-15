@@ -45,7 +45,7 @@ By default, UHN-Backend-Server will be running on http://localhost:3000
 When changing environmental files, reset the app using the following method:
 
 1. `expo start -c` (resets the expo cache)
-2. Restart the App (<kbd>r</kbd> on the Expo CLI)
+2. Restart the Expo Bundler (<kbd>r</kbd> on the Expo CLI)
 3. <kbd>CTRL^</kbd> + <kbd>C</kbd> to reset the app
 
 Run the app again using `expo start`
