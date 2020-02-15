@@ -1,12 +1,14 @@
 import React, { useState, Fragment } from "react";
 import { StyleSheet, Button as RNButton, AsyncStorage } from "react-native";
-import { Actions } from "react-native-router-flux";
+import { Actions, Drawer } from "react-native-router-flux";
 import { Modal } from "../popups";
 import { View } from "../layout";
 import { Button } from "../buttons";
 import { Text } from "../typography";
+import { connect } from 'react-redux';
+import { removePushToken } from "../../services/push-token.service"
 
-const DrawerContent = () => {
+const DrawerContent = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const modalHeader = "Logout";
@@ -18,6 +20,7 @@ const DrawerContent = () => {
       onPress={async () => {
         Actions.auth();
         await AsyncStorage.removeItem("token");
+        removePushToken(props.auth.userId);
       }}
     >
       Logout
@@ -62,4 +65,11 @@ const styles = StyleSheet.create({
   }
 });
 
-export default DrawerContent;
+// export default DrawerContent;
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth
+  }
+}
+
+export default connect(mapStateToProps, {})(DrawerContent);

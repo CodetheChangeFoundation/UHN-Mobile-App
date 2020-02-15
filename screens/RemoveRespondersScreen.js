@@ -15,28 +15,36 @@ class RemoveRespondersScreen extends Component {
     super(props);
     const myResponders = this.props.responders.myResponders; 
 
-    let responderSelectionMap = new Map();
+    let idSelectionMap = new Map();
+    let idToUsernameMap = new Map();
     for (responder of myResponders) {
-      responderSelectionMap.set(responder.username, false);
+      idSelectionMap.set(responder.id, false);
+      idToUsernameMap.set(responder.id, responder.username);
     }
 
     this.state = {
-      responderSelectionMap: responderSelectionMap,
+      idSelectionMap,
+      idToUsernameMap,
       selectedUsernames: [],
       modalVisible: false
     };
   }
 
-  onCheckboxPress = (username) => {
-    let responderSelectionMap = this.state.responderSelectionMap;
-    let oldValue = responderSelectionMap.get(username);
-    responderSelectionMap.set(username, !oldValue);
-    this.setState({responderSelectionMap});
+  onCheckboxPress = (userId) => {
+    let idSelectionMap = this.state.idSelectionMap;
+    let oldValue = idSelectionMap.get(userId);
+    idSelectionMap.set(userId, !oldValue);
+    this.setState({idSelectionMap});
   }
 
   removeSelectedResponders = () => {
-    this.props.removeResponders(this.state.selectedUsernames, this.props.responders.myResponders);
-    Actions.pop();
+    let selectedResponders = [];
+    for (let [userId, isSelected] of this.state.idSelectionMap) {
+      if (isSelected) {
+        selectedResponders.push({id: userId});
+      }
+    }
+    this.props.removeResponders(this.props.auth.userId, this.props.auth.token, selectedResponders, this.props.responders.myResponders);
   }
 
   modalHeader = "Removing responders";
@@ -55,9 +63,9 @@ class RemoveRespondersScreen extends Component {
 
   gatherSelectedUsernames = () => {
     let selectedUsernames = [];
-    for (let [username, isSelected] of this.state.responderSelectionMap) {
+    for (let [userId, isSelected] of this.state.idSelectionMap) {
       if (isSelected) {
-        selectedUsernames.push(username);
+        selectedUsernames.push(this.state.idToUsernameMap.get(userId));
       }
     }
     return selectedUsernames;
@@ -65,13 +73,13 @@ class RemoveRespondersScreen extends Component {
 
   renderRespondersList = () => {
     let respondersList = []
-    for (let [username, isSelected] of this.state.responderSelectionMap) {
+    for (let [userId, isSelected] of this.state.idSelectionMap) {
       respondersList.push(
-        <View style={styles.row} key={username}>
+        <View style={styles.row} key={userId}>
           <Checkbox checked={isSelected}
-            onPress={() => this.onCheckboxPress(username)} />
+            onPress={() => this.onCheckboxPress(userId)} />
           <ListItem
-            leftText={username}
+            leftText={this.state.idToUsernameMap.get(userId)}
           />
         </View>
       );
@@ -133,6 +141,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
+    auth: state.auth,
     responders: state.responders
   }
 }

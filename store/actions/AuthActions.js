@@ -3,6 +3,7 @@ import { LOGIN, LOGIN_FAILED, SIGNUP_FAILED, SET_LOADING } from "./Types"
 import { SERVER_ROOT } from 'react-native-dotenv';
 import { Actions } from "react-native-router-flux";
 import { AsyncStorage } from "react-native";
+import { sendPushToken } from "../../services/push-token.service";
 
 
 const login = (data, rememberMe) => {
@@ -39,8 +40,9 @@ const signupFailed = (error) => {
 }
 
 export const tokenRedirect = (userid, token, rememberMe) => {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(login({ id: userid, token: token }, rememberMe))
+    sendPushToken(userid);
   }
 }
 
@@ -50,7 +52,8 @@ export const loginHandler = (credential, rememberMe) => {
       .then(async (response) => {
         dispatch(setLoading(false));
         dispatch(login(response.data, rememberMe));
-        await AsyncStorage.setItem("token", response.data.token)
+        sendPushToken(response.data.id);
+        await AsyncStorage.setItem("token", response.data.token);
         Actions.main();
       })
       .catch(error => {
@@ -65,7 +68,6 @@ export const signupHandler = (userData) => {
     axios.post(SERVER_ROOT + '/signup', userData)
     .then(response => {
       dispatch(setLoading(false));
-      console.log(response.data);
       Actions.login();
     })
     .catch(error => {

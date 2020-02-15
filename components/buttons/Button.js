@@ -21,7 +21,7 @@ const Button = (props) => {
 /* Prop Types */
 
 Button.propTypes = {
-  variant: PropTypes.oneOf([ "primary", "secondary", "alarm", "urgent"]),
+  variant: PropTypes.oneOf([ "primary", "secondary", "alarm", "urgent", "snooze"]),
 };
 
 Button.defaultProps = {
@@ -82,6 +82,13 @@ const buttonStyles = StyleSheet.create({
     ...large,
     backgroundColor: theme.colors.red,
   },
+  snooze: {
+    ...base,
+    ...large,
+    ...border,
+    backgroundColor: theme.colors.white,
+    borderColor: theme.colors.darkGrey,
+  }
 });
 
 export default Button;
