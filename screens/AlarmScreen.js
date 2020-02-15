@@ -1,20 +1,30 @@
-import React from "react";
-import { StyleSheet } from "react-native";
+import React, { useEffect } from "react";
+import { StyleSheet, Alert } from "react-native";
 import { connect } from "react-redux";
 import { Actions } from "react-native-router-flux";
 import Timer from "../components/Timer/Timer"
 import { Container, Content, Header, View } from "../components/layout";
 import { Button } from "../components/buttons"
 import { Text } from "../components/typography";
+import { sendHelpRequest } from "../services/help-request.service";
 
 const AlarmScreen = (props) => {
 
-  const { time, userId } = props
+  const { time, userId, token } = props
   const { timeRemaining } = time
 
   useEffect(() => {
     // send help_request here
   }, [props.timeRemaining])
+
+  const sendHelp = () => {
+    sendHelpRequest(userId, token)
+      .then((response) => {
+        Alert.alert("Help request sent", "Help request has been sent to your responder network", [
+          { text: 'OK', onPress: () => Actions.main() }
+        ], { cancelable: false });
+      })
+  }
   
   return (
     <Container>
@@ -30,12 +40,8 @@ const AlarmScreen = (props) => {
         <Text style={styles.welcome}>
           Alarm Screen
         </Text>
-        {
-          timeRemaining < 15 &&
-          <Button variant="primary" onPress={() => Actions.snooze()}>I'm out of time!</Button>
-        }
         <View style={styles.button}>
-          <Button variant="urgent" onPress={() => console.log('help!')}>help now!</Button>
+          <Button variant="urgent" onPress={sendHelp}>help now!</Button>
         </View>
       </View>
     </Content>
@@ -64,7 +70,8 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     time: state.timer,
-    userId: state.auth.userId
+    userId: state.auth.userId,
+    token: state.auth.token
   }
 }
 
