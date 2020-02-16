@@ -41,7 +41,7 @@ const IconButton = (props) => {
       <View style={buttonStyle}>
           {content}
       </View>
-      <Text variant="label">{props.label}</Text>
+      {(props.label)? <Text variant="label">{props.label}</Text> : null}
     </TouchableOpacity>
   );
 }
@@ -59,7 +59,6 @@ IconButton.propTypes = {
 
 IconButton.defaultProps = {
   variant: "counter",
-  label: "",
   name: "md-pin",
   counterValue: 0,
 };
