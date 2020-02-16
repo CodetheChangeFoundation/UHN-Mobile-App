@@ -1,4 +1,4 @@
-export * from './_utils/calculateLocationDistance'
+export * from './_utils/computeDistance'
 
 export * from './_utils/getDeviceLocation'
 
