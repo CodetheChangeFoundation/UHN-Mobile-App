@@ -6,6 +6,8 @@ import { Container, Content, Header, View } from "../components/layout";
 import { Text } from "../components/typography";
 import { connect } from 'react-redux';
 import { increaseTime, decreaseTime, countdown, clearTime, resetTime } from '../store/actions';
+import { sendHelpRequest } from "../services/help-request.service";
+
 
 class SnoozeScreen extends Component {
   constructor(props) {
@@ -18,7 +20,12 @@ class SnoozeScreen extends Component {
     if (this.props.time.timeRemaining - 1 <= 0) {
       this.props.clearTime();
       clearInterval(this.interval);
-      Alert.alert("Help request sent", "Help request has been sent to your responder network", [{text: 'OK', onPress: () => Actions.main()}], {cancelable: false});
+      sendHelpRequest(this.props.userId, this.props.token)
+      .then((response) => {
+        Alert.alert("Help request sent", "Help request has been sent to your responder network", [
+          { text: 'OK', onPress: () => Actions.main() }
+        ], { cancelable: false });
+      })
     } else {
       this.props.countdown(this.props.time.timeRemaining);
     }
@@ -56,7 +63,7 @@ class SnoozeScreen extends Component {
         <Content>
           <View style={styles.container, {backgroundColor: (timeRemaining % 2 === 0)? "#ff0000" : "#ffa500"}}>
             <Text style={styles.textStyle}> 
-              your responders{"\n"}will be notified in:
+              Your responders{"\n"}will be notified in:
             </Text>
             <Text style={styles.timeStyle}>
               {this.convertSecondsToMinutes(timeRemaining)}:{this.convertSeconds(timeRemaining)}
@@ -65,7 +72,7 @@ class SnoozeScreen extends Component {
               snooze
             </Button>
             <Text style={styles.textStyle}>
-              We'll check up on your in 2 minutes
+              We'll check up on you in 2 minutes
             </Text>
           </View>
         </Content>
@@ -101,7 +108,9 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    time: state.timer
+    time: state.timer,
+    userId: state.auth.userId,
+    token: state.auth.token
   }
 }
 
