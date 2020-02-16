@@ -12,6 +12,7 @@ const fredVictorCoordinates = {
   lng: -79.3751693
 }
 
+// TODO: Remember to change this to 500 prior to Beta testing
 const MAXIMUM_DISTANCE = 1000000000 // meters
 
 const UsingScreen = (props) => {
