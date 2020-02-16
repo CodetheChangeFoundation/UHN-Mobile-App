@@ -13,10 +13,6 @@ const AlarmScreen = (props) => {
   const { time, userId, token } = props
   const { timeRemaining } = time
 
-  useEffect(() => {
-    // send help_request here
-  }, [props.timeRemaining])
-
   const sendHelp = () => {
     sendHelpRequest(userId, token)
       .then((response) => {
