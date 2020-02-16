@@ -13,17 +13,17 @@ const DrawerContent = (props) => {
 
   const modalHeader = "Logout";
   const modalBody = (<Text>Are you sure?</Text>);
-  const modalFooterLeft = (<Button variant="secondary" onPress={() => setModalVisible(false)}>Cancel</Button>);
+  const modalFooterLeft = (<Button variant="light" size="medium" onPress={() => setModalVisible(false)}>cancel</Button>);
   const modalFooterRight = (
     <Button
-      variant="primary"
+      variant="dark" size="medium"
       onPress={async () => {
         Actions.auth();
         await AsyncStorage.removeItem("token");
         removePushToken(props.auth.userId);
       }}
     >
-      Logout
+      logout
     </Button>
   );
 

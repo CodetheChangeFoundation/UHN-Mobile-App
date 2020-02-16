@@ -40,8 +40,8 @@ class RemoveRespondersScreen extends Component {
   }
 
   modalHeader = "Removing responders";
-  modalFooterLeft = (<Button variant="secondary" onPress={() => this.setState({modalVisible: false})}>Cancel</Button>);
-  modalFooterRight = (<Button variant="primary" style={{backgroundColor: theme.colors.red}} onPress={() => this.removeSelectedResponders()}>Remove</Button>);
+  modalFooterLeft = (<Button variant="light" size="medium" onPress={() => this.setState({modalVisible: false})}>cancel</Button>);
+  modalFooterRight = (<Button variant="warning" size="medium" onPress={() => this.removeSelectedResponders()}>remove</Button>);
 
   renderModalBody = () => {
     let modalBody = [];
@@ -104,7 +104,7 @@ class RemoveRespondersScreen extends Component {
           </List>
 
           <View style={styles.removeButton}>
-            <Button variant="primary" style={{backgroundColor: theme.colors.red}}
+            <Button variant="warning" size="medium"
               onPress={() => {
                 this.setState({modalVisible: true, selectedUsernames: this.gatherSelectedUsernames()});
               }}

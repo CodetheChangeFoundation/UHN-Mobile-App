@@ -29,7 +29,7 @@ const UsingScreen = () => {
       </View>
 
       <View style={styles.startButton}>
-        <Button variant="alarm" onPress={() => Actions.alarm()}>start</Button>
+        <Button variant="affirmation" size="large" onPress={() => Actions.alarm()}>start</Button>
       </View>
     </Content>
     </Container>

@@ -82,7 +82,7 @@ class SignupScreen extends Component {
     return (this.props.auth.loading) ?
       (<Spinner />)
       :
-      (<Button variant="primary" onPress={this.onSignUpButtonPress}>
+      (<Button variant="dark" size="medium" onPress={this.onSignUpButtonPress}>
         sign up
         </Button>
       );

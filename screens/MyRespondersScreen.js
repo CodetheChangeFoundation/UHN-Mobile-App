@@ -90,8 +90,8 @@ class MyRespondersScreen extends Component {
           </List>
 
           <View style={styles.buttons}>
-            <Button variant="primary" onPress={() => Actions.remove()}>remove</Button>
-            <Button variant="primary" onPress={() => Actions.add()}>add</Button>
+            <Button variant="dark" size="medium" onPress={() => Actions.remove()}>remove</Button>
+            <Button variant="dark" size="medium" onPress={() => Actions.add()}>add</Button>
           </View>
         </Content>
       </Container>

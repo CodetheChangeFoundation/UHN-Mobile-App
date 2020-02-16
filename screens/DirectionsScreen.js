@@ -102,7 +102,7 @@ const DirectionsScreen = (props) => {
         </View>
 
         <View style={styles.arrivedButton}>
-            <Button variant="alarm" onPress={handleArrived}>I've arrived</Button>
+            <Button variant="affirmation" size="large" onPress={handleArrived}>I've arrived</Button>
          </View>
     </Content>
     </Container>
