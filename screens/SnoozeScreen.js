@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Alert } from "react-native";
+import { StyleSheet, Alert, Vibration } from "react-native";
 import { Button } from "../components/buttons";
 import { Actions } from "react-native-router-flux";
 import { Container, Content, Header, View } from "../components/layout";
@@ -25,6 +25,7 @@ class SnoozeScreen extends Component {
         Alert.alert("Help request sent", "Help request has been sent to your responder network", [
           { text: 'OK', onPress: () => Actions.main() }
         ], { cancelable: false });
+        Vibration.cancel();
       })
     } else {
       this.props.countdown(this.props.time.timeRemaining);
@@ -53,7 +54,12 @@ class SnoozeScreen extends Component {
   componentDidMount() {
     this.props.countdown(this.props.time.timeRemaining);
     this.interval = setInterval(this.countdown, 1000);
+    Vibration.vibrate([1000, 1000], true);
   };
+
+  componentWillUnmount() {
+    Vibration.cancel();
+  }
 
   render() {
     const { timeRemaining } = this.props.time;
