@@ -15,6 +15,6 @@ export const getDeviceLocation = (success) => {
         })
     })
     .catch((error) => {
-        console.error('location services disabled!', {error})
+        alert("Please allow location services");
     })
 }
