@@ -123,7 +123,7 @@ Props:
   - optional
   - type: boolean
   - default: false
-- errorText: the message that shows whenever hasError is true. If not specified, no error message will ever be shown (and the Input component will have a shorter height).
+- errorText: the message that shows whenever hasError is true. If not specified, no error message will ever be shown.
   - optional
   - type: string
 - hasNext: set to true if onSubmitEditing is linked to another Input (see below)
