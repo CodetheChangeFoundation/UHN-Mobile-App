@@ -47,13 +47,11 @@ const ResponderHelpRequestModal = props => {
   }
 
   return (
-    <Container>
-      <Modal
-        modalVisible={true}
-        modalHeader={modalHeader}
-        modalBody={modalBody}
-      />
-    </Container>
+    <Modal
+      modalVisible={true}
+      modalHeader={modalHeader}
+      modalBody={modalBody}
+    />
   );
 };
 
