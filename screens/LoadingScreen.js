@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, AsyncStorage } from "react-native";
 import { Actions } from "react-native-router-flux";
 import * as Font from "expo-font";
@@ -7,12 +7,23 @@ import { AppLoading } from "expo";
 import { Container, Content, View } from "../components/layout";
 import { Text } from "../components/typography";
 var jwtDecode = require("jwt-decode");
+import { Notifications } from "expo";
 import { tokenRedirect, setLocalLocation } from "../store/actions";
 import { connect } from "react-redux";
 import { getDeviceLocation } from "../utils/index";
 
 const LoadingScreen = props => {
   const fontsLoaded = false;
+
+  useEffect(() => {
+    this._notificationSubscription = Notifications.addListener(
+      this._handleNotification
+    );
+  }, []);
+
+  _handleNotification = notification => {
+    Actions.responderHelpRequestModal({ notification: notification });
+  };
 
   _loadFonts = async () => {
     return Promise.all([
