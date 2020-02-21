@@ -9,7 +9,7 @@ const AnimatedView = (props) => {
   const [animatedHeight] = useState(new Animated.Value(0));
 
   useEffect(() => {
-    if (props.isVisible) {
+    if (props.viewIsShowing) {
       Animated.timing(
         animatedHeight,
         {
@@ -28,14 +28,14 @@ const AnimatedView = (props) => {
         }
       ).start();
     }
-  }, [props.isVisible]);
+  }, [props.viewIsShowing]);
 
   return (
     <Animated.View
       style={{...props.style, zIndex: -1, transform: [{
         translateY: animatedHeight.interpolate({
           inputRange: [0, 1],
-          outputRange: [-27, 0]     // May need to change if error message fontSize is changed
+          outputRange: [-(theme.layout.errorTextHeight), 0]
         })
       }]}}
     >
@@ -69,9 +69,9 @@ const Input = React.forwardRef((props, ref) => {
         : 
         <Icon active style={combinedStyles.icon} name="md-eye-off" onPress={() => setPasswordHidden(true)} />)}
     </Item>
-    <AnimatedView style={combinedStyles.view} isVisible={props.hasError}>
-      <Text style={combinedStyles.text}>{props.errorText}</Text>
-    </AnimatedView>
+      <AnimatedView style={combinedStyles.view} viewIsShowing={props.hasError}>
+        {props.errorText && <Text style={combinedStyles.text}>{props.errorText}</Text>}
+      </AnimatedView>
     </Fragment>
   );
 });
@@ -89,8 +89,7 @@ Input.propTypes = {
 Input.defaultProps = {
   variant: "text",
   hasNext: false,
-  hasError: false,
-  errorText: "Error detected.",
+  hasError: false
 };
 
 /* Props */
@@ -139,11 +138,9 @@ const inputStyles = StyleSheet.create({
     ...baseStyles,
   },
   view: {
-    flex: 0,
+    height: theme.layout.errorTextHeight,
     alignSelf: "stretch",
     marginLeft: 2,                          // To align with NativeBase Input
-    paddingLeft: 2,
-    backgroundColor: theme.colors.lightRed,
   },
   text: {
     ...baseStyles,
@@ -152,6 +149,7 @@ const inputStyles = StyleSheet.create({
     alignSelf: "stretch",
     justifyContent: "flex-start",
     padding: theme.layout.padding,
+    backgroundColor: theme.colors.lightRed,
   },
   icon: {
     color: theme.colors.darkGrey
