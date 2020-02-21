@@ -70,7 +70,7 @@ const DirectionsScreen = (props) => {
 
     const handleArrived  = () => {
         // TODO: PUT to update the help request status to solved
-        Actions.using()
+        Actions.main()
     }
 
   return (

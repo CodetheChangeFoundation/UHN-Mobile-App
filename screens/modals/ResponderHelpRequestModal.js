@@ -22,11 +22,13 @@ const ResponderHelpRequestModal = props => {
   const modalHeader = `${userWhoNeedsHelp.username}\nis unresponsive`;
   const modalBody = (
     <View style={styles.buttons}>
-      <Button variant="affirmation" size="large">
+      <Button variant="affirmation" size="large"
+        onPress={() => acceptRequest()}
+      >
         I am on my way with Naloxone
       </Button>
       <Button variant="light" size="large" 
-        onPress={() => Actions.pop()}
+        onPress={() => declineRequest()}
       >
         I can't help now
       </Button>
@@ -35,9 +37,9 @@ const ResponderHelpRequestModal = props => {
 
   acceptRequest = () => {
     // TODO: hit help request endpoint to check if < 6 people have taken the request yet
-    // if yes, then redirect to DirectionsScreen
-    // if no, show a message saying the request has been taken & we don't need your help any more
-    console.log("Help request accepted");
+    // if yes, then redirect to DirectionsScreen + pass notification data
+    // if no, alert saying the request has been taken & dismiss modal
+    Actions.assignment();
   }
 
   declineRequest = () => {
@@ -50,8 +52,6 @@ const ResponderHelpRequestModal = props => {
         modalVisible={true}
         modalHeader={modalHeader}
         modalBody={modalBody}
-        onBackdropPress={() => declineRequest()}
-        onBackButtonPress={() => declineRequest()}
       />
     </Container>
   );
@@ -61,10 +61,7 @@ const ResponderHelpRequestModal = props => {
 
 const styles = StyleSheet.create({
   buttons: {
-    // marginTop: theme.layout.margin,
     justifyContent: "space-around",
-    // backgroundColor: "pink",
-    // width: "100%"
   }
 })
 
