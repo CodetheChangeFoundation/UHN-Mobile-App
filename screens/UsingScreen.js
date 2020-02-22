@@ -1,13 +1,30 @@
 import React from "react";
-import {
-  StyleSheet
-} from "react-native";
+import { StyleSheet, Alert } from "react-native";
+import { connect } from 'react-redux'
 import { Actions } from "react-native-router-flux";
 import Timer from "../components/Timer/Timer";
 import { Container, Content, Header, View, Segment, Banner } from "../components/layout";
 import { Button, IconButton } from "../components/buttons";
+import { computeDistance } from '../utils'
 
-const UsingScreen = () => {
+const fredVictorCoordinates = {
+  lat: 43.6536212,
+  lng: -79.3751693
+}
+
+// TODO: Remember to change this to 500 prior to Beta testing
+const MAXIMUM_DISTANCE = 1000000000 // meters
+
+const UsingScreen = (props) => {
+
+  const startAlarm = () => {
+    const distance = computeDistance(fredVictorCoordinates, props.location.coords)
+    if( distance > MAXIMUM_DISTANCE ) Alert.alert("Cannot start alarm", "There are no responders within your area", [
+      { text: 'OK' }
+    ], { cancelable: false })
+    else Actions.alarm()
+  }
+
   return (
     <Container>
     <Header leftButton="menu" onLeftButtonPress={() => Actions.drawerOpen()}>Using Mode</Header>
@@ -29,7 +46,7 @@ const UsingScreen = () => {
       </View>
 
       <View style={styles.startButton}>
-        <Button variant="affirmation" size="large" onPress={() => Actions.alarm()}>start</Button>
+        <Button variant="affirmation" size="large" onPress={startAlarm}>start</Button>
       </View>
     </Content>
     </Container>
@@ -45,4 +62,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UsingScreen;
+const mapStateToProps = (state, currentProps) => {
+  const { location } = state.userData;
+  return { location }
+}
+
+export default connect(mapStateToProps)(UsingScreen);

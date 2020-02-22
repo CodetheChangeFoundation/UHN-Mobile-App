@@ -1,11 +1,14 @@
 import React, { Component } from "react";
-import { StyleSheet, Alert } from "react-native";
+import { StyleSheet, Alert, Vibration } from "react-native";
 import { Button } from "../components/buttons";
 import { Actions } from "react-native-router-flux";
 import { Container, Content, Header, View } from "../components/layout";
 import { Text } from "../components/typography";
 import { connect } from 'react-redux';
 import { increaseTime, decreaseTime, countdown, clearTime, resetTime } from '../store/actions';
+import { sendHelpRequest } from "../services/help-request.service";
+import { Audio } from 'expo-av';
+
 
 class SnoozeScreen extends Component {
   constructor(props) {
@@ -18,7 +21,12 @@ class SnoozeScreen extends Component {
     if (this.props.time.timeRemaining - 1 <= 0) {
       this.props.clearTime();
       clearInterval(this.interval);
-      Alert.alert("Help request sent", "Help request has been sent to your responder network", [{text: 'OK', onPress: () => Actions.main()}], {cancelable: false});
+      sendHelpRequest(this.props.userId, this.props.token)
+      .then((response) => {
+        Alert.alert("Help request sent", "Help request has been sent to your responder network", [
+          { text: 'OK', onPress: () => Actions.main() }
+        ], { cancelable: false });
+      })
     } else {
       this.props.countdown(this.props.time.timeRemaining);
     }
@@ -43,10 +51,24 @@ class SnoozeScreen extends Component {
     Actions.alarm();
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     this.props.countdown(this.props.time.timeRemaining);
     this.interval = setInterval(this.countdown, 1000);
+    Vibration.vibrate([1000, 1000], true);
+    this.soundObject = new Audio.Sound();
+    try {
+      await this.soundObject.loadAsync(require('../assets/radar.mp3'));
+    } catch (error) {
+      console.log('Cant load sound!')
+    }
+    this.soundObject.setIsLoopingAsync(true);
+    this.soundObject.playAsync();
   };
+
+  componentWillUnmount() {
+    Vibration.cancel();
+    this.soundObject.stopAsync();
+  }
 
   render() {
     const { timeRemaining } = this.props.time;
@@ -56,7 +78,7 @@ class SnoozeScreen extends Component {
         <Content>
           <View style={styles.container, {backgroundColor: (timeRemaining % 2 === 0)? "#ff0000" : "#ffa500"}}>
             <Text style={styles.textStyle}> 
-              your responders{"\n"}will be notified in:
+              Your responders{"\n"}will be notified in:
             </Text>
             <Text style={styles.timeStyle}>
               {this.convertSecondsToMinutes(timeRemaining)}:{this.convertSeconds(timeRemaining)}
@@ -65,7 +87,7 @@ class SnoozeScreen extends Component {
               snooze
             </Button>
             <Text style={styles.textStyle}>
-              We'll check up on your in 2 minutes
+              We'll check up on you in 2 minutes
             </Text>
           </View>
         </Content>
@@ -101,7 +123,9 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    time: state.timer
+    time: state.timer,
+    userId: state.auth.userId,
+    token: state.auth.token
   }
 }
 

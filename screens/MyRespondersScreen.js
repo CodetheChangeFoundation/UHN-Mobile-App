@@ -12,13 +12,13 @@ class MyRespondersScreen extends Component {
   constructor(props) {
     super(props);
     // Updates myResponders every time this page is mounted
-    this.props.getMyResponders();
+    this.props.getMyResponders(this.props.auth.userId, this.props.auth.token);
     const myResponders = this.props.responders.myResponders;
 
     let availableUsernames = [];
     let unavailableUsernames = [];
     for (responder of myResponders) {
-      if (responder.available) {
+      if (responder.onlineStatus) {
         availableUsernames.push(responder.username);
       } else {
         unavailableUsernames.push(responder.username);
@@ -36,7 +36,7 @@ class MyRespondersScreen extends Component {
       let availableUsernames = [];
       let unavailableUsernames = [];
       for (responder of this.props.responders.myResponders) {
-        if (responder.available) {
+        if (responder.onlineStatus) {
           availableUsernames.push(responder.username);
         } else {
           unavailableUsernames.push(responder.username);
@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
+    auth: state.auth,
     responders: state.responders
   }
 }
