@@ -29,17 +29,7 @@ const UsingScreen = (props) => {
     else {
       Actions.alarm();
 
-      let start = new Date();
-      let end = new Date();
-      end.setSeconds(start.getSeconds()+timeRemaining);
-
-      let data = {
-        userID: userId,
-        startTime: start.toUTCString(),
-        endTime: end.toUTCString()
-      };
-
-      props.makeAlarmLog(data, token);
+      props.makeAlarmLog(userId, timeRemaining, token);
     }
   }
 
