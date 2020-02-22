@@ -17,7 +17,7 @@ const ResponderHelpRequestModal = props => {
       <Content>
         <View style={styles.container}>
           <Text style={styles.welcome}>Responder Help Request Modal</Text>
-          <Text>{JSON.stringify(props.notification.notification)}</Text>
+          <Text>{JSON.stringify(props.notification)}</Text>
           <Button title="Go back to main page" onPress={() => Actions.main()} />
         </View>
       </Content>
