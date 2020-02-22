@@ -7,7 +7,7 @@ import { Button } from "../buttons";
 import { Text } from "../typography";
 import { connect } from 'react-redux';
 import { removePushToken } from "../../services/push-token.service"
-import { List, ListItem } from 'native-base'
+import { List, ListItem } from '../layout'
 import theme from "../../styles/base";
 
 
@@ -54,18 +54,22 @@ const DrawerContent = (props) => {
         <Text>Logo here</Text>
       </View>
       <View style={styles.bottomContainer}>
-        <List
-          style={styles.list}
-          dataArray={routes}
-          keyExtractor={(route) => `drawerRoute-${route.name}`}
-          renderRow={(route) => (
+        <List style={styles.list}>
+        {routes.map((route) => (
+          <TouchableOpacity
+            key={`list-${route.name}`}
+            onPress={route.function}
+            style={styles.stretch}
+          >
             <ListItem
-              style={styles.item}
-              onPress={() => {route.function()}}
-            ><Text>{route.name}</Text>
-            </ListItem>
-          )}
-        />
+              style={styles.list}
+              leftText={route.name}
+              leftTextStyle={styles.item}
+              rightText=""
+            />
+            </TouchableOpacity>
+        ))}
+        </List>
       </View>
     </Fragment>
   );
@@ -81,16 +85,20 @@ const styles = StyleSheet.create({
   bottomContainer: {
     flex: 2,
   },
+  stretch: {
+    alignSelf: 'stretch',
+  },
   list: {
     alignSelf: 'stretch',
+    borderBottomColor: theme.colors.fadedGrey,
   },
   item: {
     alignSelf: 'stretch',
-    justifyContent: 'center',
-    fontSize: theme.fontSizes.medium,
+    textAlign: 'center',
     paddingRight: 0,
     marginLeft: 0,
-  },
+    flex: 0,
+  }
 });
 
 // export default DrawerContent;
