@@ -7,7 +7,6 @@ import { Text } from "../typography";
 
 // TODO: On iOS, issue with closing/opening the drawer when modal is opened.
 const Modal = (props) => {
-  const deviceHeight = Math.round(Dimensions.get('window').height * 0.5);
 
   return (
     <RNModal animationType="fade" 
@@ -18,7 +17,7 @@ const Modal = (props) => {
     >
       <TouchableWithoutFeedback onPress={props.onBackdropPress}>
         <View style={styles.backdrop}>
-          <View style={[styles.container, { height: deviceHeight }]} onStartShouldSetResponder={() => true}>
+          <View style={styles.container} onStartShouldSetResponder={() => true}>
             
             <View style={styles.header}>
               <Text variant="title">{props.modalHeader}</Text>
@@ -74,9 +73,10 @@ const styles = StyleSheet.create({
   header: {
     flex: 0,
     alignSelf: "stretch",
+    marginBottom: theme.layout.margin
   },
   body: {
-    flex: 1,
+    flex: 0,
     padding: theme.layout.padding,
     alignSelf: "stretch",
   },

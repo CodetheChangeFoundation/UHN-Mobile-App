@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 import { Actions } from "react-native-router-flux";
 import { Container, Content, Header, View, List, ListItem } from "../components/layout";
 import { Checkbox } from "../components/forms";
@@ -48,7 +48,7 @@ class RemoveRespondersScreen extends Component {
     for (username of this.state.selectedUsernames) {
       modalBody.push(<ListItem key={username} leftText={username} />);
     }
-    return (<List style={styles.list}>
+    return (<List style={styles.modalList}>
             {modalBody}
             </List>);
   }
@@ -99,7 +99,7 @@ class RemoveRespondersScreen extends Component {
         </Header>
 
         <Content>
-          <List style={styles.list}>
+          <List>
             {this.renderRespondersList()}
           </List>
 
@@ -119,8 +119,6 @@ class RemoveRespondersScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  list: {
-  },
   row: {
     flexDirection: "row",
     justifyContent: "space-around"
@@ -128,6 +126,9 @@ const styles = StyleSheet.create({
   removeButton: {
     flex: 0,
     marginTop: theme.layout.margin
+  },
+  modalList: {
+    height: Math.round(Dimensions.get("window").height * 0.3)
   }
 });
 
