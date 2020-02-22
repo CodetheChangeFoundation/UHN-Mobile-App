@@ -16,11 +16,10 @@ const ResponderHelpRequestModal = (props) => {
     return null;
 
   const userWhoNeedsHelp = props.notification.data.user;
-  const modalHeader = `${userWhoNeedsHelp.username}\nis unresponsive`;
   const [address, setAddress] = useState(null);
 
   if (userWhoNeedsHelp.location && !address) {
-    convertToAddress(userWhoNeedsHelp.location.coords, setAddress);
+    convertToAddress(userWhoNeedsHelp.location.coords, setAddress, setAddress("Error finding location."));
   }
 
   useEffect(() => {
@@ -38,9 +37,9 @@ const ResponderHelpRequestModal = (props) => {
     Actions.pop();
   }
 
-  renderModalBody = () => {
-    return (
-      <View style={styles.body}>
+  const modalHeader = `${userWhoNeedsHelp.username}\nis unresponsive`;
+  const modalBody = (
+    <View style={styles.body}>
         <Text style={styles.address}>{address || "Location not specified."}</Text>
         <Button variant="affirmation" size="large"
           onPress={() => acceptRequest()}
@@ -54,8 +53,7 @@ const ResponderHelpRequestModal = (props) => {
           I can't help now
         </Button>
       </View>
-    )
-  }
+  );
 
   // Wait until location coordinates have been converted into an address
   if (userWhoNeedsHelp.location && !address) return null;
@@ -63,7 +61,7 @@ const ResponderHelpRequestModal = (props) => {
     <Modal
       modalVisible={true}
       modalHeader={modalHeader}
-      modalBody={renderModalBody()}
+      modalBody={modalBody}
     />
   );
 };
