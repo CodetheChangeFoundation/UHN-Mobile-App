@@ -1,6 +1,6 @@
 import * as axios from "axios";
 import { SERVER_ROOT } from "react-native-dotenv";
-import { METRIC_ALARM_FAILED, SET_ALARMLOG_ID } from "./Types";
+import { METRIC_ALARM_FAILED, SET_ALARMLOG_ID } from "../Types";
 
 export const makeAlarmLog = (userId, duration, token) => {
   let start = new Date();
@@ -14,7 +14,7 @@ export const makeAlarmLog = (userId, duration, token) => {
   };
 
   return (dispatch) => {
-    axios.post(SERVER_ROOT+"/metrics/alarm", data, {
+    axios.post(SERVER_ROOT + "/metrics/alarm", data, {
       headers: { "Authorization": token },
     })
     .then( (response) => {
@@ -26,8 +26,26 @@ export const makeAlarmLog = (userId, duration, token) => {
   };
 }
 
-export const changeAlarmEnd = () => {
-  return null;
+export const changeAlarmEnd = (duration, alarmID, token) => {
+  let newEnd = new Date();
+  newEnd.setSeconds(newEnd.getSeconds() + duration);
+
+  return (dispatch) => {
+    axios.put(SERVER_ROOT + "/metrics/alarm/" + alarmID, 
+    {
+      newEndTime: newEnd.toUTCString()
+    }, 
+    {
+      headers: { "Authorization": token }
+    })
+    .then((response) => {
+      dispatch(setAlarmLogID(response.data.alarmID))
+    })
+    .catch((error) => {
+      console.log(error)
+      dispatch(metricAlarmError(error));
+    })
+  };
 }
 
 const setAlarmLogID = (alarmID) => {

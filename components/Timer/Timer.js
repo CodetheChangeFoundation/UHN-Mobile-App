@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text, View } from "react-native";
 import { Actions } from "react-native-router-flux";
 import { connect } from 'react-redux';
-import { increaseTime, decreaseTime, countdown, clearTime, resetTime } from '../../store/actions';
+import { increaseTime, decreaseTime, countdown, clearTime, resetTime, changeAlarmEnd } from '../../store/actions';
 import ProgressCircle from 'react-native-progress-circle';
 import SetTimeButton from "./SetTimeButton";
 
@@ -32,13 +32,20 @@ class Timer extends Component {
   }
 
   incrementTimer() {
+    console.log(this.props)
     this.props.increaseTime(this.props.time.timeRemaining);
+    if (this.props.isUsing) {
+      this.props.changeAlarmEnd(this.props.time.timeRemaining+15, this.props.currentAlarmLog, this.props.token);
+    }
     this.resetInterval();
   };
 
   decrementTimer() {
     if (this.props.time.timeRemaining > 15) {
       this.props.decreaseTime(this.props.time.timeRemaining);
+      if (this.props.isUsing) {
+        this.props.changeAlarmEnd(this.props.time.timeRemaining-15, this.props.currentAlarmLog, this.props.token);
+      }
       this.resetInterval();
     }
   };
@@ -92,8 +99,10 @@ class Timer extends Component {
 
 function mapStateToProps(state) {
   return {
-    time: state.timer
+    time: state.timer,
+    token: state.auth.token,
+    currentAlarmLog: state.alarm.currentAlarmLog
   }
 }
 
-export default connect(mapStateToProps, { increaseTime, decreaseTime, countdown, clearTime, resetTime })(Timer);
+export default connect(mapStateToProps, { increaseTime, decreaseTime, countdown, clearTime, resetTime, changeAlarmEnd })(Timer);

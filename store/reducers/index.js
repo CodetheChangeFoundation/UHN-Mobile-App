@@ -3,12 +3,12 @@ import TimerReducer from "./TimerReducer";
 import AuthReducer from "./AuthReducer";
 import RespondersReducer from "./RespondersReducer";
 import UserDataReducer from "./UserDataReducer";
-import MetricReducer from "./MetricReducer";
+import AlarmReducer from "./metrics/AlarmReducer";
 
 export default combineReducers({
     timer: TimerReducer,
     auth: AuthReducer,
     responders: RespondersReducer,
     userData: UserDataReducer,
-    metrics: MetricReducer
+    alarm: AlarmReducer
 });

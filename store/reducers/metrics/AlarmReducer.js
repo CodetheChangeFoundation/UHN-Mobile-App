@@ -1,4 +1,4 @@
-import { SET_ALARMLOG_ID } from "../actions/Types";
+import { SET_ALARMLOG_ID } from "../../actions/Types";
 
 const initialState = {
   currentAlarmLog: null
