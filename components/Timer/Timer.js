@@ -32,7 +32,6 @@ class Timer extends Component {
   }
 
   incrementTimer() {
-    console.log(this.props)
     this.props.increaseTime(this.props.time.timeRemaining);
     if (this.props.isUsing) {
       this.props.changeAlarmEnd(this.props.time.timeRemaining+15, this.props.currentAlarmLog, this.props.token);
