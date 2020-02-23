@@ -26,20 +26,29 @@ export const makeAlarmLog = (userId, duration, token) => {
   };
 }
 
-export const changeAlarmEnd = (duration, alarmID, token) => {
-  let newEnd = new Date();
-  newEnd.setSeconds(newEnd.getSeconds() + duration);
+export const updateAlarmLog = (duration, sentStatus, alarmID, token) => {
+  let data = {};
+
+  if (duration !== null) {
+    let newEnd = new Date();
+    newEnd.setSeconds(newEnd.getSeconds() + duration);
+
+    data.newEndTime = newEnd.toUTCString();
+  }
+
+  if (sentStatus !== null) {
+    data.sentStatus = sentStatus;
+  }
+
+  console.log(data)
 
   return (dispatch) => {
-    axios.put(SERVER_ROOT + "/metrics/alarm/" + alarmID, 
-    {
-      newEndTime: newEnd.toUTCString()
-    }, 
+    axios.put(SERVER_ROOT + "/metrics/alarm/" + alarmID, data, 
     {
       headers: { "Authorization": token }
     })
     .then((response) => {
-      dispatch(setAlarmLogID(response.data.alarmID))
+      dispatch(setAlarmLogID(response.data.alarmID));
     })
     .catch((error) => {
       console.log(error)
