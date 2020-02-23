@@ -7,6 +7,7 @@ import { Container, Content, Header, View } from "../components/layout";
 import { Button } from "../components/buttons"
 import { Text } from "../components/typography";
 import { sendHelpRequest } from "../services/help-request.service";
+import { updateAlarmLog } from "../store/actions";
 
 const AlarmScreen = (props) => {
 
@@ -19,6 +20,7 @@ const AlarmScreen = (props) => {
         Alert.alert("Help request sent", "Help request has been sent to your responder network", [
           { text: 'OK', onPress: () => Actions.main() }
         ], { cancelable: false });
+        props.updateAlarmLog(0, true, props.currentAlarmLog, token)
       })
   }
   
@@ -74,8 +76,9 @@ function mapStateToProps(state) {
   return {
     time: state.timer,
     userId: state.auth.userId,
-    token: state.auth.token
+    token: state.auth.token,
+    currentAlarmLog: state.alarm.currentAlarmLog
   }
 }
 
-export default connect(mapStateToProps)(AlarmScreen);
+export default connect(mapStateToProps, { updateAlarmLog })(AlarmScreen);
