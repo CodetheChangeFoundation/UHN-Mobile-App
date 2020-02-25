@@ -47,6 +47,7 @@ export const tokenRedirect = (userid, token, rememberMe) => {
 }
 
 export const loginHandler = (credential, rememberMe) => {
+  console.log('http://' + SERVER_ROOT + '/login')
   return (dispatch) => {
     axios.post(SERVER_ROOT + '/login', credential)
       .then(async (response) => {
