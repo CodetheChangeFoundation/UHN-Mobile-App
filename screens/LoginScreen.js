@@ -35,7 +35,7 @@ class LoginScreen extends Component {
     console.log("[DEBUG] username is " + username + ", password is " + password);
     getDeviceLocation((coords) => { this.props.setLocalLocation({ coords }) })
     this.props.setLoading(true);
-    this.props.loginHandler({ username: username, password: password }, rememberMe);
+    this.props.loginHandler({ username: username, password: password, naloxoneAvailability: this.props.naloxoneAvailability }, rememberMe);
   }
 
   renderLoginButtonOrSpinner = () => {
@@ -122,7 +122,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    auth: state.auth
+    auth: state.auth,
+    naloxoneAvailability: state.userData.naloxoneAvailability
+
   }
 }
 

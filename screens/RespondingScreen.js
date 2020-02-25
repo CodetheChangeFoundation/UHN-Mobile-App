@@ -7,9 +7,11 @@ import { Container, Content, Header, View, Segment, Banner, List, ListItem } fro
 import { Switch } from "../components/buttons";
 import { Text } from "../components/typography";
 import theme from "../styles/base";
+import { connect } from 'react-redux'
+import { setNaloxoneAvailabilityStatus } from '../store/actions'
 
 // fake data
-const fakeAvailability = true;
+// const fakeAvailability = true;
 const fakeUsernames = [
   "pho",
   "bluebird",
@@ -24,53 +26,53 @@ const fakeUsernames = [
   "g",
 ];
 
-const RespondingScreen = () => {
-  // TODO: fetch availability for this user
-  const [availability, setAvailability] = useState(fakeAvailability);
+const RespondingScreen = (props) => {
   // TODO: fetch list of usernames this user responds to
   const usernames = fakeUsernames;
 
   useEffect(() => {
     // TODO: send the updated availiabilty status
   });
-  
+
   return (
     <Container>
-    <Header leftButton="menu" onLeftButtonPress={() => Actions.drawerOpen()}>Responding Mode</Header>
+      <Header leftButton="menu" onLeftButtonPress={() => Actions.drawerOpen()}>Responding Mode</Header>
 
-    <Content>
-      <Banner>
-        <Segment active="right"
-          leftText="using" rightText="responding"
-          onLeftButtonPress={() => Actions.using()}
-        />
-      </Banner>
+      <Content>
+        <Banner>
+          <Segment active="right"
+            leftText="using" rightText="responding"
+            onLeftButtonPress={() => Actions.using()}
+          />
+        </Banner>
 
-      <View style={styles.setAvailability}>
-        <Text>I am available with Naloxone</Text>
-        <Switch 
-          style={styles.availabilitySwitch}
-          value={availability} 
-          onValueChange={(newValue) => {setAvailability(newValue)}}
-        />
-      </View>
+        <View style={styles.setAvailability}>
+          <Text>I am available with Naloxone</Text>
+          <Switch
+            style={styles.availabilitySwitch}
+            value={props.naloxoneAvailability}
+            onValueChange={() => {
+              props.setNaloxoneAvailabilityStatus(props.auth.userId, props.auth.token, props.naloxoneAvailability); 
+            }}
+          />
+        </View>
 
-      <View style={styles.watchingFor}>
-        <Text>I am watching for</Text>
-      </View>
+        <View style={styles.watchingFor}>
+          <Text>I am watching for</Text>
+        </View>
 
-      <List style={styles.list}>
-        {
-          usernames.map((username) => {
-            return (
-              <ListItem key={username}
-                leftText={username}
-              />
-            );
-          })
-        }
-      </List>
-    </Content>
+        <List style={styles.list}>
+          {
+            usernames.map((username) => {
+              return (
+                <ListItem key={username}
+                  leftText={username}
+                />
+              );
+            })
+          }
+        </List>
+      </Content>
     </Container>
   );
 }
@@ -95,4 +97,11 @@ const styles = StyleSheet.create({
   }
 });
 
-export default RespondingScreen;
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth,
+    naloxoneAvailability: state.userData.naloxoneAvailability
+  };
+}
+
+export default connect(mapStateToProps, { setNaloxoneAvailabilityStatus })(RespondingScreen);
