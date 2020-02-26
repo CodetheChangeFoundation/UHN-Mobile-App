@@ -24,7 +24,12 @@ const ProfileScreen = (props) => {
       getUserInfo(props.userId, props.token)
         .then((response) => {
           setUserInfo(response.data);
-          convertToAddress(response.data.location.coords, setUserAddress);
+          if (!!response.data.location) {
+            console.log("location exists.")
+            convertToAddress(response.data.location.coords, setUserAddress);
+          } else {
+            setUserAddress("Not registered");
+          }
         })
     }
   })
