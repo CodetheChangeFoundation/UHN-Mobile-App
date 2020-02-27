@@ -8,12 +8,12 @@ import { Text } from "../typography";
 const ListItem = (props) => {
   return (
       <View {...props} style={[listItemStyles.listItem, props.style]}>
-        <View style={listItemStyles.leftView}>
+        {!!props.leftText && <View style={listItemStyles.leftView}>
           <Text style={[listItemStyles.leftText, props.leftTextStyle]}>{props.leftText}</Text>
-        </View>
-        <View style={listItemStyles.rightView}>
+        </View>}
+        {!!props.rightText &&<View style={listItemStyles.rightView}>
           <Text style={[listItemStyles.rightText, props.rightTextStyle]}>{props.rightText}</Text>
-        </View>
+        </View>}
       </View>
   );
 }
