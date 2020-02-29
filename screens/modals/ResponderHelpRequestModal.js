@@ -8,6 +8,7 @@ import { Modal } from "../../components/popups";
 import { Button } from "../../components/buttons";
 import { convertToAddress } from "../../utils";
 import { connect } from "react-redux";
+import { dismissNotification } from "../../store/actions";
 
 const ResponderHelpRequestModal = (props) => {
   if (
@@ -16,25 +17,27 @@ const ResponderHelpRequestModal = (props) => {
   )
     return null;
 
-  const userWhoNeedsHelp = props.notification.data.user;
+  const incomingNotification = props.notification.notificationQueue[0];
+  const userWhoNeedsHelp = incomingNotification.user;
   const [address, setAddress] = useState(null);
 
-  if (userWhoNeedsHelp.location && !address) {
+  if (!!userWhoNeedsHelp.location.coords.lat && !!userWhoNeedsHelp.location.coords.lng && !address) {
     convertToAddress(userWhoNeedsHelp.location.coords, setAddress, setAddress("Error finding location."));
   }
 
   useEffect(() => {
-    // console.log("notification received: ", JSON.stringify(props.notification));
+    console.log("notification: ", JSON.stringify(props.notification, null, 2));
   });
 
   acceptRequest = () => {
-    // TODO: hit help request endpoint to check if < 6 people have taken the request yet
-    // if yes, then redirect to DirectionsScreen + pass notification data
-    // if no, alert saying the request has been taken, then dismiss modal
+    // TODO: add this responder to the help request
+    // if full (has 6 responders already), arrived, or resolved, show alert, dismiss modal, and remove notif from queue
+    // otherwise redirect to directions screen
     Actions.assignment();
   }
 
   declineRequest = () => {
+    props.dismissNotification(props.notification);
     Actions.pop();
   }
 
@@ -87,4 +90,4 @@ mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(ResponderHelpRequestModal);
+export default connect(mapStateToProps, { dismissNotification })(ResponderHelpRequestModal);

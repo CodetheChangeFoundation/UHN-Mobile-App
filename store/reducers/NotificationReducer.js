@@ -1,15 +1,22 @@
-import { SET_NOTIFICATION } from "../actions/Types";
+import { ADD_NOTIFICATION, REMOVE_NOTIFICATION } from "../actions/Types";
 
 const initialState = {
-  notification: []
+  notificationQueue: []     // Items are queued to end of array & dequeued from the beginning (index 0)
 }
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case SET_NOTIFICATION:
+    case ADD_NOTIFICATION:
       return { 
         ...state, 
-        notification: [...state.notification, action.data.notification]
+        notificationQueue: [...state.notificationQueue, action.data.notification]
+      };
+    case REMOVE_NOTIFICATION:
+      let newNotificationQueue = state.notificationQueue;
+      newNotificationQueue.shift();
+      return { 
+        ...state, 
+        notificationQueue: newNotificationQueue
       };
     default:
       return state;
