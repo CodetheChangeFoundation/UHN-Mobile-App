@@ -4,9 +4,13 @@ import { Actions } from "react-native-router-flux";
 import theme from "../../styles/base";
 import { Container, Content, Header, View } from "../../components/layout";
 import { Text } from "../../components/typography";
+<<<<<<< HEAD
 import { Modal } from "../../components/popups";
 import { Button } from "../../components/buttons";
 import { convertToAddress } from "../../utils";
+=======
+import { connect } from "react-redux";
+>>>>>>> master
 
 const ResponderHelpRequestModal = (props) => {
   if (
@@ -15,6 +19,7 @@ const ResponderHelpRequestModal = (props) => {
   )
     return null;
 
+<<<<<<< HEAD
   const userWhoNeedsHelp = props.notification.data.user;
   const [address, setAddress] = useState(null);
 
@@ -57,6 +62,8 @@ const ResponderHelpRequestModal = (props) => {
 
   // Wait until location coordinates have been converted into an address
   if (userWhoNeedsHelp.location && !address) return null;
+=======
+>>>>>>> master
   return (
     <Modal
       modalVisible={true}
@@ -80,4 +87,10 @@ const styles = StyleSheet.create({
   }
 })
 
-export default ResponderHelpRequestModal;
+mapStateToProps = state => {
+  return {
+    notification: state.notification
+  };
+};
+
+export default connect(mapStateToProps)(ResponderHelpRequestModal);
