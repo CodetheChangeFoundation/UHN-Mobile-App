@@ -3,6 +3,7 @@ import { StyleSheet, Button, AppState, Platform } from "react-native";
 import { Actions } from "react-native-router-flux";
 import { Container, Content, Header, View } from "../../components/layout";
 import { Text } from "../../components/typography";
+import { connect } from "react-redux";
 
 const ResponderHelpRequestModal = props => {
   if (
@@ -10,10 +11,6 @@ const ResponderHelpRequestModal = props => {
     Platform.OS !== "ios"
   )
     return null;
-
-  useEffect(() => {
-    console.log("notification received: ", JSON.stringify(props.notification));
-  });
 
   return (
     <Container>
@@ -43,4 +40,10 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ResponderHelpRequestModal;
+mapStateToProps = state => {
+  return {
+    notification: state.notification
+  };
+};
+
+export default connect(mapStateToProps)(ResponderHelpRequestModal);
