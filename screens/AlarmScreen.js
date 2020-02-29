@@ -26,7 +26,10 @@ const AlarmScreen = (props) => {
   
   const exitAlarm = () => {
     Alert.alert("Are you sure you want to exit?", "This will reset the timer", [
-      { text: 'Yes', onPress: () => Actions.main() },
+      { text: 'Yes', onPress: () => {
+        Actions.main();
+        props.updateAlarmLog(0, null, props.currentAlarmLog, token)
+      }},
       { text: 'No', style: 'cancel' }
     ], { cancelable: false });
   }
