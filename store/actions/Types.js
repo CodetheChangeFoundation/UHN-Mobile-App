@@ -22,3 +22,6 @@ export const RESPONDERS_ERROR = "RESPONDERS_ERROR";
 // MetricActions types
 export const SET_ALARMLOG_ID = "SET_ALARMLOG_ID";
 export const METRIC_ALARM_FAILED = "METRIC_ALARM_FAILED";
+
+// Notification types
+export const SET_NOTIFICATION = "SET_NOTIFICATION";
