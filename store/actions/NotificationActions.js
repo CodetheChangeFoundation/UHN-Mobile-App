@@ -22,7 +22,7 @@ const addNotification = (notification) => {
 export const receiveNotification = (notification) => {
   return (dispatch, getState) => {
     const { notification: {notificationQueue, notificationCount} } = getState();
-    console.log("adding notif. queue now has", notificationCount + 1)
+    
     dispatch(addNotification(notification));
     // Show modal if there are no other help requests in progress
     if (notificationCount == 0) {
@@ -41,7 +41,6 @@ const removeNotification = () => {
 export const dismissNotification = () => {
   return (dispatch, getState) => {
     const { notification: {notificationQueue, notificationCount} } = getState();
-    console.log("dismissing notif. queue now has", notificationCount - 1)
 
     if ((Actions.currentScene == "responderHelpRequestModal")) {
       Actions.pop()     // Dismiss responderHelpRequestModal in case we need to re-render it below

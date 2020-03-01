@@ -25,10 +25,6 @@ const ResponderHelpRequestModal = (props) => {
     convertToAddress(userWhoNeedsHelp.location.coords, setAddress, setAddress("Error finding location."));
   }
 
-  useEffect(() => {
-    // console.log("help request modal props.notification: \n", JSON.stringify(props.notification, null, 2));
-  });
-
   acceptRequest = () => {
     // TODO: add this responder to the help request
     // if full (has 6 responders already), arrived, or resolved, show alert, dismiss modal, and remove notif from queue
@@ -39,7 +35,6 @@ const ResponderHelpRequestModal = (props) => {
 
   declineRequest = () => {
     props.dismissNotification();
-    // Actions.pop();
   }
 
   const modalHeader = `${userWhoNeedsHelp.username}\nis unresponsive`;
