@@ -7,9 +7,13 @@ import { Button } from "../buttons";
 import { Text } from "../typography";
 import { connect } from 'react-redux';
 import { removePushToken } from "../../services/push-token.service"
+<<<<<<< HEAD
+import { setStatus } from '../../store/actions'
+=======
 import { setNaloxoneAvailabilityStatus } from '../../store/actions'
 import { List, ListItem } from '../layout'
 import theme from "../../styles/base";
+>>>>>>> 61b28f20ad91dff5316c1e69c2c942829cd7b89f
 
 const DrawerContent = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -24,8 +28,8 @@ const DrawerContent = (props) => {
         Actions.auth();
         await AsyncStorage.removeItem("token");
         removePushToken(props.auth.userId);
-        if (props.naloxoneAvailability) 
-          props.setNaloxoneAvailabilityStatus(props.auth.userId, props.auth.token, props.naloxoneAvailability)
+        if (props.naloxoneAvailability)
+          props.setStatus(props.auth.userId, props.auth.token, { "online": false })
       }}
     >
       Logout
@@ -111,4 +115,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { setNaloxoneAvailabilityStatus })(DrawerContent);
+export default connect(mapStateToProps, { setStatus })(DrawerContent);

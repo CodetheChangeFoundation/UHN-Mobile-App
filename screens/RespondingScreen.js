@@ -8,7 +8,7 @@ import { Switch } from "../components/buttons";
 import { Text } from "../components/typography";
 import theme from "../styles/base";
 import { connect } from 'react-redux'
-import { setNaloxoneAvailabilityStatus } from '../store/actions'
+import { setStatus } from '../store/actions'
 
 // fake data
 // const fakeAvailability = true;
@@ -52,7 +52,11 @@ const RespondingScreen = (props) => {
             style={styles.availabilitySwitch}
             value={props.naloxoneAvailability}
             onValueChange={() => {
-              props.setNaloxoneAvailabilityStatus(props.auth.userId, props.auth.token, props.naloxoneAvailability); 
+              if (props.naloxoneAvailability) {
+                props.setStatus(props.auth.userId, props.auth.token, { "naloxoneAvailability": false })
+              } else {
+                props.setStatus(props.auth.userId, props.auth.token, { "naloxoneAvailability": true })
+              }
             }}
           />
         </View>
@@ -104,4 +108,4 @@ const mapStateToProps = (state) => {
   };
 }
 
-export default connect(mapStateToProps, { setNaloxoneAvailabilityStatus })(RespondingScreen);
+export default connect(mapStateToProps, { setStatus })(RespondingScreen);

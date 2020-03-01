@@ -16,19 +16,20 @@ const setNaloxoneAvailabilityHandler = (naloxoneAvailability) => {
   }
 }
 
-export const setNaloxoneAvailabilityStatus = (userId, token, currentNaloxoneAvailability) => {
-  var naloxoneAvailability = !currentNaloxoneAvailability;
+export const setStatus = (userId, token, statusToChange) => {
   return (dispatch) => {
-    axios.post(`${SERVER_ROOT}/users/${userId}/status`, 
-    { "naloxoneAvailability": naloxoneAvailability }, 
-    {
-      headers: { "Authorization": token },
-    })
-    .then(response => {
-      dispatch(setNaloxoneAvailabilityHandler(naloxoneAvailability))
-    })
-    .catch(error => {
-      console.log(error);
-    }) 
+    axios.post(`${SERVER_ROOT}/users/${userId}/status`,
+      statusToChange,
+      {
+        headers: { "Authorization": token },
+      })
+      .then(response => {
+        if (statusToChange.naloxoneAvailability != undefined) {
+          dispatch(setNaloxoneAvailabilityHandler(statusToChange.naloxoneAvailability))
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      })
   }
 }
