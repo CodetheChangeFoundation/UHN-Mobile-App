@@ -18,6 +18,7 @@ export const SET_LOCATION = "SET_LOCATION";
 // RespondersActions types
 export const SET_MY_RESPONDERS = "SET_MY_RESPONDERS";
 export const RESPONDERS_ERROR = "RESPONDERS_ERROR";
+export const SET_NALOXONE_AVAILABILITY = 'SET_NALOXONE_AVAILABILITY';
 
 // Notification types
 export const SET_NOTIFICATION = "SET_NOTIFICATION";
