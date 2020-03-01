@@ -7,13 +7,9 @@ import { Button } from "../buttons";
 import { Text } from "../typography";
 import { connect } from 'react-redux';
 import { removePushToken } from "../../services/push-token.service"
-<<<<<<< HEAD
 import { setStatus } from '../../store/actions'
-=======
-import { setNaloxoneAvailabilityStatus } from '../../store/actions'
 import { List, ListItem } from '../layout'
 import theme from "../../styles/base";
->>>>>>> 61b28f20ad91dff5316c1e69c2c942829cd7b89f
 
 const DrawerContent = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
