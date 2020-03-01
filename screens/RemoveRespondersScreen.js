@@ -25,9 +25,9 @@ class RemoveRespondersScreen extends Component {
     this.state = {
       idSelectionMap,
       idToUsernameMap,
-      selectedUsernames: [],
-      modalVisible: false
+      selectedUsernames: []
     };
+    
   }
 
   onCheckboxPress = (userId) => {
@@ -48,12 +48,19 @@ class RemoveRespondersScreen extends Component {
   }
 
   modalHeader = "Removing responders";
-  modalFooterLeft = (<Button variant="light" size="medium" onPress={() => this.setState({modalVisible: false})}>cancel</Button>);
+  modalFooterLeft = (<Button variant="light" size="medium" onPress={() => Actions.pop()}>cancel</Button>);
   modalFooterRight = (<Button variant="warning" size="medium" onPress={() => this.removeSelectedResponders()}>remove</Button>);
+  modalFooterRight = (<Button variant="warning" size="medium" 
+                      onPress={() => {
+                        Actions.pop(); // Pop from the GenericModal screen
+                        this.removeSelectedResponders()} // Pop from this screen
+                      }>
+                        remove
+                      </Button>);
 
-  renderModalBody = () => {
+  renderModalBody = (selectedUsernames) => {
     let modalBody = [];
-    for (username of this.state.selectedUsernames) {
+    for (username of selectedUsernames) {
       modalBody.push(<ListItem key={username} leftText={username} />);
     }
     return (<List style={styles.modalList}>
@@ -90,16 +97,6 @@ class RemoveRespondersScreen extends Component {
   render() {
     return (
       <Container>
-        <Modal
-          modalVisible={this.state.modalVisible}
-          modalHeader={this.modalHeader}
-          modalBody={this.renderModalBody()}
-          modalFooterLeft={this.modalFooterLeft}
-          modalFooterRight={this.modalFooterRight}
-          onBackdropPress={() => this.setState({modalVisible: false})}
-          onBackButtonPress={() => this.setState({modalVisible: false})}
-        /> 
-
         <Header leftButton="arrow" 
         onLeftButtonPress={() => Actions.pop()}
         >
@@ -114,7 +111,17 @@ class RemoveRespondersScreen extends Component {
           <View style={styles.removeButton}>
             <Button variant="warning" size="medium"
               onPress={() => {
-                this.setState({modalVisible: true, selectedUsernames: this.gatherSelectedUsernames()});
+                const selectedUsernames = this.gatherSelectedUsernames();
+                this.setState({selectedUsernames});
+                modalParams = {
+                  modalHeader: this.modalHeader,
+                  modalBody: this.renderModalBody(selectedUsernames),
+                  modalFooterLeft: this.modalFooterLeft,
+                  modalFooterRight: this.modalFooterRight,
+                  onBackdropPress: () => Actions.pop(),
+                  onBackButtonPress: () => Actions.pop()
+                }
+                Actions.modal(modalParams);
               }}
             >
               remove selected

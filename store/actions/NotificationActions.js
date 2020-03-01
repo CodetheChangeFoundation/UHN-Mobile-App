@@ -2,7 +2,10 @@ import { ADD_NOTIFICATION, REMOVE_NOTIFICATION } from "./Types";
 import { Actions } from "react-native-router-flux";
 
 const openHelpRequestModal = () => {
-    // TODO: To render modal, need to dismiss any other modals currently on screen
+    // To render modal, need to dismiss any other modals currently on screen
+    if ((Actions.currentScene == "modal")) {
+      Actions.pop()
+    }
     setTimeout(() => Actions.responderHelpRequestModal(), 1);
 }
 
@@ -41,9 +44,9 @@ export const dismissNotification = () => {
     console.log("dismissing notif. queue now has", notificationCount - 1)
 
     if ((Actions.currentScene == "responderHelpRequestModal")) {
-      Actions.pop()
-    } else {
-      Actions.main();
+      Actions.pop()     // Dismiss responderHelpRequestModal in case we need to re-render it below
+    } else if ((Actions.currentScene == "directions")) {
+      Actions.main();   // Need to get away from DirectionsScreen (or any other screen related to the last help request)
     }
 
     dispatch(removeNotification());

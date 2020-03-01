@@ -33,6 +33,7 @@ const ResponderHelpRequestModal = (props) => {
     // TODO: add this responder to the help request
     // if full (has 6 responders already), arrived, or resolved, show alert, dismiss modal, and remove notif from queue
     // otherwise redirect to directions screen
+    Actions.pop()
     Actions.assignment();
   }
 

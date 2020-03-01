@@ -5,7 +5,6 @@ import theme from "../../styles/base";
 import { View } from "../layout";
 import { Text } from "../typography";
 
-// TODO: On iOS, issue with closing/opening the drawer when modal is opened.
 const Modal = (props) => {
 
   return (
@@ -42,7 +41,7 @@ const Modal = (props) => {
 /* Prop Types */
 
 Modal.propTypes = {
-  modalVisible: PropTypes.bool.isRequired,
+  modalVisible: PropTypes.bool,
   modalHeader: PropTypes.string.isRequired,
   modalBody: PropTypes.element.isRequired,
   modalFooterLeft: PropTypes.element,
@@ -50,6 +49,10 @@ Modal.propTypes = {
   onBackdropPress: PropTypes.func,
   onBackButtonPress: PropTypes.func,
 };
+
+Modal.defaultProps = {
+  modalVisible: true
+}
 
 /* Styles */
 
