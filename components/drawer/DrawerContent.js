@@ -7,7 +7,7 @@ import { Button } from "../buttons";
 import { Text } from "../typography";
 import { connect } from 'react-redux';
 import { removePushToken } from "../../services/push-token.service"
-import { setNaloxoneAvailabilityStatus } from '../../store/actions'
+import { setStatus } from '../../store/actions'
 
 const DrawerContent = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -22,8 +22,8 @@ const DrawerContent = (props) => {
         Actions.auth();
         await AsyncStorage.removeItem("token");
         removePushToken(props.auth.userId);
-        if (props.naloxoneAvailability) 
-          props.setNaloxoneAvailabilityStatus(props.auth.userId, props.auth.token, props.naloxoneAvailability)
+        if (props.naloxoneAvailability)
+          props.setStatus(props.auth.userId, props.auth.token, { "online": false })
       }}
     >
       Logout
@@ -76,4 +76,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { setNaloxoneAvailabilityStatus })(DrawerContent);
+export default connect(mapStateToProps, { setStatus })(DrawerContent);
