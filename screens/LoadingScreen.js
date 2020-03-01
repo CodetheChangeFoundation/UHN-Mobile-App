@@ -8,7 +8,7 @@ import { Container, Content, View } from "../components/layout";
 import { Text } from "../components/typography";
 var jwtDecode = require("jwt-decode");
 import { Notifications } from "expo";
-import { tokenRedirect, setLocalLocation } from "../store/actions";
+import { tokenRedirect, setLocalLocation, setNotification } from "../store/actions";
 import { connect } from "react-redux";
 import { getDeviceLocation } from "../utils/index";
 
@@ -22,7 +22,8 @@ const LoadingScreen = props => {
   }, []);
 
   _handleNotification = notification => {
-    Actions.responderHelpRequestModal({ notification: notification });
+    props.setNotification(notification.data);
+    Actions.responderHelpRequestModal();
   };
 
   _loadFonts = async () => {
@@ -109,10 +110,11 @@ const styles = StyleSheet.create({
 mapStateToProps = state => {
   return {
     auth: state.auth,
-    userData: state.userData
+    userData: state.userData,
+    notification: state.notification
   };
 };
 
-export default connect(mapStateToProps, { tokenRedirect, setLocalLocation })(
+export default connect(mapStateToProps, { tokenRedirect, setLocalLocation, setNotification })(
   LoadingScreen
 );
