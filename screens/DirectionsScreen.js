@@ -13,6 +13,7 @@ import {
     convertToAddress,
     getUserLocation,
 } from '../utils/index'
+import { dismissNotification } from "../store/actions";
 
 import mapMarkerIcon from '../components/icons/mapMarker'
 
@@ -70,7 +71,9 @@ const DirectionsScreen = (props) => {
 
     const handleArrived  = () => {
         // TODO: PUT to update the help request status to solved
-        Actions.main()
+        // Actions.main()
+        // Remmove the current help request notification from the queue
+        props.dismissNotification();
     }
 
   return (
@@ -151,4 +154,4 @@ const mapStateToProps = (state, currentProps) => {
     return currentProps
 }
 
-export default connect(mapStateToProps)(DirectionsScreen);
+export default connect(mapStateToProps, { dismissNotification })(DirectionsScreen);

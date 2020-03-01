@@ -26,7 +26,7 @@ const ResponderHelpRequestModal = (props) => {
   }
 
   useEffect(() => {
-    console.log("notification: ", JSON.stringify(props.notification, null, 2));
+    // console.log("help request modal props.notification: \n", JSON.stringify(props.notification, null, 2));
   });
 
   acceptRequest = () => {
@@ -37,8 +37,8 @@ const ResponderHelpRequestModal = (props) => {
   }
 
   declineRequest = () => {
-    props.dismissNotification(props.notification);
-    Actions.pop();
+    props.dismissNotification();
+    // Actions.pop();
   }
 
   const modalHeader = `${userWhoNeedsHelp.username}\nis unresponsive`;
@@ -60,7 +60,7 @@ const ResponderHelpRequestModal = (props) => {
   );
 
   // Wait until location coordinates have been converted into an address
-  if (userWhoNeedsHelp.location && !address) return null;
+  // if (userWhoNeedsHelp.location && !address) return null;
   return (
     <Modal
       modalVisible={true}

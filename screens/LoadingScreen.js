@@ -22,7 +22,7 @@ const LoadingScreen = props => {
   }, []);
 
   _handleNotification = notification => {
-    props.receiveNotification(props.notification, notification.data);
+    props.receiveNotification(notification.data);
   };
 
   _loadFonts = async () => {
