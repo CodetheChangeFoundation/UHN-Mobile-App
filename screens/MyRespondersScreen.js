@@ -18,7 +18,7 @@ class MyRespondersScreen extends Component {
     let availableUsernames = [];
     let unavailableUsernames = [];
     for (responder of myResponders) {
-      if (responder.onlineStatus) {
+      if (responder.availbilityStatus) {
         availableUsernames.push(responder.username);
       } else {
         unavailableUsernames.push(responder.username);
@@ -29,14 +29,16 @@ class MyRespondersScreen extends Component {
       availableUsernames,
       unavailableUsernames
     };
+    this.renderRespondersOrError.bind(this);
   }
+  
 
   componentDidUpdate(prevProps) {
     if (this.props.responders.myResponders !== prevProps.responders.myResponders) {
       let availableUsernames = [];
       let unavailableUsernames = [];
       for (responder of this.props.responders.myResponders) {
-        if (responder.onlineStatus) {
+        if (responder.availbilityStatus) {
           availableUsernames.push(responder.username);
         } else {
           unavailableUsernames.push(responder.username);
@@ -45,6 +47,45 @@ class MyRespondersScreen extends Component {
       // Sort availableUsernames and unavailableUsernames if desired
       this.setState({availableUsernames, unavailableUsernames});
     }
+  }
+
+  renderRespondersOrError = () => {
+    return (this.props.responders.error.length > 0) ?
+      (<View>
+        <Text>{this.props.responders.error}</Text>
+      </View>)
+      :
+      (<List style={styles.list}>
+        {
+          (this.state.availableUsernames.length == 0 && this.state.unavailableUsernames.length == 0)
+          &&
+          <View>
+            <Text>You currently have no responders.</Text>
+          </View>
+        }
+        {
+          this.state.availableUsernames.map((username) => {
+            return (
+              <ListItem key={username}
+                leftText={username}
+                rightText="available"
+                rightTextStyle={styles.available}
+              />
+            );
+          })
+        }
+        {
+          this.state.unavailableUsernames.map((username) => {
+            return (
+              <ListItem key={username}
+                leftText={username}
+                rightText="unavailable"
+                rightTextStyle={styles.unavailable}
+              />
+            );
+          })
+        }
+      </List>);
   }
 
   render() {
@@ -57,38 +98,7 @@ class MyRespondersScreen extends Component {
         </Header>
 
         <Content>
-          <List style={styles.list}>
-            {
-              (this.state.availableUsernames.length == 0 && this.state.unavailableUsernames.length == 0)
-              && 
-              <View>
-                <Text>You currently have no responders.</Text>
-              </View>
-            }
-            {
-              this.state.availableUsernames.map((username) => {
-                return (
-                  <ListItem key={username}
-                    leftText={username}
-                    rightText="available"
-                    rightTextStyle={styles.available}
-                  />
-                );
-              })
-            }
-            {
-              this.state.unavailableUsernames.map((username) => {
-                return (
-                  <ListItem key={username}
-                    leftText={username}
-                    rightText="unavailable"
-                    rightTextStyle={styles.unavailable}
-                  />
-                );
-              })
-            }
-          </List>
-
+          {this.renderRespondersOrError()}
           <View style={styles.buttons}>
             <Button variant="primary" onPress={() => Actions.remove()}>remove</Button>
             <Button variant="primary" onPress={() => Actions.add()}>add</Button>

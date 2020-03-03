@@ -1,4 +1,4 @@
-import { SET_LOCATION } from "../actions/Types"
+import { SET_LOCATION, SET_NALOXONE_AVAILABILITY } from "../actions/Types"
 
 /**
  * TODO: save both "userLocation" and "deviceLastLocation" for emergency purposes
@@ -8,19 +8,22 @@ import { SET_LOCATION } from "../actions/Types"
 
 const initialState = {
   location: {
-        coords: {
-          lat: 0,
-          lng: 0,
-        },
-        note: ''
-  }
+    coords: {
+      lat: 0,
+      lng: 0,
+    },
+    note: ''
+  },
+  naloxoneAvailability: false
 };
 
 export default (state = initialState, action) => {
-  switch(action.type){
+  switch (action.type) {
     case SET_LOCATION:
-      return {...state, location: action.data.location};
+      return { ...state, location: action.data.location };
+    case SET_NALOXONE_AVAILABILITY:
+      return { ...state, naloxoneAvailability: action.data.naloxoneAvailability };
     default:
-      return state;  
+      return state;
   }
 }
