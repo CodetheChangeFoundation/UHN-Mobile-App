@@ -1,6 +1,7 @@
 import { SET_LOCATION, SET_NALOXONE_AVAILABILITY } from "./Types"
 import * as axios from 'axios';
 import { SERVER_ROOT } from 'react-native-dotenv';
+import { Alert } from 'react-native';
 
 export const setLocalLocation = (location) => {
   return {
@@ -29,7 +30,12 @@ export const setStatus = (userId, token, statusToChange) => {
         }
       })
       .catch(error => {
-        console.log(error);
+        Alert.alert(
+          "Failed to set user status!",
+          error.response.data.errors[0].message,
+          [{ text: "OK" }],
+          { cancelable: true }
+        )
       })
   }
 }
