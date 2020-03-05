@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, Alert, AppState, Platform } from "react-native";
 import { Actions } from "react-native-router-flux";
 import theme from "../../styles/base";
+import statusCodes from "../../constants/statusCodes";
 import { Container, Content, Header, View } from "../../components/layout";
 import { Text } from "../../components/typography";
 import { Modal } from "../../components/popups";
@@ -27,18 +28,16 @@ const ResponderHelpRequestModal = (props) => {
   }
 
   acceptRequest = () => {
-    // TODO: add this responder to the help request
-    // if full (has 6 responders already), arrived, or resolved, show alert, dismiss modal, and remove notif from queue
-    // otherwise redirect to directions screen
     addResponderToHelpRequest(props.auth.userId, props.auth.token, incomingNotification.helpRequestId)
       .then((response) => {
-        // Handle error status codes 
+
+        // Handle error where there are already 6 responders who accepted
         if (!!response) {
-          console.log(response)
-          if (response.status == 200) {
+          if (response.status == statusCodes.ok) {
             Actions.pop()
             Actions.assignment();
-          } else if ((response.status == 400) && (response.data.statusCode == 400200)) {
+          } else if ((response.status == statusCodes.badRequest) 
+            && (response.data.statusCode == statusCodes.limitReachedError)) {
             Alert.alert(
               "No Help Required",
               `${userWhoNeedsHelp.username} does not need your help anymore. Thanks!`,
@@ -53,6 +52,7 @@ const ResponderHelpRequestModal = (props) => {
         } else {
           props.dismissNotification();
         }
+
       })
   }
 

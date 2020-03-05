@@ -1,5 +1,6 @@
 import axios from "axios";
 import { SERVER_ROOT } from "react-native-dotenv";
+import statusCodes from "../constants/statusCodes"
 
 const sendHelpRequest = async (userId, token) => {
     return axios
@@ -27,10 +28,9 @@ const addResponderToHelpRequest = (userId, token, helpRequestId) => {
       return response;
     })
     .catch((err) => {
-      console.log(err)
       if (err.response) {
-        // console.log("error response:", err.response)
-        if ((err.response.status == 400) && (err.response.data.statusCode == 400200)) {
+        if ((err.response.status == statusCodes.badRequest) 
+          && (err.response.data.statusCode == statusCodes.limitReachedError)) {
           return err.response;
         }
       } else {
