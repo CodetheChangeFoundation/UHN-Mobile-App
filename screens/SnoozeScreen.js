@@ -7,8 +7,8 @@ import { Text } from "../components/typography";
 import { connect } from 'react-redux';
 import { increaseTime, decreaseTime, countdown, clearTime, resetTime } from '../store/actions';
 import { sendHelpRequest } from "../services/help-request.service";
+import { convertSeconds, convertSecondsToMinutes } from "../services/time-functions.service";
 import { Audio } from 'expo-av';
-
 
 class SnoozeScreen extends Component {
   constructor(props) {
@@ -30,19 +30,6 @@ class SnoozeScreen extends Component {
     } else {
       this.props.countdown(this.props.time.timeRemaining);
     }
-  };
-
-  convertSeconds = (seconds) => {
-    let second = Math.floor(seconds % 3600 % 60);
-    if (second <= 9) {
-      second = "0" + second;
-    }
-    return second;
-  };
-
-  convertSecondsToMinutes = (seconds) => {
-    let minute = Math.floor(seconds % 3600 / 60);
-    return minute;
   };
 
   snoozeHandler() {
@@ -81,7 +68,7 @@ class SnoozeScreen extends Component {
               Your responders{"\n"}will be notified in:
             </Text>
             <Text style={styles.timeStyle}>
-              {this.convertSecondsToMinutes(timeRemaining)}:{this.convertSeconds(timeRemaining)}
+              {convertSecondsToMinutes(timeRemaining)}:{convertSeconds(timeRemaining)}
             </Text>
             <Button variant="snooze" onPress={this.snoozeHandler}>
               snooze
