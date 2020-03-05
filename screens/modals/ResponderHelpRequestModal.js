@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, AppState, Platform } from "react-native";
+import { StyleSheet, Alert, AppState, Platform } from "react-native";
 import { Actions } from "react-native-router-flux";
 import theme from "../../styles/base";
 import { Container, Content, Header, View } from "../../components/layout";
@@ -9,6 +9,7 @@ import { Button } from "../../components/buttons";
 import { convertToAddress } from "../../utils";
 import { connect } from "react-redux";
 import { dismissNotification } from "../../store/actions";
+import { addResponderToHelpRequest } from "../../services/help-request.service";
 
 const ResponderHelpRequestModal = (props) => {
   if (
@@ -29,8 +30,30 @@ const ResponderHelpRequestModal = (props) => {
     // TODO: add this responder to the help request
     // if full (has 6 responders already), arrived, or resolved, show alert, dismiss modal, and remove notif from queue
     // otherwise redirect to directions screen
-    Actions.pop()
-    Actions.assignment();
+    addResponderToHelpRequest(props.auth.userId, props.auth.token, incomingNotification.helpRequestId)
+      .then((response) => {
+        // Handle error status codes 
+        if (!!response) {
+          console.log(response)
+          if (response.status == 200) {
+            Actions.pop()
+            Actions.assignment();
+          } else if ((response.status == 400) && (response.data.statusCode == 400200)) {
+            Alert.alert(
+              "No Help Required",
+              `${userWhoNeedsHelp.username} does not need your help anymore. Thanks!`,
+              [{
+                text: "OK",
+                onPress: () => props.dismissNotification()
+              }]
+            );
+          } else {
+            props.dismissNotification();
+          }
+        } else {
+          props.dismissNotification();
+        }
+      })
   }
 
   declineRequest = () => {
@@ -82,7 +105,8 @@ const styles = StyleSheet.create({
 
 mapStateToProps = state => {
   return {
-    notification: state.notification
+    notification: state.notification,
+    auth: state.auth
   };
 };
 
