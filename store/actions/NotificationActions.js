@@ -2,11 +2,13 @@ import { ADD_NOTIFICATION, REMOVE_NOTIFICATION } from "./Types";
 import { Actions } from "react-native-router-flux";
 
 const openHelpRequestModal = () => {
-    // To render modal, need to dismiss any other modals currently on screen
-    if ((Actions.currentScene == "modal")) {
-      Actions.pop()
-    }
-    setTimeout(() => Actions.responderHelpRequestModal(), 1);
+  // TODO: the modal will not show if there is currently an Alert showing onscreen.
+  
+  // To render modal, need to dismiss any other modals currently on screen
+  if ((Actions.currentScene == "modal")) {
+    Actions.pop()
+  }
+  setTimeout(() => Actions.responderHelpRequestModal(), 1);
 }
 
 
