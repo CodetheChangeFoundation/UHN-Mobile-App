@@ -8,7 +8,7 @@ import { Alert } from 'react-native';
 export const respondersError = (error) => {
   Alert.alert(
     "Responders request failed!",
-    error.response.data.errors[0].message,
+    error.response?.data?.errors[0]?.message || '',
     [{ text: "OK" }],
     { cancelable: true }
   )

@@ -32,7 +32,7 @@ export const setStatus = (userId, token, statusToChange) => {
       .catch(error => {
         Alert.alert(
           "Failed to set user status!",
-          error.response.data.errors[0].message,
+          error.response?.data?.errors[0]?.message || '',
           [{ text: "OK" }],
           { cancelable: true }
         )

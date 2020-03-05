@@ -18,8 +18,8 @@ const loginFailed = (error) => {
   console.log("login failed:", error);
   Alert.alert(
     "Login failed!",
-    error.response.data.errors[0].message
-    + "! Please check that you've entered each field correctly.",
+    (error.response?.data?.errors[0]?.message || '')
+    + "\nPlease check that you've entered each field correctly.",
     [{ text: "OK" }],
     { cancelable: true }
   )
@@ -39,8 +39,8 @@ const signupFailed = (error) => {
   console.log("signup failed: ", error);
   Alert.alert(
     "Signup failed!",
-    error.response.data.errors[0].message
-    + "! Please check that you've entered each field correctly.",
+    (error.response?.data?.errors[0]?.message || '')
+    + "\nPlease check that you've entered each field correctly.",
     [{ text: "OK" }],
     { cancelable: true }
   )

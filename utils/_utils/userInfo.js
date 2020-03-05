@@ -12,7 +12,7 @@ const getUserInfo = async (userId, token) => {
     .catch((err) => {
       Alert.alert(
         "Error getting user!!",
-        error.response.data.errors[0].message,
+        error.response?.data?.errors[0]?.message || '',
         [{ text: "OK" }],
         { cancelable: true }
       )

@@ -6,7 +6,7 @@ const locationsError = (error) => {
     console.error(error)
     Alert.alert(
         "Location request failed!",
-        error.response.data.errors[0].message,
+        error.response?.data?.errors[0]?.message || '',
         [{ text: "OK" }],
         { cancelable: true }
       )
