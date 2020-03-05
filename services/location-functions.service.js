@@ -1,5 +1,48 @@
-import * as Location from "expo-location";
+import * as Location from 'expo-location';
 import { Alert } from 'react-native'
+
+const getDeviceLocation = (success) => {
+    Location.requestPermissionsAsync()
+    .then(() => {
+        Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest })
+        .then((location) => {
+            const coordinates = { lat: location.coords.latitude, lng: location.coords.longitude }
+
+            if (success) success(coordinates)
+            return coordinates
+        })
+        .catch((error) => {
+            console.error('cannot get location!', {error})
+        })
+    })
+    .catch((error) => {
+        alert("Please allow location services");
+    })
+}
+
+
+const toRad = (angle) => {
+    return (angle * Math.PI) / 180;
+}
+
+// Haversine Formula to compute distance in meters
+const computeDistance = (locationOne, locationTwo) => {
+    const { lat:lat1, lng:lng1 } = locationOne
+    const { lat:lat2, lng:lng2 } = locationTwo
+    const lat1InRad = toRad(lat1);
+    const lng1InRad = toRad(lng1);
+    const lat2InRad = toRad(lat2);
+    const lng2InRad = toRad(lng2);
+  
+    return (
+      // In meters
+      6377830.272 *
+      Math.acos(
+        Math.sin(lat1InRad) * Math.sin(lat2InRad) +
+          Math.cos(lat1InRad) * Math.cos(lat2InRad) * Math.cos(lng2InRad - lng1InRad),
+      )
+    );
+}
 
 /**
  * Both have the same pattern:
@@ -8,7 +51,7 @@ import { Alert } from 'react-native'
  * 3) If fail, call fail function
  */
 
-export const convertToCoordinates = (address, success, fail) => {
+const convertToCoordinates = (address, success, fail) => {
 
     Location.geocodeAsync(address)
     .then((results) => {
@@ -33,7 +76,7 @@ export const convertToCoordinates = (address, success, fail) => {
     })
 }
 
-export const convertToAddress = (coordinates, success, fail) => {
+const convertToAddress = (coordinates, success, fail) => {
 
     let coords = {coordinates}
     if (coordinates && coordinates.lat || coordinates.lng) {
@@ -64,4 +107,11 @@ export const convertToAddress = (coordinates, success, fail) => {
     .catch((error) => {
         console.error('cannot reverse geocode coordinates!', {error})
     })
+}
+
+module.exports = {
+    getDeviceLocation,
+    computeDistance,
+    convertToAddress,
+    convertToCoordinates
 }

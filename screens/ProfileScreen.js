@@ -3,7 +3,8 @@ import { StyleSheet } from "react-native";
 import { Actions } from "react-native-router-flux";
 import { Container, Content, Header, View } from "../components/layout";
 import { Text } from "../components/typography";
-import { getUserInfo, convertToAddress } from "../utils";
+import { convertToAddress } from "../services/location-functions.service";
+import { getUserInfo } from '../services/user.service'
 import { connect } from "react-redux";
 import theme from "../styles/base";
 

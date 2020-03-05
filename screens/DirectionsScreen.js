@@ -11,8 +11,8 @@ import theme from '../styles/base'
 import {
     convertToCoordinates,
     convertToAddress,
-    getUserLocation,
-} from '../utils/index'
+} from '../services/location-functions.service'
+import { getUserLocation } from '../services/user.service';
 
 import mapMarkerIcon from '../components/icons/mapMarker'
 

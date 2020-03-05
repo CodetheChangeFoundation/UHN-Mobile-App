@@ -8,7 +8,7 @@ import { Button, Switch } from "../components/buttons";
 import { Form, Input } from "../components/forms";
 import { connect } from 'react-redux';
 import { loginHandler, setLoading, setLocalLocation, setStatus } from '../store/actions';
-import { getDeviceLocation } from '../utils/index'
+import { getDeviceLocation } from "../services/location-functions.service";
 
 class LoginScreen extends Component {
 

@@ -13,9 +13,8 @@ import {
     getDeviceLocation,
     convertToCoordinates,
     convertToAddress,
-    getUserLocation,
-    updateUserLocation
-} from '../utils/index'
+} from "../services/location-functions.service";
+import { getUserLocation, updateUserLocation } from '../services/user.service'
 import { setLocalLocation } from '../store/actions'
 
 import mapMarkerIcon from '../components/icons/mapMarker'

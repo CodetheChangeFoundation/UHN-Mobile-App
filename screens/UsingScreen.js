@@ -5,7 +5,7 @@ import { Actions } from "react-native-router-flux";
 import Timer from "../components/Timer/Timer";
 import { Container, Content, Header, View, Segment, Banner } from "../components/layout";
 import { Button, IconButton } from "../components/buttons";
-import { computeDistance } from '../utils'
+import { computeDistance } from '../services/location-functions.service'
 
 const fredVictorCoordinates = {
   lat: 43.6536212,

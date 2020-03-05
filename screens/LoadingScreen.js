@@ -10,7 +10,7 @@ var jwtDecode = require("jwt-decode");
 import { Notifications } from "expo";
 import { tokenRedirect, setLocalLocation, setNotification } from "../store/actions";
 import { connect } from "react-redux";
-import { getDeviceLocation } from "../utils/index";
+import { getDeviceLocation } from "../services/location-functions.service";
 
 const LoadingScreen = props => {
   const fontsLoaded = false;
