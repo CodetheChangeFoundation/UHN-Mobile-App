@@ -61,6 +61,9 @@ export const loginHandler = (credential, rememberMe) => {
   return (dispatch) => {
     axios.post(SERVER_ROOT + '/login', credential)
       .then(async (response) => {
+        if (response.data.metricError) {
+          console.log("Metric Error:", response.data.metricError);
+        }
         dispatch(setLoading(false));
         dispatch(login(response.data, rememberMe));
         dispatch(setStatus(response.data.id, response.data.token, { "naloxoneAvailability": response.data.naloxoneAvailability }))
@@ -79,6 +82,9 @@ export const signupHandler = (userData) => {
   return (dispatch) => {
     axios.post(SERVER_ROOT + '/signup', userData)
       .then(response => {
+        if (response.data.metricError) {
+          console.log("Metric Error:", response.data.metricError);
+        }
         dispatch(setLoading(false));
         Actions.login();
       })
