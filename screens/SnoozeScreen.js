@@ -86,7 +86,7 @@ class SnoozeScreen extends Component {
             <Text style={styles.timeStyle}>
               {this.convertSecondsToMinutes(timeRemaining)}:{this.convertSeconds(timeRemaining)}
             </Text>
-            <Button variant="snooze" onPress={this.snoozeHandler}>
+            <Button variant="light" size="large" onPress={this.snoozeHandler}>
               snooze
             </Button>
             <Text style={styles.textStyle}>

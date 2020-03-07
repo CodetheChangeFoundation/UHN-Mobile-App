@@ -54,7 +54,7 @@ const UsingScreen = (props) => {
       </View>
 
       <View style={styles.startButton}>
-        <Button variant="alarm" onPress={startAlarm}>start</Button>
+        <Button variant="affirmation" size="large" onPress={startAlarm}>start</Button>
       </View>
     </Content>
     </Container>

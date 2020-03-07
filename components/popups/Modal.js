@@ -1,14 +1,11 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { StyleSheet, Dimensions, TouchableWithoutFeedback, Modal as RNModal } from 'react-native';
 import PropTypes from "prop-types";
 import theme from "../../styles/base";
 import { View } from "../layout";
-import { Button } from "../buttons";
 import { Text } from "../typography";
 
-// TODO: On iOS, issue with closing/opening the drawer when modal is opened.
 const Modal = (props) => {
-  const deviceHeight = Math.round(Dimensions.get('window').height * 0.5);
 
   return (
     <RNModal animationType="fade" 
@@ -19,7 +16,7 @@ const Modal = (props) => {
     >
       <TouchableWithoutFeedback onPress={props.onBackdropPress}>
         <View style={styles.backdrop}>
-          <View style={[styles.container, { height: deviceHeight }]} onStartShouldSetResponder={() => true}>
+          <View style={styles.container} onStartShouldSetResponder={() => true}>
             
             <View style={styles.header}>
               <Text variant="title">{props.modalHeader}</Text>
@@ -29,7 +26,7 @@ const Modal = (props) => {
               {props.modalBody}
             </View>
 
-            <View style={[styles.footer, { flex: props.modalFooterLeft || props.modalFooterRight? 2 : 0 }]}>
+            <View style={styles.footer}>
               {props.modalFooterLeft}
               {props.modalFooterRight}
             </View>
@@ -44,7 +41,7 @@ const Modal = (props) => {
 /* Prop Types */
 
 Modal.propTypes = {
-  modalVisible: PropTypes.bool.isRequired,
+  modalVisible: PropTypes.bool,
   modalHeader: PropTypes.string.isRequired,
   modalBody: PropTypes.element.isRequired,
   modalFooterLeft: PropTypes.element,
@@ -52,6 +49,10 @@ Modal.propTypes = {
   onBackdropPress: PropTypes.func,
   onBackButtonPress: PropTypes.func,
 };
+
+Modal.defaultProps = {
+  modalVisible: true
+}
 
 /* Styles */
 
@@ -70,16 +71,20 @@ const styles = StyleSheet.create({
     padding: 20,
     margin: theme.layout.margin,
     alignSelf: "stretch",
+    justifyContent: "space-between"
   },
   header: {
-    flex: 1,
+    flex: 0,
+    alignSelf: "stretch",
+    marginBottom: theme.layout.margin
   },
   body: {
-    flex: 4,
+    flex: 0,
     padding: theme.layout.padding,
     alignSelf: "stretch",
   },
   footer: {
+    flex: 0,
     flexDirection: "row",
     justifyContent: "space-around",
   },
