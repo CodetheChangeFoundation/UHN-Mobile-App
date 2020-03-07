@@ -3,9 +3,8 @@ import { LOGIN, LOGIN_FAILED, SIGNUP_FAILED, SET_LOADING } from "./Types"
 import { setStatus } from '../../store/actions/UserDataActions.js'
 import { SERVER_ROOT } from 'react-native-dotenv';
 import { Actions } from "react-native-router-flux";
-import { AsyncStorage } from "react-native";
+import { AsyncStorage, Alert } from "react-native";
 import { sendPushToken } from "../../services/push-token.service";
-
 
 const login = (data, rememberMe) => {
   console.log(data);
@@ -16,10 +15,14 @@ const login = (data, rememberMe) => {
 }
 
 const loginFailed = (error) => {
-  // TODO: Render error message (not "error" variable, something intuitive to a non-programmer) to prompt user to try again
-  console.log("login failed: ");
-  console.log(error);
-  console.log(error.message)
+  console.log("login failed:", error);
+  Alert.alert(
+    "Login failed!",
+    (error.response?.data?.errors[0]?.message || '')
+    + "\nPlease check that you've entered each field correctly.",
+    [{ text: "OK" }],
+    { cancelable: true }
+  )
   return {
     type: LOGIN_FAILED
   }
@@ -33,9 +36,14 @@ export const setLoading = (isLoading) => {
 }
 
 const signupFailed = (error) => {
-  // TODO: Render error message (not "error" variable, something intuitive to a non-programmer) to prompt user to try again
-  console.log("signup failed: ");
-  console.log(error);
+  console.log("signup failed: ", error);
+  Alert.alert(
+    "Signup failed!",
+    (error.response?.data?.errors[0]?.message || '')
+    + "\nPlease check that you've entered each field correctly.",
+    [{ text: "OK" }],
+    { cancelable: true }
+  )
   return {
     type: SIGNUP_FAILED
   }

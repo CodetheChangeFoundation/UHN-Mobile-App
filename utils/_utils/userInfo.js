@@ -9,7 +9,14 @@ const getUserInfo = async (userId, token) => {
     .then((response) => {
       return response;
     })
-    .catch((err) => console.error(err));
+    .catch((err) => {
+      Alert.alert(
+        "Error getting user!!",
+        error.response?.data?.errors[0]?.message || '',
+        [{ text: "OK" }],
+        { cancelable: true }
+      )
+    });
 };
 
 module.exports = {

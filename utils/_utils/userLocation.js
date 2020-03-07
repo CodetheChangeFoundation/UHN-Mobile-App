@@ -1,5 +1,16 @@
 import * as axios from 'axios';
 import { SERVER_ROOT } from 'react-native-dotenv';
+import { Alert } from 'react-native';
+
+const locationsError = (error) => {
+    console.error(error)
+    Alert.alert(
+        "Location request failed!",
+        error.response?.data?.errors[0]?.message || '',
+        [{ text: "OK" }],
+        { cancelable: true }
+      )
+}
 
 // GET Request from db, returns promise
 // response --> location: { coords: { lat, lng }, note }
@@ -11,7 +22,7 @@ export const getUserLocation = (payload) => {
     return (
         axios.get(SERVER_ROOT + '/users/' + payload.id + '/location', accessToken)
         .then(response => { return response.data })
-        .catch(error => { console.error(error) })
+        .catch(error => { locationsError(error) })
     )
 }
 
@@ -26,6 +37,6 @@ export const updateUserLocation = (payload) => {
     return (
       axios.put(SERVER_ROOT + '/users/' + payload.id + '/location', payload.data, config)
         .then(response => { return response.data })
-        .catch(error => { console.error(error) })
+        .catch(error => { locationsError(error) })
     )
 }
