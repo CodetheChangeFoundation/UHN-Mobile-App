@@ -1,5 +1,5 @@
 import React, { useState, Fragment } from "react";
-import { StyleSheet, AsyncStorage, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { Actions } from "react-native-router-flux";
 import { Modal } from "../popups";
 import { View } from "../layout";
@@ -7,6 +7,7 @@ import { Button } from "../buttons";
 import { Text } from "../typography";
 import { connect } from 'react-redux';
 import { removePushToken } from "../../services/push-token.service"
+import * as LocalStorageService from "../../services/localStorage.service";
 import { setStatus } from '../../store/actions'
 import { List, ListItem } from '../layout'
 import theme from "../../styles/base";
@@ -22,7 +23,7 @@ const DrawerContent = (props) => {
       variant="primary"
       onPress={async () => {
         Actions.auth();
-        await AsyncStorage.removeItem("token");
+        LocalStorageService.clearToken();
         removePushToken(props.auth.userId);
         if (props.naloxoneAvailability)
           props.setStatus(props.auth.userId, props.auth.token, { "online": false })

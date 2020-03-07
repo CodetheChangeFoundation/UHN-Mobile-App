@@ -16,20 +16,17 @@ const setNaloxoneAvailabilityHandler = (naloxoneAvailability) => {
   }
 }
 
-export const setStatus = (userId, token, statusToChange) => {
+export const setStatus = (userId, statusToChange) => {
   return (dispatch) => {
     axios.post(`${SERVER_ROOT}/users/${userId}/status`,
-      statusToChange,
-      {
-        headers: { "Authorization": token },
-      })
+      statusToChange)
       .then(response => {
         if (statusToChange.naloxoneAvailability != undefined) {
           dispatch(setNaloxoneAvailabilityHandler(statusToChange.naloxoneAvailability))
         }
       })
       .catch(error => {
-        console.log(error);
+        console.error(error.response);
       })
   }
 }

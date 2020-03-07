@@ -1,16 +1,16 @@
+var jwtDecode = require("jwt-decode");
+import { AppLoading, Notifications } from "expo";
 import React, { useEffect } from "react";
-import { StyleSheet, AsyncStorage } from "react-native";
+import { StyleSheet } from "react-native";
 import { Actions } from "react-native-router-flux";
+import { connect } from "react-redux";
+import { tokenRedirect, setLocalLocation, setNotification } from "../store/actions";
 import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
-import { AppLoading } from "expo";
 import { Container, Content, View } from "../components/layout";
 import { Text } from "../components/typography";
-var jwtDecode = require("jwt-decode");
-import { Notifications } from "expo";
-import { tokenRedirect, setLocalLocation, setNotification } from "../store/actions";
-import { connect } from "react-redux";
 import { getDeviceLocation } from "../utils/index";
+import * as LocalStorageService from "../services/localStorage.service";
 
 const LoadingScreen = props => {
   const fontsLoaded = false;
@@ -42,7 +42,7 @@ const LoadingScreen = props => {
   };
 
   _checkToken = async () => {
-    const token = await AsyncStorage.getItem("token");
+    const token = await LocalStorageService.getAccessToken();
 
     if (token) {
       let isExpired = false;
@@ -60,6 +60,7 @@ const LoadingScreen = props => {
         });
         Actions.main();
       } else {
+        console.log("token expired")
         Actions.auth();
       }
     } else {
