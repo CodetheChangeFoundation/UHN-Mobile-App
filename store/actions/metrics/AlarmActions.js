@@ -40,8 +40,6 @@ export const updateAlarmLog = (duration, sentStatus, alarmID, token) => {
     data.sentStatus = sentStatus;
   }
 
-  console.log(data)
-
   return (dispatch) => {
     axios.put(SERVER_ROOT + "/metrics/alarm/" + alarmID, data, 
     {
@@ -51,7 +49,6 @@ export const updateAlarmLog = (duration, sentStatus, alarmID, token) => {
       dispatch(setAlarmLogID(response.data.alarmID));
     })
     .catch((error) => {
-      console.log(error)
       dispatch(metricAlarmError(error));
     })
   };
