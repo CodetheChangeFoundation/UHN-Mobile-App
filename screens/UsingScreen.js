@@ -6,6 +6,7 @@ import Timer from "../components/Timer/Timer";
 import { Container, Content, Header, View, Segment, Banner } from "../components/layout";
 import { Button, IconButton } from "../components/buttons";
 import { computeDistance } from '../utils'
+import { makeAlarmLog } from "../store/actions";
 
 const fredVictorCoordinates = {
   lat: 43.6536212,
@@ -17,12 +18,19 @@ const MAXIMUM_DISTANCE = 1000000000 // meters
 
 const UsingScreen = (props) => {
 
+  const { time, userId, token } = props;
+  const { timeRemaining } = time
+
   const startAlarm = () => {
     const distance = computeDistance(fredVictorCoordinates, props.location.coords)
     if( distance > MAXIMUM_DISTANCE ) Alert.alert("Cannot start alarm", "There are no responders within your area", [
       { text: 'OK' }
     ], { cancelable: false })
-    else Actions.alarm()
+    else {
+      Actions.alarm();
+
+      props.makeAlarmLog(userId, timeRemaining, token);
+    }
   }
 
   return (
@@ -64,7 +72,12 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state, currentProps) => {
   const { location } = state.userData;
-  return { location }
+  return { 
+    location,
+    userId: state.auth.userId,
+    time: state.timer, 
+    token: state.auth.token
+  }
 }
 
-export default connect(mapStateToProps)(UsingScreen);
+export default connect(mapStateToProps, { makeAlarmLog })(UsingScreen);

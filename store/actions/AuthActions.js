@@ -1,5 +1,6 @@
 import * as axios from 'axios';
 import { LOGIN, LOGIN_FAILED, SIGNUP_FAILED, SET_LOADING } from "./Types"
+import { setStatus } from '../../store/actions/UserDataActions.js'
 import { SERVER_ROOT } from 'react-native-dotenv';
 import { Actions } from "react-native-router-flux";
 import { AsyncStorage } from "react-native";
@@ -10,7 +11,7 @@ const login = (data, rememberMe) => {
   console.log(data);
   return {
     type: LOGIN,
-    data: {userId: data.id, token: data.token, rememberMe: rememberMe}
+    data: { userId: data.id, token: data.token, rememberMe: rememberMe }
   };
 }
 
@@ -18,6 +19,7 @@ const loginFailed = (error) => {
   // TODO: Render error message (not "error" variable, something intuitive to a non-programmer) to prompt user to try again
   console.log("login failed: ");
   console.log(error);
+  console.log(error.message)
   return {
     type: LOGIN_FAILED
   }
@@ -26,7 +28,7 @@ const loginFailed = (error) => {
 export const setLoading = (isLoading) => {
   return {
     type: SET_LOADING,
-    data: {loading: isLoading}
+    data: { loading: isLoading }
   }
 }
 
@@ -47,11 +49,16 @@ export const tokenRedirect = (userid, token, rememberMe) => {
 }
 
 export const loginHandler = (credential, rememberMe) => {
+  console.log('http://' + SERVER_ROOT + '/login')
   return (dispatch) => {
     axios.post(SERVER_ROOT + '/login', credential)
       .then(async (response) => {
+        if (response.data.metricError) {
+          console.log("Metric Error:", response.data.metricError);
+        }
         dispatch(setLoading(false));
         dispatch(login(response.data, rememberMe));
+        dispatch(setStatus(response.data.id, response.data.token, { "naloxoneAvailability": response.data.naloxoneAvailability }))
         sendPushToken(response.data.id);
         await AsyncStorage.setItem("token", response.data.token);
         Actions.main();
@@ -66,14 +73,17 @@ export const loginHandler = (credential, rememberMe) => {
 export const signupHandler = (userData) => {
   return (dispatch) => {
     axios.post(SERVER_ROOT + '/signup', userData)
-    .then(response => {
-      dispatch(setLoading(false));
-      Actions.login();
-    })
-    .catch(error => {
-      dispatch(setLoading(false));
-      dispatch(signupFailed(error));
-    })
+      .then(response => {
+        if (response.data.metricError) {
+          console.log("Metric Error:", response.data.metricError);
+        }
+        dispatch(setLoading(false));
+        Actions.login();
+      })
+      .catch(error => {
+        dispatch(setLoading(false));
+        dispatch(signupFailed(error));
+      })
   }
 }
 

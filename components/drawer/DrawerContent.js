@@ -7,9 +7,9 @@ import { Button } from "../buttons";
 import { Text } from "../typography";
 import { connect } from 'react-redux';
 import { removePushToken } from "../../services/push-token.service"
+import { setStatus } from '../../store/actions'
 import { List, ListItem } from '../layout'
 import theme from "../../styles/base";
-
 
 const DrawerContent = (props) => {
   const modalHeader = "Logout";
@@ -22,6 +22,8 @@ const DrawerContent = (props) => {
         Actions.auth();
         await AsyncStorage.removeItem("token");
         removePushToken(props.auth.userId);
+        if (props.naloxoneAvailability)
+          props.setStatus(props.auth.userId, props.auth.token, { "online": false })
       }}
     >
       logout
@@ -100,8 +102,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    auth: state.auth
+    auth: state.auth,
+    naloxoneAvailability: state.userData.naloxoneAvailability
   }
 }
 
-export default connect(mapStateToProps, {})(DrawerContent);
+export default connect(mapStateToProps, { setStatus })(DrawerContent);

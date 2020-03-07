@@ -7,7 +7,7 @@ import { Text } from "../components/typography";
 import { Button, Switch } from "../components/buttons";
 import { Form, Input } from "../components/forms";
 import { connect } from 'react-redux';
-import { loginHandler, setLoading, setLocalLocation } from '../store/actions';
+import { loginHandler, setLoading, setLocalLocation, setStatus } from '../store/actions';
 import { getDeviceLocation } from '../utils/index'
 
 class LoginScreen extends Component {
@@ -78,8 +78,8 @@ class LoginScreen extends Component {
 
             <View style={styles.rememberMe}>
               <Text variant="footnote">remember me</Text>
-              <Switch style={styles.rememberMeSwitch} 
-                value={this.state.rememberMe} 
+              <Switch style={styles.rememberMeSwitch}
+                value={this.state.rememberMe}
                 onValueChange={() => this.setRememberMe()}
               />
             </View>
@@ -126,4 +126,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { loginHandler, setLoading, setLocalLocation })(LoginScreen);
+export default connect(mapStateToProps, { loginHandler, setLoading, setLocalLocation, setStatus })(LoginScreen);
