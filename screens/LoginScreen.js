@@ -42,7 +42,7 @@ class LoginScreen extends Component {
     return (this.props.auth.loading) ?
       (<Spinner />)
       :
-      (<Button variant="primary" onPress={this.onLoginButtonPress}>
+      (<Button variant="dark" size="medium" onPress={this.onLoginButtonPress}>
         login
         </Button>
       );
@@ -89,7 +89,7 @@ class LoginScreen extends Component {
             </View>
 
             <View style={styles.signupButton}>
-              <Button variant="secondary" onPress={() => Actions.signup()}>sign up</Button>
+              <Button variant="light" size="medium" onPress={() => Actions.signup()}>sign up</Button>
             </View>
           </Form>
         </Content>

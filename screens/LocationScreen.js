@@ -203,8 +203,8 @@ const LocationScreen = (props) => {
 
         <View style={styles.searchButton}>
             { addressConfirm ? 
-                (<Button variant="alarm" onPress={handleConfirm}>confirm</Button>)
-                : (<Button variant="alarm" onPress={handleSearch}>search</Button>)
+                (<Button variant="affirmation" size="large" onPress={handleConfirm}>confirm</Button>)
+                : (<Button variant="affirmation" size="large" onPress={handleSearch}>search</Button>)
             }
          </View>
     </Content>

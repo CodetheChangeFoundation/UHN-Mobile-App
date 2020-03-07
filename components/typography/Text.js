@@ -1,21 +1,21 @@
 import React from "react";
 import PropTypes from "prop-types";
 import theme from "../../styles/base"
-import { Text as RNText, StyleSheet } from "react-native";
-import { Title, Text as NBText } from "native-base";
+import { StyleSheet } from "react-native";
+import { Text as NBText } from "native-base";
 
 const Text = (props) => {
   return (
-      <NBText {...props} style={[textStyles[props.variant], props.style]}>{props.children}</NBText>
+    <NBText {...props} style={[textStyles[props.variant], props.style]}>{props.children}</NBText>
   );
 }
 
 /* Prop Types */
 
 Text.propTypes = {
-  variant: PropTypes.oneOf([ "body", "footnote", "title", "header", "primary", "secondary", "alarm", "urgent", "label", "snooze"]),
+  variant: PropTypes.oneOf([ "body", "footnote", "title", "header", "label"]),
 };
-0
+
 Text.defaultProps = {
   variant: "body",
 };
@@ -41,7 +41,6 @@ const textStyles = StyleSheet.create({
   footnote: {
     ...regular,
     fontSize: theme.fontSizes.small,
-    textAlign: "center",
   },
   title: {
     ...big,
@@ -51,35 +50,11 @@ const textStyles = StyleSheet.create({
     ...big,
     color: theme.colors.white,
   },
-  primary: {
-    ...regular,
-    color: theme.colors.white,
-  },
-  secondary: {
-    ...regular,
-    color: theme.colors.darkGrey,
-  },
-  alarm: {
-    ...regular,
-    fontSize: theme.fontSizes.large,
-    color: theme.colors.white,
-  },
-  urgent: {
-    ...regular,
-    fontSize: theme.fontSizes.large,
-    color: theme.colors.white,
-  },
-  snooze: {
-    ...regular,
-    fontSize: theme.fontSizes.large,
-    color: theme.colors.black,
-    fontWeight: "bold", 
-  },
   label: {
     ...regular,
     fontSize: theme.fontSizes.xsmall,
     textAlign: "center",
-  },
+  }
 });
 
 export default Text;

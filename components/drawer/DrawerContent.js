@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { Fragment } from "react";
 import { StyleSheet, AsyncStorage, TouchableOpacity } from "react-native";
 import { Actions } from "react-native-router-flux";
 import { Modal } from "../popups";
@@ -12,14 +12,12 @@ import { List, ListItem } from '../layout'
 import theme from "../../styles/base";
 
 const DrawerContent = (props) => {
-  const [modalVisible, setModalVisible] = useState(false);
-
   const modalHeader = "Logout";
   const modalBody = (<Text>Are you sure?</Text>);
-  const modalFooterLeft = (<Button variant="secondary" onPress={() => setModalVisible(false)}>Cancel</Button>);
+  const modalFooterLeft = (<Button variant="light" size="medium" onPress={() => Actions.pop()}>cancel</Button>);
   const modalFooterRight = (
     <Button
-      variant="primary"
+      variant="dark" size="medium"
       onPress={async () => {
         Actions.auth();
         await AsyncStorage.removeItem("token");
@@ -28,30 +26,29 @@ const DrawerContent = (props) => {
           props.setStatus(props.auth.userId, props.auth.token, { "online": false })
       }}
     >
-      Logout
+      logout
     </Button>
   );
+
+  const modalParams = {
+    modalHeader,
+    modalBody,
+    modalFooterLeft,
+    modalFooterRight,
+    onBackdropPress: () => Actions.pop(),
+    onBackButtonPress: () => Actions.pop()
+  }
 
   const routes = [
     {name: 'Using', function: Actions.using},
     {name: 'Responding', function: Actions.responding},
     {name: 'User Profile', function: Actions.profile},
     {name: 'Resource', function: Actions.resource},
-    {name: 'Logout', function: () => {setModalVisible(true)}},
+    {name: 'Logout', function: () => {Actions.modal(modalParams)}},
   ]
 
   return (
     <Fragment>
-      <Modal
-        modalVisible={modalVisible}
-        modalHeader={modalHeader}
-        modalBody={modalBody}
-        modalFooterLeft={modalFooterLeft}
-        modalFooterRight={modalFooterRight}
-        onBackdropPress={() => setModalVisible(false)}
-        onBackButtonPress={() => setModalVisible(false)}
-      />
-
       <View style={styles.topContainer}>
         <Text>Logo here</Text>
       </View>
@@ -103,7 +100,6 @@ const styles = StyleSheet.create({
   }
 });
 
-// export default DrawerContent;
 const mapStateToProps = (state) => {
   return {
     auth: state.auth,

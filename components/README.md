@@ -27,15 +27,28 @@ expo start --clear
 **Button**
 
 ```
-<Button variant="alarm" />
+<Button
+  variant="warning"
+  size="large"
+  textStyles={{fontSize: 32}}
+>
+  Stop
+</Button>
 ```
 
 Props:
 
 - variant: changes the appearance of the button
   - optional
-  - type: one of "primary", "secondary", "alarm", "urgent"
-  - default: "primary"
+  - type: one of "dark", "light", "affirmation", "warning"
+  - default: "dark"
+- size: changes the size of the button
+  - optional
+  - type: one of "medium", "large"
+  - default: "medium"
+- textStyles: additional styles to pass onto the Text component inside the Button
+  - optional
+  - type: object
 
 
 **Switch**
@@ -362,8 +375,7 @@ Props:
   - type: one of
     - "body", "footnote", "title" (used for displaying text on screen)
     - "header" (used in the Header component)
-    - "primary", "secondary", "alarm", "urgent", "snooze" (used in the Button component)
-    - "label" (used in the IconButton component)
+    - "label" (used for very small text, e.g. button labels)
   - default: "body"
 
 ## Timer

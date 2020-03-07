@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import theme from "../../styles/base";
 import { StyleSheet, TouchableOpacity } from "react-native";
-import { Button as NBButton } from "native-base";
 import { Text } from "../typography";
 
 const Button = (props) => {
@@ -12,20 +11,29 @@ const Button = (props) => {
   };
 
   return (
-      <TouchableOpacity {...combinedProps} style={[buttonStyles[props.variant], props.style]}>
-          <Text variant={props.variant}>{props.children}</Text>
-      </TouchableOpacity>
+    <TouchableOpacity {...combinedProps} 
+      style={[baseButtonStyles, variantButtonStyles[props.variant], sizeButtonStyles[props.size], props.style]}
+    >
+      <Text variant="body" 
+        style={[baseTextStyles, variantTextStyles[props.variant], sizeTextStyles[props.size], props.textStyles]}
+      >
+        {props.children}
+      </Text>
+    </TouchableOpacity>
   );
 }
 
 /* Prop Types */
 
 Button.propTypes = {
-  variant: PropTypes.oneOf([ "primary", "secondary", "alarm", "urgent", "snooze"]),
+  variant: PropTypes.oneOf([ "dark", "light", "affirmation", "warning" ]),
+  size: PropTypes.oneOf([ "medium", "large" ]),
+  textStyles: PropTypes.object
 };
 
 Button.defaultProps = {
-  variant: "primary",
+  variant: "dark",
+  size: "medium"
 };
 
 /* Props */
@@ -36,58 +44,70 @@ const buttonProps = {
 
 /* Styles */
 
-const base = {
+const baseButtonStyles = {
   margin: theme.layout.margin,
   alignItems: "center",
   justifyContent: "center",
   flexShrink: 1,
-}
+};
 
-const medium = {
-  height: 54,
-  width: 180,
-  borderRadius: 54,
-}
-
-const large = {
-  height: 72,
-  width: 240,
-  borderRadius: 72,
-}
-
-const border = {
-  borderWidth: 1,
-}
-
-const buttonStyles = StyleSheet.create({
-  primary: {
-    ...base,
-    ...medium,
+const variantButtonStyles = StyleSheet.create({
+  dark: {
     backgroundColor: theme.colors.darkGrey,
   },
-  secondary: {
-    ...base,
-    ...medium,
-    ...border,
+  light: {
     backgroundColor: theme.colors.white,
+    borderWidth: 1,
     borderColor: theme.colors.darkGrey,
   },
-  alarm: {
-    ...base,
-    ...large,
+  affirmation: {
     backgroundColor: theme.colors.green,
   },
-  urgent: {
-    ...base,
-    ...large,
+  warning: {
     backgroundColor: theme.colors.red,
+  }
+});
+
+const variantTextStyles = StyleSheet.create({
+  dark: {
+    color: theme.colors.white
   },
-  snooze: {
-    ...base,
-    ...large,
-    ...border,
-    backgroundColor: theme.colors.white,
-    borderColor: theme.colors.darkGrey,
+  light: {
+    color: theme.colors.darkGrey
+  },
+  affirmation: {
+    color: theme.colors.white
+  },
+  warning: {
+    color: theme.colors.white
+  }
+});
+
+const baseTextStyles = {
+  textAlign: "center",
+}
+
+const sizeButtonStyles = StyleSheet.create({
+  medium: {
+    height: 54,
+    width: 180,
+    borderRadius: 54,
+    paddingHorizontal: 18,
+  },
+  large: {
+    height: 72,
+    width: 240,
+    borderRadius: 72,
+    paddingHorizontal: 24,
+  }
+});
+
+const sizeTextStyles = StyleSheet.create({
+  medium: {
+    fontSize: theme.fontSizes.medium,
+  },
+  large: {
+    fontSize: theme.fontSizes.large,
   }
 });
 

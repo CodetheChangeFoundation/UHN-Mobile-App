@@ -5,7 +5,7 @@ import { Actions } from "react-native-router-flux";
 import { Container, Content, Header, View } from "../components/layout";
 import { Text } from "../components/typography";
 import { connect } from 'react-redux';
-import { increaseTime, decreaseTime, countdown, clearTime, resetTime } from '../store/actions';
+import { increaseTime, decreaseTime, countdown, clearTime, resetTime, updateAlarmLog } from '../store/actions';
 import { sendHelpRequest } from "../services/help-request.service";
 import { convertSeconds, convertSecondsToMinutes } from "../services/time-functions.service";
 import { Audio } from 'expo-av';
@@ -26,6 +26,8 @@ class SnoozeScreen extends Component {
         Alert.alert("Help request sent", "Help request has been sent to your responder network", [
           { text: 'OK', onPress: () => Actions.main() }
         ], { cancelable: false });
+        
+        this.props.updateAlarmLog(null, true, this.props.currentAlarmLog, this.props.token)
       })
     } else {
       this.props.countdown(this.props.time.timeRemaining);
@@ -33,6 +35,7 @@ class SnoozeScreen extends Component {
   };
 
   snoozeHandler() {
+    this.props.updateAlarmLog(120, null, this.props.currentAlarmLog, this.props.token);
     clearInterval(this.interval);
     this.props.resetTime();
     Actions.alarm();
@@ -70,7 +73,7 @@ class SnoozeScreen extends Component {
             <Text style={styles.timeStyle}>
               {convertSecondsToMinutes(timeRemaining)}:{convertSeconds(timeRemaining)}
             </Text>
-            <Button variant="snooze" onPress={this.snoozeHandler}>
+            <Button variant="light" size="large" onPress={this.snoozeHandler}>
               snooze
             </Button>
             <Text style={styles.textStyle}>
@@ -112,8 +115,9 @@ function mapStateToProps(state) {
   return {
     time: state.timer,
     userId: state.auth.userId,
-    token: state.auth.token
+    token: state.auth.token,
+    currentAlarmLog: state.alarm.currentAlarmLog
   }
 }
 
-export default connect(mapStateToProps, { increaseTime, decreaseTime, countdown, clearTime, resetTime })(SnoozeScreen);
+export default connect(mapStateToProps, { increaseTime, decreaseTime, countdown, clearTime, resetTime, updateAlarmLog })(SnoozeScreen);

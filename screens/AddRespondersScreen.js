@@ -141,8 +141,11 @@ class AddRespondersScreen extends Component {
           </List>
 
           <View style={styles.addButton}>
-            <Button variant="primary" style={{backgroundColor: theme.colors.green}}
-            onPress={() => this.addSelectedUserIds()}>add selected</Button>
+            <Button variant="affirmation" size="medium"
+              onPress={() => this.addSelectedUserIds()}
+            >
+              add selected
+            </Button>
           </View>
         </Content>
       </Container>
