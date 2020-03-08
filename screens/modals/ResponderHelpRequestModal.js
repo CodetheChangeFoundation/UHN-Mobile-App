@@ -34,7 +34,6 @@ const ResponderHelpRequestModal = (props) => {
         // Handle error where there are already 6 responders who accepted
         if (!!response) {
           if (response.status == statusCodes.ok) {
-            Actions.pop()
             Actions.assignment();
           } else if ((response.status == statusCodes.badRequest) 
             && (response.data.statusCode == statusCodes.limitReachedError)) {

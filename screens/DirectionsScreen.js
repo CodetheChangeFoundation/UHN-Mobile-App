@@ -82,8 +82,7 @@ const DirectionsScreen = (props) => {
     }
 
     const handleArrived  = () => {
-        // TODO: PUT to update the help request status to solved
-        
+        // updateStatusOfHelpRequest(props.token, 'arrived', )
         props.dismissNotification();
     }
 
