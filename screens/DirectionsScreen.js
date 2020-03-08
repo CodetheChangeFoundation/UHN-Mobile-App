@@ -14,12 +14,11 @@ import {
     getUserLocation,
 } from '../utils/index'
 import { dismissNotification } from "../store/actions";
+import { updateStatusOfHelpRequest } from "../services/help-request.service";
 
 import mapMarkerIcon from '../components/icons/mapMarker'
 
-const DEFAULT_CLIENT = 'Pho'
-const DEFAULT_COORDINATES = { lat: 49.2827, lng: -123.1207 }
-const DEFAULT_INFORMATION = 'There is a key under the mat'
+const DEFAULT_COORDINATES = { lat: 43.6536212, lng: -79.3751693 }
 
 const openStreetMapLayer = {
     attribution:'&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
@@ -37,15 +36,18 @@ const DirectionsScreen = (props) => {
 
     const [address, setAddress] = useState(null)
     const [note, setNote] = useState(null)
-
+    const [client, setClient] = useState(null)
     
     useEffect(() => {
+      
+      const currentNotification = props.notification.notificationQueue[0]
+      const { username, location } = currentNotification.user
+      const { coords, note } = location
 
-        // TODO: GET the assigned's location and note here
-
-        setLocation(DEFAULT_COORDINATES)
-        convertToAddress(DEFAULT_COORDINATES, setAddress)
-        setNote(DEFAULT_INFORMATION)
+      setLocation(currentNotification.user.location.coords)
+      convertToAddress(coords, setAddress)
+      setNote(note)
+      setClient(username)
 
     }, [])
 
@@ -71,8 +73,7 @@ const DirectionsScreen = (props) => {
 
     const handleArrived  = () => {
         // TODO: PUT to update the help request status to solved
-        // Actions.main()
-        // Remmove the current help request notification from the queue
+        
         props.dismissNotification();
     }
 
@@ -95,7 +96,7 @@ const DirectionsScreen = (props) => {
         </View>
 
         <View style={styles.textWrapper}>
-            <Text style={styles.supportText}>{DEFAULT_CLIENT}'s location:</Text>
+            <Text style={styles.supportText}>{client}'s location:</Text>
             <Text style={styles.addressText}>{address}</Text>
         </View>
 
@@ -148,10 +149,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state, currentProps) => {
-    // const { token, userId } = state.auth;
-    // const { location } = state.userData;
-    // return { ...currentProps, token, userId, location }
-    return currentProps
+    const { token, userId } = state.auth;
+    const notification = state.notification;
+    return { ...currentProps, token, userId, notification }
 }
 
 export default connect(mapStateToProps, { dismissNotification })(DirectionsScreen);

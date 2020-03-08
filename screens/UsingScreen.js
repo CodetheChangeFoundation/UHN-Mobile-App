@@ -41,7 +41,7 @@ const UsingScreen = (props) => {
       <Banner>
         <Segment active="left"
           leftText="using" rightText="responding"
-          onRightButtonPress={() => Actions.responding()}
+          onRightButtonPress={() => Actions.assignment()}
         />
       </Banner>
       <Banner>
