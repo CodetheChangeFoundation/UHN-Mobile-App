@@ -73,9 +73,15 @@ export default function App() {
                 key="start"
                 component={AlarmScreen}
                 title="Alarm Start"
+                type={ActionConst.REPLACE}
                 initial
               />
-              <Scene key="snooze" component={SnoozeScreen} title="Snooze" />
+              <Scene
+                key="snooze"
+                component={SnoozeScreen} 
+                title="Snooze"
+                type={ActionConst.REPLACE}
+              />
             </Scene>
             <Scene key="responders" hideNavBar>
               <Scene
