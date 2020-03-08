@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Alert } from 'react-native';
 import { connect } from 'react-redux'
 import { WebViewLeaflet } from 'react-native-webview-leaflet'
 
@@ -8,11 +8,7 @@ import { Container, Content, Header, View } from "../components/layout";
 import { Button } from "../components/buttons";
 import { Text } from "../components/typography"
 import theme from '../styles/base'
-import {
-    convertToCoordinates,
-    convertToAddress,
-    getUserLocation,
-} from '../utils/index'
+import { convertToAddress } from '../utils/index'
 import { dismissNotification } from "../store/actions";
 import { updateStatusOfHelpRequest } from "../services/help-request.service";
 
@@ -41,6 +37,20 @@ const DirectionsScreen = (props) => {
     useEffect(() => {
       
       const currentNotification = props.notification.notificationQueue[0]
+
+      if(!currentNotification) {
+        Alert.alert(
+          "Sorry! Data on this help request cannot be found!",
+          "You will be re-directed back to the main menu",
+          [
+            { text: 'Ok', onPress: () => {
+              Actions.main()
+            }},
+          ],
+          { cancelable: false });
+        return
+      }
+    
       const { username, location } = currentNotification.user
       const { coords, note } = location
 
