@@ -33,31 +33,32 @@ const DirectionsScreen = (props) => {
     const [address, setAddress] = useState(null)
     const [note, setNote] = useState(null)
     const [client, setClient] = useState(null)
+    const [helpRequestId, setHelpRequestId] = useState(null)
     
     useEffect(() => {
+        const currentNotification = props.notification.notificationQueue[0]
+
+        if(!currentNotification) {
+          Alert.alert(
+            "Sorry! Data on this help request cannot be found!",
+            "You will be re-directed back to the main menu",
+            [
+              { text: 'Ok', onPress: () => {
+                Actions.main()
+              }},
+            ],
+            { cancelable: false });
+          return
+        }
       
-      const currentNotification = props.notification.notificationQueue[0]
+        const { username, location } = currentNotification.user
+        const { coords, note } = location
 
-      if(!currentNotification) {
-        Alert.alert(
-          "Sorry! Data on this help request cannot be found!",
-          "You will be re-directed back to the main menu",
-          [
-            { text: 'Ok', onPress: () => {
-              Actions.main()
-            }},
-          ],
-          { cancelable: false });
-        return
-      }
-    
-      const { username, location } = currentNotification.user
-      const { coords, note } = location
-
-      setLocation(currentNotification.user.location.coords)
-      convertToAddress(coords, setAddress)
-      setNote(note)
-      setClient(username)
+        setLocation(currentNotification.user.location.coords)
+        convertToAddress(coords, setAddress)
+        setNote(note)
+        setClient(username)
+        setHelpRequestId(currentNotification.helpRequestId)
 
     }, [])
 
@@ -82,8 +83,17 @@ const DirectionsScreen = (props) => {
     }
 
     const handleArrived  = () => {
-        // updateStatusOfHelpRequest(props.token, 'arrived', )
-        props.dismissNotification();
+        updateStatusOfHelpRequest(props.token, 'arrived', helpRequestId)
+        props.dismissNotification()
+        Alert.alert(
+          `Thank you for attending to ${client}!`,
+          "You will be re-directed back to the main menu",
+          [
+            { text: 'Ok', onPress: () => {
+              Actions.main()
+            }},
+          ],
+          { cancelable: false });
     }
 
   return (
