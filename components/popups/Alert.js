@@ -3,6 +3,8 @@ import { Alert as RNAlert } from "react-native";
 import PropTypes from "prop-types";
 import theme from "../../styles/base";
 import { Actions } from "react-native-router-flux";
+import { connect } from "react-redux";
+import { checkForNotifications } from "../../store/actions";
 
 const Alert = (props) => {
   const { 
@@ -10,15 +12,13 @@ const Alert = (props) => {
     positiveButton, negativeButton, neutralButton,
     cancelable
   } = props;
-  
-  console.log("alert opened in", Actions.currentScene)
 
   const runFunc = (func) => {
-    console.log("leaving", Actions.currentScene)
     Actions.pop();
     if (func) {
       func();
     }
+    props.checkForNotifications()
   }
 
   const renderButtons = (positiveButton, negativeButton, neutralButton) => {
@@ -85,4 +85,4 @@ Alert.defaultProps = {
   cancelable: true
 }
 
-export default Alert;
+export default connect(null, { checkForNotifications })(Alert);
