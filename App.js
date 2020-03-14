@@ -14,8 +14,8 @@ import LocationScreen from './screens/LocationScreen';
 import AddRespondersScreen from "./screens/AddRespondersScreen";
 import RemoveRespondersScreen from "./screens/RemoveRespondersScreen";
 import ResponderHelpRequestModal from "./screens/modals/ResponderHelpRequestModal";
-import GenericModal from "./screens/modals/GenericModal";
-import GenericAlert from "./screens/modals/GenericAlert";
+import Modal from "./components/popups/Modal";
+import Alert from "./components/popups/Alert";
 import DirectionsScreen from "./screens/DirectionsScreen";
 import DrawerContent from "./components/drawer/DrawerContent";
 import { Provider } from "react-redux";
@@ -111,12 +111,12 @@ export default function App() {
           />
           <Scene
             key="modal"
-            component={GenericModal}
+            component={Modal}
             hideNavBar
           />
           <Scene
             key="alert"
-            component={GenericAlert}
+            component={Alert}
             hideNavBar
           />
         </Lightbox>
