@@ -13,11 +13,9 @@ const Alert = (props) => {
     cancelable
   } = props;
 
-  const runFunc = (func) => {
-    Actions.pop();    // Pops the invisible alert Scene
-    if (!!func) {
-      func();
-    }
+  const dismissModal = (func) => {
+    Actions.pop();        // Pops the invisible alert Scene
+    if (!!func) func();   // Runs the onPress prop for that button
     props.checkForNotifications()
   }
 
@@ -27,17 +25,17 @@ const Alert = (props) => {
     // Neutral
     if (!!neutralButton) {
       if (!!negativeButton) {
-        buttons.push({ text: neutralButton.text, style: neutralButton.style, onPress: () => runFunc(neutralButton.onPress) });
+        buttons.push({ text: neutralButton.text, style: neutralButton.style, onPress: () => dismissModal(neutralButton.onPress) });
       } else {
         console.warn("Alert PropTypes: neutralButton requires negativeButton to be defined");
       }
     }
     // Negative
     if (!!negativeButton) {
-      buttons.push({ text: negativeButton.text, style: negativeButton.style, onPress: () => runFunc(negativeButton.onPress) });
+      buttons.push({ text: negativeButton.text, style: negativeButton.style, onPress: () => dismissModal(negativeButton.onPress) });
     }
     // Positive
-    buttons.push({ text: positiveButton.text, style: positiveButton.style, onPress: () => runFunc(positiveButton.onPress) });
+    buttons.push({ text: positiveButton.text, style: positiveButton.style, onPress: () => dismissModal(positiveButton.onPress) });
 
     return buttons;
   }
@@ -48,7 +46,7 @@ const Alert = (props) => {
     renderButtons(positiveButton, negativeButton, neutralButton),
     {
       cancelable, 
-      onDismiss: () => runFunc(null)  // To pop this Scene when cancelable == true and the modal is dismissed
+      onDismiss: () => dismissModal(null)  // To pop this Scene when cancelable == true and the modal is dismissed
     }
   );
   
