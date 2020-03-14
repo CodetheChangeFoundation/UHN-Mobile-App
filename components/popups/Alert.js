@@ -14,8 +14,8 @@ const Alert = (props) => {
   } = props;
 
   const runFunc = (func) => {
-    Actions.pop();
-    if (func) {
+    Actions.pop();    // Pops the invisible alert Scene
+    if (!!func) {
       func();
     }
     props.checkForNotifications()
@@ -79,9 +79,6 @@ Alert.propTypes = {
 }
 
 Alert.defaultProps = {
-  positiveButton: {
-    text: "OK"
-  },
   cancelable: true
 }
 

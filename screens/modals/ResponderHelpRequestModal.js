@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Alert, AppState, Platform } from "react-native";
+import { StyleSheet, AppState, Platform } from "react-native";
 import { Actions } from "react-native-router-flux";
 import theme from "../../styles/base";
 import statusCodes from "../../constants/statusCodes";
@@ -38,14 +38,11 @@ const ResponderHelpRequestModal = (props) => {
             Actions.assignment();
           } else if ((response.status == statusCodes.badRequest) 
             && (response.data.statusCode == statusCodes.limitReachedError)) {
-            Alert.alert(
-              "No Help Required",
-              `${userWhoNeedsHelp.username} does not need your help anymore. Thanks!`,
-              [{
-                text: "OK",
-                onPress: () => props.dismissNotification()
-              }]
-            );
+            Actions.alert({
+              alertTitle: "No Help Required",
+              alertBody: `${userWhoNeedsHelp.username} does not need your help anymore. Thanks!`,
+              positiveButton: { text: "OK", onPress: () => props.dismissNotification() },
+            });
           } else {
             props.dismissNotification();
           }
@@ -78,8 +75,6 @@ const ResponderHelpRequestModal = (props) => {
       </View>
   );
 
-  // Wait until location coordinates have been converted into an address
-  // if (userWhoNeedsHelp.location && !address) return null;
   return (
     <Modal
       modalVisible={true}
