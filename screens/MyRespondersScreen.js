@@ -5,7 +5,7 @@ import { Container, Content, Header, View, List, ListItem } from "../components/
 import { Text } from "../components/typography";
 import { Button } from "../components/buttons";
 import theme from "../styles/base";
-import { getMyResponders, getNumberOfAvailableResponders } from "../store/actions";
+import { getMyResponders } from "../store/actions";
 import { connect } from "react-redux";
 
 class MyRespondersScreen extends Component {
@@ -31,7 +31,7 @@ class MyRespondersScreen extends Component {
     };
     this.renderRespondersOrError.bind(this);
   }
-
+  
 
   componentDidUpdate(prevProps) {
     if (this.props.responders.myResponders !== prevProps.responders.myResponders) {
@@ -45,7 +45,7 @@ class MyRespondersScreen extends Component {
         }
       }
       // Sort availableUsernames and unavailableUsernames if desired
-      this.setState({ availableUsernames, unavailableUsernames });
+      this.setState({availableUsernames, unavailableUsernames});
     }
   }
 
@@ -91,11 +91,8 @@ class MyRespondersScreen extends Component {
   render() {
     return (
       <Container>
-        <Header leftButton="arrow"
-          onLeftButtonPress={() => {
-            this.props.getNumberOfAvailableResponders(this.props.auth.userId, this.props.auth.token);
-            Actions.using();
-          }}
+        <Header leftButton="arrow" 
+        onLeftButtonPress={() => Actions.main()}
         >
           My Responders
         </Header>
@@ -137,4 +134,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { getMyResponders, getNumberOfAvailableResponders })(MyRespondersScreen);
+export default connect(mapStateToProps, { getMyResponders })(MyRespondersScreen);

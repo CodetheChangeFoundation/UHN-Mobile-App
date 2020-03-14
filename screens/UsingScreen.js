@@ -18,7 +18,6 @@ const MAXIMUM_DISTANCE = 1000000000 // meters
 
 
 class UsingScreen extends Component {
-  
   constructor(props) {
     super(props);
     this.startAlarm.bind(this);
@@ -28,21 +27,31 @@ class UsingScreen extends Component {
     const { time, userId, token } = this.props;
     const { timeRemaining } = time
     const distance = computeDistance(fredVictorCoordinates, this.props.location.coords)
-    if (distance > MAXIMUM_DISTANCE) Alert.alert("Cannot start alarm", "There are no responders within your area", [
+    if (distance > MAXIMUM_DISTANCE) Alert.alert("Cannot start alarm", "Your responders are not available within your area", [
       { text: 'OK' }
     ], { cancelable: false })
+    else if (this.props.respondersAvailable < 3) Alert.alert("Warning", `${this.props.respondersAvailable} responder(s) is (are) available within your area, would you like to cancel your action?`, [
+      { text: 'Continue', onPress: () => Actions.alarm() }, 
+      { text: 'Cancel' }
+    ], { cancelable: true })
     else {
       Actions.alarm();
-
       this.props.makeAlarmLog(userId, timeRemaining, token);
     }
   }
 
-  componentDidMount(){
-    this.props.getNumberOfAvailableResponders(this.props.userId, this.props.token);
+  componentDidMount() {
+    this.interval = setInterval(() => 
+    this.props.getNumberOfAvailableResponders(this.props.userId, this.props.token), 
+    5000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   render() {
+    console.log("UsingScreen render()");
     return (
       <Container>
         <Header leftButton="menu" onLeftButtonPress={() => Actions.drawerOpen()}>Using Mode</Header>
