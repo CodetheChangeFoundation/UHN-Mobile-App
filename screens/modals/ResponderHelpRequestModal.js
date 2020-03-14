@@ -11,6 +11,7 @@ import { convertToAddress } from "../../utils";
 import { connect } from "react-redux";
 import { dismissNotification } from "../../store/actions";
 import { addResponderToHelpRequest } from "../../services/help-request.service";
+import { HELP_REQUEST_RESPONDER_LIMIT } from "../../constants/helpRequest";
 
 const ResponderHelpRequestModal = (props) => {
   if (
@@ -39,8 +40,8 @@ const ResponderHelpRequestModal = (props) => {
           } else if ((response.status == statusCodes.badRequest) 
             && (response.data.statusCode == statusCodes.limitReachedError)) {
             Alert.alert(
-              "No Help Required",
-              `${userWhoNeedsHelp.username} does not need your help anymore. Thanks!`,
+              "Response Not Needed",
+              `Thanks, but ${HELP_REQUEST_RESPONDER_LIMIT} people have already responded. Your help is not needed at this time.`,
               [{
                 text: "OK",
                 onPress: () => props.dismissNotification()

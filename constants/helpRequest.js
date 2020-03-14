@@ -1,0 +1,1 @@
+export const HELP_REQUEST_RESPONDER_LIMIT = 6;
