@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet
-} from "react-native";
+import { StyleSheet } from "react-native";
 import { Actions } from "react-native-router-flux";
 import { Container, Content, Header, View, Segment, Banner, List, ListItem } from "../components/layout";
 import { Switch } from "../components/buttons";
@@ -9,28 +7,27 @@ import { Text } from "../components/typography";
 import theme from "../styles/base";
 import { connect } from 'react-redux'
 import { setStatus } from '../store/actions'
-
-// fake data
-// const fakeAvailability = true;
-const fakeUsernames = [
-  "pho",
-  "bluebird",
-  "pandy",
-  "alpha1",
-  "a",
-  "b",
-  "c",
-  "d",
-  "e",
-  "f",
-  "g",
-];
+import { getWatchingFor } from "../utils";
 
 const RespondingScreen = (props) => {
-  // TODO: fetch list of usernames this user responds to
-  const usernames = fakeUsernames;
+  const [usernames, setUsernames] = useState(null);
+  
+  // Fetches the list of usernames this user responds to
+  const fetchWatchingFor = () => {
+    getWatchingFor(props.auth.userId, props.auth.token)
+      .then((response) => {
+        if (response) {
+        const watchingForUsers = response.data.respondingTo;
+        const usernames = watchingForUsers.map((user) => user.username);
+        setUsernames(usernames);
+        }
+      });
+  }
 
   useEffect(() => {
+    if (!usernames) {
+      fetchWatchingFor();
+    }
     // TODO: send the updated availiabilty status
   });
 
@@ -67,13 +64,16 @@ const RespondingScreen = (props) => {
 
         <List style={styles.list}>
           {
-            usernames.map((username) => {
-              return (
-                <ListItem key={username}
-                  leftText={username}
-                />
-              );
-            })
+            (!!usernames && usernames.length > 0)?
+              usernames.map((username) => {
+                return (
+                  <ListItem key={username}
+                    leftText={username}
+                  />
+                );
+              })
+            :
+            <Text style={styles.emptyListText}>No users.</Text>
           }
         </List>
       </Content>
@@ -98,6 +98,10 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 0
+  },
+  emptyListText: {
+    fontFamily: theme.fonts.header,
+    color: theme.colors.lightGrey,
   }
 });
 
