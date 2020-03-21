@@ -51,7 +51,7 @@ class SnoozeScreen extends Component {
     this.props.updateAlarmLog(120, null, this.props.currentAlarmLog, this.props.token);
     clearInterval(this.interval);
     this.props.resetTime();
-    Actions.alarm();
+    Actions.start();
   };
 
   async componentDidMount() {
