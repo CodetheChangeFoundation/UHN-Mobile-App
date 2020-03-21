@@ -24,10 +24,11 @@ class SnoozeScreen extends Component {
       sendHelpRequest(this.props.userId, this.props.token)
       .then((response) => {
         Alert.alert("Help request sent", "Help request has been sent to your responder network", [
-          { text: 'OK', onPress: () => Actions.main() }
+          { text: 'OK' }
         ], { cancelable: false });
         
         this.props.updateAlarmLog(null, true, this.props.currentAlarmLog, this.props.token)
+        Actions.main();
       })
     } else {
       this.props.countdown(this.props.time.timeRemaining);

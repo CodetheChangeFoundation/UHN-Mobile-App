@@ -18,9 +18,10 @@ const AlarmScreen = (props) => {
     sendHelpRequest(userId, token)
       .then((response) => {
         Alert.alert("Help request sent", "Help request has been sent to your responder network", [
-          { text: 'OK', onPress: () => Actions.main() }
+          { text: 'OK' }
         ], { cancelable: false });
         props.updateAlarmLog(0, true, props.currentAlarmLog, token)
+        Actions.main()
       })
   }
   
