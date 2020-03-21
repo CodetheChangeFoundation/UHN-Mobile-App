@@ -30,7 +30,7 @@ class UsingScreen extends Component {
     if (distance > MAXIMUM_DISTANCE) Alert.alert("Cannot start alarm", "Your responders are not available within your area", [
       { text: 'OK' }
     ], { cancelable: false })
-    else if (this.props.respondersAvailable < 3) Alert.alert("Warning", `${this.props.respondersAvailable} responder(s) is (are) available within your area, would you like to cancel your action?`, [
+    else if (this.props.respondersAvailable < 3) Alert.alert("Warning", `Only ${this.props.respondersAvailable} responder(s) is (are) available within your area, would you like to cancel your action?`, [
       { text: 'Continue', onPress: () => Actions.alarm() }, 
       { text: 'Cancel' }
     ], { cancelable: true })
