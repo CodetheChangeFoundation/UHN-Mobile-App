@@ -1,4 +1,4 @@
-import { SET_LOCATION, SET_NALOXONE_AVAILABILITY } from "./Types"
+import { SET_LOCATION, SET_NALOXONE_AVAILABILITY, SET_NUMBER_OF_RESPONDERS } from "./Types"
 import * as axios from 'axios';
 import { SERVER_ROOT } from 'react-native-dotenv';
 import { Alert } from 'react-native';
@@ -36,6 +36,38 @@ export const setStatus = (userId, token, statusToChange) => {
           [{ text: "OK" }],
           { cancelable: true }
         )
+      })
+  }
+}
+
+export const setAvailableResponderCount = (count) => {
+
+  return {
+    type: SET_NUMBER_OF_RESPONDERS,
+    data: { respondersAvailable: count }
+  };
+}
+
+export const getNumberOfAvailableResponders = (userId, token) => {
+  var url = `${SERVER_ROOT}/users/${userId}/responders/count`;
+  var header = {
+    headers: {
+      'x-access-token': 'Bearer ' + token,
+      'Content-Type': "application/json"
+    }
+  }
+  return (dispatch) => {
+    axios.get(url, header)
+      .then(response => {
+        dispatch(setAvailableResponderCount(response.data.count));
+      })
+      .catch(error => {
+        Alert.alert(
+          "Failed to fetch number of available responders.",
+          error.response?.data?.errors[0]?.message || '',
+          [{ text: "OK" }],
+          { cancelable: true }
+        );
       })
   }
 }
