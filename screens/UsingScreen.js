@@ -1,93 +1,129 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import { StyleSheet, Alert } from "react-native";
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
 import { Actions } from "react-native-router-flux";
 import Timer from "../components/Timer/Timer";
 import { Container, Content, Header, View, Segment, Banner } from "../components/layout";
 import { Button, IconButton } from "../components/buttons";
-import { computeDistance } from '../utils'
+import { computeDistance } from "../utils";
 import { makeAlarmLog, getNumberOfAvailableResponders } from "../store/actions";
 
 const fredVictorCoordinates = {
   lat: 43.6536212,
   lng: -79.3751693
-}
+};
 
 // TODO: Remember to change this to 500 prior to Beta testing
-const MAXIMUM_DISTANCE = 1000000000 // meters
+const MAXIMUM_DISTANCE = 1000000000; // meters
 
+const UsingScreen = props => {
+  const { location, time, userId, token } = props;
+  const { timeRemaining } = time;
 
-class UsingScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.startAlarm.bind(this);
-  }
-
-  startAlarm = () => {
-    const { time, userId, token } = this.props;
-    const { timeRemaining } = time
-    const distance = computeDistance(fredVictorCoordinates, this.props.location.coords)
-    if (distance > MAXIMUM_DISTANCE) Alert.alert("Cannot start alarm", "Your responders are not available within your area", [
-      { text: 'OK' }
-    ], { cancelable: false })
-    else if (this.props.respondersAvailable < 3) Alert.alert("Warning", `Only ${this.props.respondersAvailable} responder(s) is (are) available within your area, would you like to cancel your action?`, [
-      { text: 'Continue', onPress: () => Actions.alarm() }, 
-      { text: 'Cancel' }
-    ], { cancelable: true })
-    else {
-      Actions.alarm();
-      this.props.makeAlarmLog(userId, timeRemaining, token);
+  const startAlarm = () => {
+    // Check if location has been set
+    console.log({ location });
+    if (
+      location === null ||
+      location.coords === null ||
+      (location.coords.lat !== 0 && location.coords.lng !== 0)
+    ) {
+      Alert.alert(
+        "Cannot start alarm",
+        "Your location is not set. Please set your location in the 'locations' page' and enable location services on your device.",
+        [
+          {
+            text: "Set my location now",
+            onPress: () => {
+              Actions.location();
+            }
+          },
+          { text: "Cancel", onPress: () => {} }
+        ],
+        { cancelable: false }
+      );
+      return null;
     }
-  }
 
-  componentDidMount() {
-    this.interval = setInterval(() => 
-    this.props.getNumberOfAvailableResponders(this.props.userId, this.props.token), 
-    5000);
-  }
+    // Check for responders in the area (for beta-testing, compare to the coordinates of the Fred Victor Building)
+    const distance = computeDistance(fredVictorCoordinates, location.coords);
+    if (distance > MAXIMUM_DISTANCE) {
+      Alert.alert(
+        "Cannot start alarm",
+        "There are no responders within your area",
+        [{ text: "OK" }],
+        { cancelable: false }
+      );
+      return null;
+    }
 
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
+    Actions.alarm();
 
-  render() {
-    console.log("UsingScreen render()");
-    return (
-      <Container>
-        <Header leftButton="menu" onLeftButtonPress={() => Actions.drawerOpen()}>Using Mode</Header>
+    props.makeAlarmLog(userId, timeRemaining, token);
+  };
 
-        <Content>
-          <Banner>
-            <Segment active="left"
-              leftText="using" rightText="responding"
-              onRightButtonPress={() => Actions.responding()}
-            />
-          </Banner>
-          <Banner>
-            <IconButton variant="icon" name="md-pin" label="current location" onPress={() => Actions.location()} />
-            <IconButton variant="counter" counterValue={this.props.respondersAvailable} label="responders available" onPress={() => Actions.responders()} />
-          </Banner>
-
-          <View style={styles.timer}>
-            <Timer isUsing={false} />
-          </View>
-
-          <View style={styles.startButton}>
-            <Button variant="affirmation" size="large" onPress={this.startAlarm}>start</Button>
-          </View>
-        </Content>
-      </Container>
+  useEffect(() => {
+    let interval = setInterval(
+      () => props.getNumberOfAvailableResponders(props.userId, props.token),
+      5000
     );
-  }
-}
+
+    return (cleanUp = () => {
+      clearInterval(interval);
+    });
+  });
+
+  return (
+    <Container>
+      <Header leftButton="menu" onLeftButtonPress={() => Actions.drawerOpen()}>
+        Using Mode
+      </Header>
+
+      <Content>
+        <Banner>
+          <Segment
+            active="left"
+            leftText="using"
+            rightText="responding"
+            onRightButtonPress={() => Actions.responding()}
+          />
+        </Banner>
+        <Banner>
+          <IconButton
+            variant="icon"
+            name="md-pin"
+            label="current location"
+            onPress={() => Actions.location()}
+          />
+          <IconButton
+            variant="counter"
+            counterValue={props.respondersAvailable}
+            label="responders available"
+            onPress={() => Actions.responders()}
+          />
+        </Banner>
+
+        <View style={styles.timer}>
+          <Timer isUsing={false} />
+        </View>
+
+        <View style={styles.startButton}>
+          <Button variant="affirmation" size="large" onPress={startAlarm}>
+            start
+          </Button>
+        </View>
+      </Content>
+    </Container>
+  );
+};
 
 const styles = StyleSheet.create({
   timer: {
-    flex: 5,
+    flex: 5
   },
   startButton: {
-    flex: 2,
-  },
+    flex: 2
+  }
 });
 
 const mapStateToProps = (state, currentProps) => {
@@ -98,7 +134,9 @@ const mapStateToProps = (state, currentProps) => {
     time: state.timer,
     token: state.auth.token,
     respondersAvailable: state.userData.respondersAvailable
-  }
-}
+  };
+};
 
-export default connect(mapStateToProps, { makeAlarmLog, getNumberOfAvailableResponders })(UsingScreen);
+export default connect(mapStateToProps, { makeAlarmLog, getNumberOfAvailableResponders })(
+  UsingScreen
+);

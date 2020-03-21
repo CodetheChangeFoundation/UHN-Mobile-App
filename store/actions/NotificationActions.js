@@ -46,8 +46,6 @@ export const dismissNotification = () => {
 
     if ((Actions.currentScene == "responderHelpRequestModal")) {
       Actions.pop()     // Dismiss responderHelpRequestModal in case we need to re-render it below
-    } else if ((Actions.currentScene == "directions")) {
-      Actions.main();   // Need to get away from DirectionsScreen (or any other screen related to the last help request)
     }
 
     dispatch(removeNotification());
