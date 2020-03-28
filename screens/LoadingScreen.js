@@ -10,7 +10,7 @@ var jwtDecode = require("jwt-decode");
 import { Notifications } from "expo";
 import { tokenRedirect, setLocalLocation, receiveNotification } from "../store/actions";
 import { connect } from "react-redux";
-import { getDeviceLocation } from "../utils/index";
+import { promptLocationPermissions } from "../utils/index";
 
 const LoadingScreen = props => {
   const fontsLoaded = false;
@@ -54,9 +54,8 @@ const LoadingScreen = props => {
       if (!isExpired) {
         // TODO: Set actual remember me
         props.tokenRedirect(decodedToken.id, token, false);
-        getDeviceLocation(coords => {
-          props.setLocalLocation({ coords });
-        });
+        // Prompt for location permissions but don't save it to redux.
+        await promptLocationPermissions();
         Actions.main();
       } else {
         Actions.auth();
