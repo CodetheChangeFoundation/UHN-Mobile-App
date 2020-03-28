@@ -5,17 +5,12 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 import { Text } from "../typography";
 
 const Button = (props) => {
-  const combinedProps = {
-    ...buttonProps,
-    ...props,
-  };
-
   return (
-    <TouchableOpacity {...combinedProps} 
-      style={[baseButtonStyles, variantButtonStyles[props.variant], sizeButtonStyles[props.size], props.style]}
+    <TouchableOpacity {...{...buttonProps, ...props}}
+      style={{...baseButtonStyles, ...buttonStylesByVariant[props.variant], ...buttonStylesBySize[props.size], ...props.style}}
     >
       <Text variant="body" 
-        style={[baseTextStyles, variantTextStyles[props.variant], sizeTextStyles[props.size], props.textStyles]}
+        style={{...baseTextStyles, ...textStylesByVariant[props.variant], ...textStylesBySize[props.size], ...props.textStyles}}
       >
         {props.children}
       </Text>
@@ -51,7 +46,7 @@ const baseButtonStyles = {
   flexShrink: 1,
 };
 
-const variantButtonStyles = StyleSheet.create({
+const buttonStylesByVariant = StyleSheet.create({
   dark: {
     backgroundColor: theme.colors.darkGrey,
   },
@@ -68,7 +63,7 @@ const variantButtonStyles = StyleSheet.create({
   }
 });
 
-const variantTextStyles = StyleSheet.create({
+const textStylesByVariant = StyleSheet.create({
   dark: {
     color: theme.colors.white
   },
@@ -87,7 +82,7 @@ const baseTextStyles = {
   textAlign: "center",
 }
 
-const sizeButtonStyles = StyleSheet.create({
+const buttonStylesBySize = StyleSheet.create({
   medium: {
     height: 54,
     width: 180,
@@ -102,7 +97,7 @@ const sizeButtonStyles = StyleSheet.create({
   }
 });
 
-const sizeTextStyles = StyleSheet.create({
+const textStylesBySize = StyleSheet.create({
   medium: {
     fontSize: theme.fontSizes.medium,
   },
