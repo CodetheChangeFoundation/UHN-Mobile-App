@@ -7,12 +7,12 @@ import { Text } from "../typography";
 
 const ListItem = (props) => {
   return (
-      <View {...props} style={[listItemStyles.listItem, props.style]}>
+      <View {...props} style={{...listItemStyles.listItem, ...props.style}}>
         {!!props.leftText && <View style={listItemStyles.leftView}>
-          <Text style={[listItemStyles.leftText, props.leftTextStyle]}>{props.leftText}</Text>
+          <Text style={{...listItemStyles.leftText, ...props.leftTextStyle}}>{props.leftText}</Text>
         </View>}
-        {!!props.rightText &&<View style={listItemStyles.rightView}>
-          <Text style={[listItemStyles.rightText, props.rightTextStyle]}>{props.rightText}</Text>
+        {!!props.rightText && <View style={listItemStyles.rightView}>
+          <Text style={{...listItemStyles.rightText, ...props.rightTextStyle}}>{props.rightText}</Text>
         </View>}
       </View>
   );

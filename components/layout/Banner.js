@@ -6,7 +6,7 @@ import View from "./View";
 
 const Banner = (props) => {
   return (
-    <View {...props} style={[bannerStyles.view, props.style]}>{props.children}</View>
+    <View {...props} style={{...bannerStyles.view, ...props.style}}>{props.children}</View>
   );
 }
 
