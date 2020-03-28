@@ -58,8 +58,20 @@ const updateUserLocation = (payload) => {
     )
 }
 
+const getWatchingFor = async (userId, token) => {
+  return axios.get(`${SERVER_ROOT}/users/${userId}/responding-to`,
+    {
+      headers: { "Authorization": token },
+    })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {userInfoError(error)});
+}
+
 module.exports = {
     getUserInfo,
     getUserLocation,
+    getWatchingFor,
     updateUserLocation
 }
