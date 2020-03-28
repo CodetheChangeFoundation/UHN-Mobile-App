@@ -1,5 +1,5 @@
-import React, { Component, useEffect } from "react";
-import { StyleSheet, Alert } from "react-native";
+import React, { useEffect } from "react";
+import { StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import { Actions } from "react-native-router-flux";
 import Timer from "../components/Timer/Timer";

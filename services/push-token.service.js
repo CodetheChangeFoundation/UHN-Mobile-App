@@ -2,6 +2,7 @@ import { Notifications } from "expo";
 import * as Permissions from "expo-permissions";
 import axios from "axios";
 import { SERVER_ROOT } from "react-native-dotenv";
+import { Actions } from "react-native-router-flux";
 
 const sendPushToken = async userId => {
   const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);

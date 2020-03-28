@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { StyleSheet, AppState, Platform } from "react-native";
 import { Actions } from "react-native-router-flux";
-import theme from "../../styles/base";
 import statusCodes from "../../constants/statusCodes";
 import { View } from "../../components/layout";
 import { Text } from "../../components/typography";

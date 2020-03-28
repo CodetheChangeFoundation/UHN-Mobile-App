@@ -3,7 +3,6 @@ import { SERVER_ROOT } from 'react-native-dotenv';
 import { SET_MY_RESPONDERS, RESPONDERS_ERROR } from "./Types"
 import { Actions } from 'react-native-router-flux';
 
-
 export const respondersError = (error) => {
   Actions.alert({
     alertTitle: "Responders request failed!",
