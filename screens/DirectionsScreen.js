@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Alert } from 'react-native';
 import { connect } from 'react-redux'
 import { WebViewLeaflet } from 'react-native-webview-leaflet'
 
@@ -14,12 +14,11 @@ import {
 } from '../services/location-functions.service'
 import { getUserLocation } from '../services/user.service';
 import { dismissNotification } from "../store/actions";
+import { updateStatusOfHelpRequest } from "../services/help-request.service";
 
 import mapMarkerIcon from '../components/icons/mapMarker'
 
-const DEFAULT_CLIENT = 'Pho'
-const DEFAULT_COORDINATES = { lat: 49.2827, lng: -123.1207 }
-const DEFAULT_INFORMATION = 'There is a key under the mat'
+const DEFAULT_COORDINATES = { lat: 43.6536212, lng: -79.3751693 }
 
 const openStreetMapLayer = {
     attribution:'&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
@@ -37,15 +36,33 @@ const DirectionsScreen = (props) => {
 
     const [address, setAddress] = useState(null)
     const [note, setNote] = useState(null)
-
+    const [client, setClient] = useState(null)
+    const [helpRequestId, setHelpRequestId] = useState(null)
     
     useEffect(() => {
+        const currentNotification = props.notification.notificationQueue[0]
 
-        // TODO: GET the assigned's location and note here
+        if(!currentNotification) {
+          Alert.alert(
+            "Sorry! Data on this help request cannot be found!",
+            "You will be re-directed back to the main menu",
+            [
+              { text: 'Ok', onPress: () => {
+                Actions.main()
+              }},
+            ],
+            { cancelable: false });
+          return
+        }
+      
+        const { username, location } = currentNotification.user
+        const { coords, note } = location
 
-        setLocation(DEFAULT_COORDINATES)
-        convertToAddress(DEFAULT_COORDINATES, setAddress)
-        setNote(DEFAULT_INFORMATION)
+        setLocation(currentNotification.user.location.coords)
+        convertToAddress(coords, setAddress)
+        setNote(note)
+        setClient(username)
+        setHelpRequestId(currentNotification.helpRequestId)
 
     }, [])
 
@@ -70,10 +87,17 @@ const DirectionsScreen = (props) => {
     }
 
     const handleArrived  = () => {
-        // TODO: PUT to update the help request status to solved
-        // Actions.main()
-        // Remmove the current help request notification from the queue
-        props.dismissNotification();
+        updateStatusOfHelpRequest(props.token, 'arrived', helpRequestId)
+        props.dismissNotification()
+        Alert.alert(
+          `Thank you for attending to ${client}!`,
+          "You will be re-directed back to the main menu",
+          [
+            { text: 'Ok', onPress: () => {
+              Actions.main()
+            }},
+          ],
+          { cancelable: false });
     }
 
   return (
@@ -95,7 +119,7 @@ const DirectionsScreen = (props) => {
         </View>
 
         <View style={styles.textWrapper}>
-            <Text style={styles.supportText}>{DEFAULT_CLIENT}'s location:</Text>
+            <Text style={styles.supportText}>{client}'s location:</Text>
             <Text style={styles.addressText}>{address}</Text>
         </View>
 
@@ -148,10 +172,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state, currentProps) => {
-    // const { token, userId } = state.auth;
-    // const { location } = state.userData;
-    // return { ...currentProps, token, userId, location }
-    return currentProps
+    const { token, userId } = state.auth;
+    const notification = state.notification;
+    return { ...currentProps, token, userId, notification }
 }
 
 export default connect(mapStateToProps, { dismissNotification })(DirectionsScreen);
