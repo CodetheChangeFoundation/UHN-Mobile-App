@@ -26,7 +26,7 @@ const UsingScreen = props => {
     if (
       location === null ||
       location.coords === null ||
-      (location.coords.lat !== 0 && location.coords.lng !== 0)
+      (location.coords.lat === 0 && location.coords.lng === 0)
     ) {
       Alert.alert(
         "Cannot start alarm",

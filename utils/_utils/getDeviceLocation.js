@@ -11,7 +11,7 @@ export const getDeviceLocation = (success) => {
             return coordinates
         })
         .catch((error) => {
-            console.error('cannot get location!', {error})
+            alert('cannot get location!', {error})
         })
     })
     .catch((error) => {
