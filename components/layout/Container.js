@@ -16,8 +16,8 @@ const containerStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.white,
-    justifyContent: "center",
-  },
+    justifyContent: "center"
+  }
 });
 
 export default Container;

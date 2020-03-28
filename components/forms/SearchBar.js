@@ -56,7 +56,7 @@ SearchBar.defaultProps = {
 /* Props */
 
 const searchBarProps = {
-  placeholderTextColor: theme.colors.darkGrey,
+  placeholderTextColor: theme.colors.darkGrey
 }
 
 /* Styles */
@@ -64,7 +64,7 @@ const searchBarProps = {
 const baseStyles = {
   fontFamily: theme.fonts.body,
   fontSize: theme.fontSizes.medium,
-  color: theme.colors.darkGrey,
+  color: theme.colors.darkGrey
 }
 
 const searchBarStyles = StyleSheet.create({

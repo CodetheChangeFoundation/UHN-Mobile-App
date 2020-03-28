@@ -18,7 +18,7 @@ const List = (props) => {
 
 const styles = StyleSheet.create({
   list: {
-    alignSelf: "stretch",
+    alignSelf: "stretch"
   }
 });
 

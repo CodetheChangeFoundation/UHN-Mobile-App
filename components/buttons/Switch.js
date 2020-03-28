@@ -20,11 +20,11 @@ const Switch = (props) => {
 
 Switch.propTypes = {
   value: PropTypes.bool,
-  onValueChange: PropTypes.func.isRequired,
+  onValueChange: PropTypes.func.isRequired
 };
 
 Switch.defaultProps = {
-  value: false,
+  value: false
 };
 
 /* Props */ 
@@ -32,14 +32,14 @@ Switch.defaultProps = {
 const switchProps = {
   trackColor: {
     false: (Platform.OS === "ios")? theme.colors.white : theme.colors.fadedGrey,
-    true: (Platform.OS === "ios")? theme.colors.white : theme.colors.fadedGreen,
+    true: (Platform.OS === "ios")? theme.colors.white : theme.colors.fadedGreen
   },
   ios_backgroundColor: theme.colors.white,
   height: 24,
   width: 42,
   borderWidth: 1,
   borderRadius: 16,
-  borderColor: theme.colors.lightGrey,
+  borderColor: theme.colors.lightGrey
 }
 
 export default Switch;

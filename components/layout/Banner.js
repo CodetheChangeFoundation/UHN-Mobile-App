@@ -21,7 +21,7 @@ const bannerStyles = StyleSheet.create({
     height: theme.layout.bannerHeight,
     padding: theme.layout.padding,
     overflow: "hidden"
-  },
+  }
 });
 
 export default Banner;

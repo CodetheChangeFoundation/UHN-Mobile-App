@@ -39,7 +39,7 @@ IconButton.propTypes = {
   counterValue: PropTypes.number,
   size: PropTypes.number,
   color: PropTypes.string,
-  onPress: PropTypes.func,
+  onPress: PropTypes.func
 };
 
 IconButton.defaultProps = {
@@ -47,20 +47,20 @@ IconButton.defaultProps = {
   name: "md-pin",
   size: 42,
   color: theme.colors.green,
-  counterValue: 0,
+  counterValue: 0
 };
 
 /* Props */
 
 const iconButtonProps = {
-  activeOpacity: theme.buttons.buttonPressOpacity,
+  activeOpacity: theme.buttons.buttonPressOpacity
 }
 
 /* Styles */
 
 const iconButtonStyles = StyleSheet.create({
   touchableOpacity: {
-    alignItems: "center",
+    alignItems: "center"
   },
   view: {
     flex: 0,
@@ -68,7 +68,7 @@ const iconButtonStyles = StyleSheet.create({
   },
   counterView: {
     alignSelf: "stretch"
-  },
+  }
 });
 
 export default IconButton;

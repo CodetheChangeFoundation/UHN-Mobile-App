@@ -93,7 +93,7 @@ SegmentButton.defaultProps = {
 /* Props */
 
 const segmentButtonProps = {
-  activeOpacity: theme.buttons.buttonPressOpacity,
+  activeOpacity: theme.buttons.buttonPressOpacity
 }
 
 /* Styles */
@@ -103,7 +103,7 @@ const buttonStyles = {
   justifyContent: "center",
   height: theme.layout.segmentHeight,
   padding: theme.layout.padding,
-  borderWidth: 1,
+  borderWidth: 1
 }
 
 const segmentButtonStyles = StyleSheet.create({

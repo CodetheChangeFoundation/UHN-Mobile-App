@@ -47,7 +47,7 @@ Modal.propTypes = {
   modalFooterLeft: PropTypes.element,
   modalFooterRight: PropTypes.element,
   onBackdropPress: PropTypes.func,
-  onBackButtonPress: PropTypes.func,
+  onBackButtonPress: PropTypes.func
 };
 
 Modal.defaultProps = {
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   backdrop: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: "rgba(0, 0, 0, 0.5)"
   },
   modal: {
   },
@@ -81,13 +81,13 @@ const styles = StyleSheet.create({
   body: {
     flex: 0,
     padding: theme.layout.padding,
-    alignSelf: "stretch",
+    alignSelf: "stretch"
   },
   footer: {
     flex: 0,
     flexDirection: "row",
-    justifyContent: "space-around",
-  },
+    justifyContent: "space-around"
+  }
 });
 
 export default Modal;

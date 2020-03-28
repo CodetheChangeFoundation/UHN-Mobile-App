@@ -47,7 +47,7 @@ const iconName = {
 
 const segment = {
   flex: 0,
-  alignSelf: "flex-end",
+  alignSelf: "flex-end"
 };
 
 const headerStyles = StyleSheet.create({
@@ -55,11 +55,11 @@ const headerStyles = StyleSheet.create({
     height: theme.layout.headerHeight,
     alignItems: "flex-end",
     paddingVertical: theme.layout.margin,
-    backgroundColor: theme.colors.darkGrey,
+    backgroundColor: theme.colors.darkGrey
   },
   leftButton: {
     fontSize: theme.iconSizes.header,
-    color: theme.colors.white,
+    color: theme.colors.white
   },
   left: {
     ...segment,
@@ -68,7 +68,7 @@ const headerStyles = StyleSheet.create({
   body: {
     ...segment,
     flex: 1,
-    alignItems: "flex-start",
+    alignItems: "flex-start"
   },
   right: {
     ...segment,

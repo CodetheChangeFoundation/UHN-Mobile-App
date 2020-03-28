@@ -24,7 +24,7 @@ ListItem.propTypes = {
   leftText: PropTypes.string,
   leftTextStyle: PropTypes.object,
   rightText: PropTypes.string,
-  rightTextStyle: PropTypes.object,
+  rightTextStyle: PropTypes.object
 };
 
 /* Styles */
@@ -39,23 +39,23 @@ const listItemStyles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: theme.layout.margin,
+    paddingHorizontal: theme.layout.margin
   },
   leftView: {
     flex: 1,
-    alignItems: "flex-start",
+    alignItems: "flex-start"
   },
   rightView: {
     flex: 1,
-    alignItems: "flex-end",
+    alignItems: "flex-end"
   },
   leftText: {
     fontFamily: theme.fonts.header,
-    color: theme.colors.lightGrey,
+    color: theme.colors.lightGrey
   },
   rightText: {
-    fontSize: theme.fontSizes.xsmall,
-  },
+    fontSize: theme.fontSizes.xsmall
+  }
 });
 
 export default ListItem;

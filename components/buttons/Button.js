@@ -34,7 +34,7 @@ Button.defaultProps = {
 /* Props */
 
 const buttonProps = {
-  activeOpacity: theme.buttons.buttonPressOpacity,
+  activeOpacity: theme.buttons.buttonPressOpacity
 }
 
 /* Styles */
@@ -43,23 +43,23 @@ const baseButtonStyles = {
   margin: theme.layout.margin,
   alignItems: "center",
   justifyContent: "center",
-  flexShrink: 1,
+  flexShrink: 1
 };
 
 const buttonStylesByVariant = StyleSheet.create({
   dark: {
-    backgroundColor: theme.colors.darkGrey,
+    backgroundColor: theme.colors.darkGrey
   },
   light: {
     backgroundColor: theme.colors.white,
     borderWidth: 1,
-    borderColor: theme.colors.darkGrey,
+    borderColor: theme.colors.darkGrey
   },
   affirmation: {
-    backgroundColor: theme.colors.green,
+    backgroundColor: theme.colors.green
   },
   warning: {
-    backgroundColor: theme.colors.red,
+    backgroundColor: theme.colors.red
   }
 });
 
@@ -79,7 +79,7 @@ const textStylesByVariant = StyleSheet.create({
 });
 
 const baseTextStyles = {
-  textAlign: "center",
+  textAlign: "center"
 }
 
 const buttonStylesBySize = StyleSheet.create({
@@ -87,22 +87,22 @@ const buttonStylesBySize = StyleSheet.create({
     height: 54,
     width: 180,
     borderRadius: 54,
-    paddingHorizontal: 18,
+    paddingHorizontal: 18
   },
   large: {
     height: 72,
     width: 240,
     borderRadius: 72,
-    paddingHorizontal: 24,
+    paddingHorizontal: 24
   }
 });
 
 const textStylesBySize = StyleSheet.create({
   medium: {
-    fontSize: theme.fontSizes.medium,
+    fontSize: theme.fontSizes.medium
   },
   large: {
-    fontSize: theme.fontSizes.large,
+    fontSize: theme.fontSizes.large
   }
 });
 
