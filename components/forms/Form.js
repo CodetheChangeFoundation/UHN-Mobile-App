@@ -6,7 +6,7 @@ import { Form as NBForm } from "native-base";
 
 const Form = (props) => {
   return (
-      <NBForm {...props} style={[formStyles.form, props.style]}>{props.children}</NBForm>
+      <NBForm {...props} style={{...formStyles.form, ...props.style}}>{props.children}</NBForm>
   );
 }
 

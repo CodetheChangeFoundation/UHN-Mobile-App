@@ -5,13 +5,9 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 import { CheckBox, Icon } from "native-base";
 
 const Checkbox = (props) => {
-  const iconProps = {
-    name: props.checked? "md-checkbox" : "md-square-outline"
-  }
-
   return (
-    <TouchableOpacity {...props} onPress={props.onPress} style={[checkboxStyles.checkbox, props.style]}>
-      <Icon {...iconProps} style={checkboxStyles.icon}></Icon>
+    <TouchableOpacity {...props} onPress={props.onPress} style={{...checkboxStyles.checkbox, ...props.style}}>
+      <Icon name={props.checked? "md-checkbox" : "md-square-outline"} style={checkboxStyles.icon}></Icon>
     </TouchableOpacity>
   );
 }

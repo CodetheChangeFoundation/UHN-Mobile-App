@@ -5,7 +5,7 @@ import theme from "../styles/base"
 import { Container, Content, Header, View } from "../components/layout";
 import { Text } from "../components/typography";
 import { Button, Switch } from "../components/buttons";
-import { Form, Input } from "../components/forms";
+import { Form, Input, Spinner } from "../components/forms";
 import { connect } from 'react-redux';
 import { loginHandler, setLoading, setLocalLocation, setStatus } from '../store/actions';
 import { getDeviceLocation } from '../utils/index'
