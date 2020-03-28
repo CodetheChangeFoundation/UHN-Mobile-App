@@ -6,25 +6,24 @@ import { Header as NBHeader, Left, Body, Right, Icon } from "native-base";
 import { Text } from "../typography";
 
 const Header = (props) => {
-  const leftButtonCombinedProps = {
-    name: iconName[props.leftButton],
-    onPress: props.onLeftButtonPress
-  }
-
-  const bodyCombinedStyles = {
-    ...headerStyles.body,
-    marginLeft: (props.leftButton)? theme.layout.margin : 0
-  }
-
   return (
-    <NBHeader {...props} style={[headerStyles.header, props.style]}>
+    <NBHeader {...props} style={{...headerStyles.header, ...props.style}}>
+
       <Left style={headerStyles.left}>
-        {(props.leftButton) && <Icon {...leftButtonCombinedProps} style={headerStyles.leftButton}/>}
+        {(props.leftButton) && 
+          <Icon name={iconName[props.leftButton]} onPress={props.onLeftButtonPress} style={headerStyles.leftButton}/>
+        }
       </Left>
-      <Body style={bodyCombinedStyles}>
+
+      <Body style={{
+        ...headerStyles.body,
+        marginLeft: (props.leftButton)? theme.layout.margin : 0
+      }}>
         <Text variant="header">{props.children}</Text>
       </Body>
+
       <Right style={headerStyles.right} />
+
     </NBHeader>
   );
 }
