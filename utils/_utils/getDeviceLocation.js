@@ -1,4 +1,5 @@
 import * as Location from 'expo-location';
+import { Actions } from "react-native-router-flux";
 
 export const getDeviceLocation = (success) => {
     Location.requestPermissionsAsync()
@@ -11,10 +12,20 @@ export const getDeviceLocation = (success) => {
             return coordinates
         })
         .catch((error) => {
-            alert('cannot get location!', {error})
+            Actions.alert({
+                alertTitle: "Cannot get location!",
+                alertBody: (error.response?.data?.errors[0]?.message || ''),
+                positiveButton: { text: "OK" },
+                cancelable: true 
+            });
         })
     })
     .catch((error) => {
-        alert("Please allow location services");
+        Actions.alert({
+            alertTitle: "Please allow location services!",
+            alertBody: (error.response?.data?.errors[0]?.message || ''),
+            positiveButton: { text: "OK" },
+            cancelable: true 
+        });
     })
 }
