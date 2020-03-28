@@ -7,7 +7,11 @@ const sendPushToken = async userId => {
   const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
 
   if (status !== "granted") {
-    alert("Please allow permissions for notifications");
+    Actions.alert({
+      alertTitle: "Please allow permissions for notifications!",
+      positiveButton: { text: "OK" },
+      cancelable: true
+    });
     return;
   }
 

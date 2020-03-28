@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Alert, Vibration } from "react-native";
+import { StyleSheet, Vibration } from "react-native";
 import { Button } from "../components/buttons";
 import { Actions } from "react-native-router-flux";
 import { Container, Content, Header, View } from "../components/layout";
@@ -23,9 +23,12 @@ class SnoozeScreen extends Component {
       clearInterval(this.interval);
       sendHelpRequest(this.props.userId, this.props.token)
       .then((response) => {
-        Alert.alert("Help request sent", "Help request has been sent to your responder network", [
-          { text: 'OK', onPress: () => Actions.main() }
-        ], { cancelable: false });
+        Actions.alert({
+          alertTitle: "Help request sent",
+          alertBody: "A help request has been sent to your responder network.",
+          positiveButton: { text: "OK", onPress: () => Actions.main() },
+          cancelable: false 
+        });
         
         this.props.updateAlarmLog(null, true, this.props.currentAlarmLog, this.props.token)
       })

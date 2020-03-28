@@ -1,15 +1,14 @@
 import * as axios from 'axios';
 import { SERVER_ROOT } from 'react-native-dotenv';
-import { Alert } from 'react-native';
+import { Actions } from "react-native-router-flux";
 
 const locationsError = (error) => {
-    console.error(error)
-    Alert.alert(
-        "Location request failed!",
-        error.response?.data?.errors[0]?.message || '',
-        [{ text: "OK" }],
-        { cancelable: true }
-      )
+    Actions.alert({
+        alertTitle: "Location request failed!",
+        alertBody: error.response?.data?.errors[0]?.message || '',
+        positiveButton: { text: "OK" },
+        cancelable: true
+      });
 }
 
 const getUserInfo = async (userId, token) => {
@@ -21,12 +20,12 @@ const getUserInfo = async (userId, token) => {
       return response;
     })
     .catch((err) => {
-      Alert.alert(
-        "Error getting user!!",
-        error.response?.data?.errors[0]?.message || '',
-        [{ text: "OK" }],
-        { cancelable: true }
-      )
+      Actions.alert({
+        alertTitle: "Error getting user!!",
+        alertBody: error.response?.data?.errors[0]?.message || '',
+        positiveButton: { text: "OK" },
+        cancelable: true
+      });
     });
 };
 
