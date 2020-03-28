@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import theme from "../../styles/base";
-import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Item, Input, Label, Icon } from "native-base";
 

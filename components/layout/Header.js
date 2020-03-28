@@ -2,13 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import theme from "../../styles/base";
 import { Platform, StyleSheet } from "react-native";
-import { Ionicons } from '@expo/vector-icons';
-import { Header as NBHeader, Left, Body, Right } from "native-base";
+import { Header as NBHeader, Left, Body, Right, Icon } from "native-base";
 import { Text } from "../typography";
 
 const Header = (props) => {
   const leftButtonCombinedProps = {
-    ...headerProps.leftButton,
     name: iconName[props.leftButton],
     onPress: props.onLeftButtonPress
   }
@@ -21,7 +19,7 @@ const Header = (props) => {
   return (
     <NBHeader {...props} style={[headerStyles.header, props.style]}>
       <Left style={headerStyles.left}>
-        {(props.leftButton) && <Ionicons {...leftButtonCombinedProps}/>}
+        {(props.leftButton) && <Icon {...leftButtonCombinedProps} style={headerStyles.leftButton}/>}
       </Left>
       <Body style={bodyCombinedStyles}>
         <Text variant="header">{props.children}</Text>
@@ -45,13 +43,6 @@ const iconName = {
   menu: "md-menu"
 };
 
-const headerProps = {
-  leftButton: {
-    size: theme.iconSizes.header,
-    color: theme.colors.white,
-  }
-};
-
 /* Styles */
 
 const segment = {
@@ -65,6 +56,10 @@ const headerStyles = StyleSheet.create({
     alignItems: "flex-end",
     paddingVertical: theme.layout.margin,
     backgroundColor: theme.colors.darkGrey,
+  },
+  leftButton: {
+    fontSize: theme.iconSizes.header,
+    color: theme.colors.white,
   },
   left: {
     ...segment,

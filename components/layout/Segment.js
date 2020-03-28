@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import theme from "../../styles/base";
 import { Platform, StyleSheet, TouchableOpacity } from "react-native";
-import { Ionicons } from '@expo/vector-icons';
 import { Segment as NBSegment, Button as NBButton } from "native-base";
 import { Text } from "../typography";
 import View from "./View";

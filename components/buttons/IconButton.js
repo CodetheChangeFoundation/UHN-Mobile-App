@@ -4,7 +4,7 @@ import theme from "../../styles/base";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { View } from "../layout";
 import { Text } from "../typography";
-import { Ionicons } from "@expo/vector-icons";
+import { Icon } from "native-base";
 
 const IconButton = (props) => {
   const combinedProps = {
@@ -12,15 +12,9 @@ const IconButton = (props) => {
     ...props,
   };
 
-  const combinedIconProps = {
-    ...iconProps,
-    name: props.name,
-    size: props.size || iconProps.size
-  };
-
   const iconButtonContent = {
     icon: (
-      <Ionicons {...combinedIconProps}>{props.children}</Ionicons>
+      <Icon name={props.name} style={[iconButtonStyles.icon, {fontSize: props.size}]}>{props.children}</Icon>
     ),
     counter: (
       <View style={iconButtonStyles.counterView}>
@@ -60,6 +54,7 @@ IconButton.propTypes = {
 IconButton.defaultProps = {
   variant: "counter",
   name: "md-pin",
+  size: 42,
   counterValue: 0,
 };
 
@@ -67,11 +62,6 @@ IconButton.defaultProps = {
 
 const iconButtonProps = {
   activeOpacity: theme.buttons.buttonPressOpacity,
-}
-
-const iconProps = {
-  size: 42,
-  color: theme.colors.green,
 }
 
 /* Styles */
@@ -88,6 +78,9 @@ const iconButtonStyles = StyleSheet.create({
     alignItems: "center", 
     justifyContent: "center", 
     overflow: "hidden",
+  },
+  icon: {
+    color: theme.colors.green,
   },
   counterView: {
     alignSelf: "stretch",
