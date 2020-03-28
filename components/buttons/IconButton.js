@@ -21,7 +21,10 @@ const IconButton = (props) => {
   const content = iconButtonContent[props.variant];
 
   return (
-    <TouchableOpacity {...{...iconButtonProps, ...props}} onPress={props.onPress} style={{...iconButtonStyles.touchableOpacity, ...props.style}}>
+    <TouchableOpacity 
+      {...{...iconButtonProps, ...props}} 
+      style={{...iconButtonStyles.touchableOpacity, ...props.style}}
+    >
       <View style={{...iconButtonStyles.view, width: props.size, height: props.size, borderRadius: props.size}}>
           {content}
       </View>

@@ -6,11 +6,8 @@ import { StyleSheet, Switch as RNSwitch, Platform } from "react-native";
 const Switch = (props) => {
   return (
     <RNSwitch
-      {...{
-        ...props,
-        ...switchProps,
-        thumbColor: props.value? theme.colors.green : theme.colors.lightGrey
-      }} 
+      {...{...props, ...switchProps}} 
+      thumbColor={props.value? theme.colors.green : theme.colors.lightGrey}
       style={props.style}
     />
   );

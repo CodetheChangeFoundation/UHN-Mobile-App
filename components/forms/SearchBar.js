@@ -20,10 +20,7 @@ const SearchBar = (props) => {
     <Item style={searchBarStyles.item}>
       <Icon name="md-search" style={searchBarStyles.icon} />
       <Input
-        {...{
-          ...searchBarProps,
-          ...props
-        }}
+        {...{...searchBarProps, ...props}}
         onFocus={onFocus}
         onBlur={onBlur}
         style={{...searchBarStyles.input, ...props.style}}

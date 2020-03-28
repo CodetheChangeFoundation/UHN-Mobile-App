@@ -6,7 +6,7 @@ import { Text as NBText } from "native-base";
 
 const Text = (props) => {
   return (
-    <NBText {...props} style={[textStyles[props.variant], props.style]}>{props.children}</NBText>
+    <NBText {...props} style={{...textStyles[props.variant], ...props.style}}>{props.children}</NBText>
   );
 }
 
