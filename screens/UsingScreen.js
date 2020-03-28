@@ -22,7 +22,6 @@ const UsingScreen = props => {
 
   const startAlarm = () => {
     // Check if location has been set
-    console.log({ location });
     if (
       location === null ||
       location.coords === null ||
@@ -45,22 +44,22 @@ const UsingScreen = props => {
       return null;
     }
 
-    // Check for responders in the area (for beta-testing, compare to the coordinates of the Fred Victor Building)
-    const distance = computeDistance(fredVictorCoordinates, location.coords);
-    if (distance > MAXIMUM_DISTANCE) {
-      Alert.alert(
-        "Cannot start alarm",
-        "There are no responders within your area",
-        [{ text: "OK" }],
-        { cancelable: false }
-      );
+    // Check for responders in the area
+    const distance = computeDistance(fredVictorCoordinates, props.location.coords)
+    if( distance > MAXIMUM_DISTANCE ) {
+      Actions.alert({
+        alertTitle: "Cannot start alarm",
+        alertBody: "There are no responders within your area",
+        positiveButton: { text: 'OK' },
+        cancelable: false
+      });
       return null;
     }
 
     Actions.alarm();
 
     props.makeAlarmLog(userId, timeRemaining, token);
-  };
+  }
 
   useEffect(() => {
     let interval = setInterval(

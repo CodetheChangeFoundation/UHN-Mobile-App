@@ -14,9 +14,10 @@ import LocationScreen from './screens/LocationScreen';
 import AddRespondersScreen from "./screens/AddRespondersScreen";
 import RemoveRespondersScreen from "./screens/RemoveRespondersScreen";
 import ResponderHelpRequestModal from "./screens/modals/ResponderHelpRequestModal";
-import GenericModal from "./screens/modals/GenericModal";
 import DirectionsScreen from "./screens/DirectionsScreen";
 import DrawerContent from "./components/drawer/DrawerContent";
+import Modal from "./components/popups/Modal";
+import Alert from "./components/popups/Alert";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
@@ -116,7 +117,12 @@ export default function App() {
           />
           <Scene
             key="modal"
-            component={GenericModal}
+            component={Modal}
+            hideNavBar
+          />
+          <Scene
+            key="alert"
+            component={Alert}
             hideNavBar
           />
         </Lightbox>
