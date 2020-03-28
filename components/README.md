@@ -99,6 +99,14 @@ Props:
   - optional
   - type: number
   - default: 0
+- size: the size of the button
+  - optional
+  - type: number
+  - default: 42
+- color: the color of the button
+  - optional
+  - type: string
+  - default: "#60A781" (green)
 - onPress: the function to execute when the IconButton is pressed
   - optional
   - type: function

@@ -31,8 +31,8 @@ const checkboxStyles = StyleSheet.create({
     paddingRight: theme.layout.margin
   },
   icon: {
-    color: theme.colors.darkGrey,
-    fontSize: theme.iconSizes.body
+    fontSize: theme.iconSizes.body,
+    color: theme.colors.darkGrey
   }
 });
 

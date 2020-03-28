@@ -2,40 +2,30 @@ import React from "react";
 import PropTypes from "prop-types";
 import theme from "../../styles/base";
 import { StyleSheet, TouchableOpacity } from "react-native";
+import { Icon } from "native-base";
 import { View } from "../layout";
 import { Text } from "../typography";
-import { Icon } from "native-base";
 
 const IconButton = (props) => {
-  const combinedProps = {
-    ...iconButtonProps,
-    ...props,
-  };
-
+  // Render the content of the IconButton based on variant
   const iconButtonContent = {
     icon: (
-      <Icon name={props.name} style={[iconButtonStyles.icon, {fontSize: props.size}]}>{props.children}</Icon>
+      <Icon name={props.name} style={{fontSize: props.size, color: props.color}}>{props.children}</Icon>
     ),
     counter: (
-      <View style={iconButtonStyles.counterView}>
+      <View style={{...iconButtonStyles.counterView, backgroundColor: props.color}}>
         <Text variant="header">{props.counterValue}</Text>
       </View>
     ),
   };
   const content = iconButtonContent[props.variant];
 
-  // Make button size dynamic
-  const buttonStyle = {...iconButtonStyles.view}
-  buttonStyle.width = props.size || iconProps.size
-  buttonStyle.height = props.size || iconProps.size
-  buttonStyle.borderRadius = props.size || iconProps.size
-
   return (
-    <TouchableOpacity {...combinedProps} onPress={props.onPress} style={[iconButtonStyles.touchableOpacity, props.style]}>
-      <View style={buttonStyle}>
+    <TouchableOpacity {...{...iconButtonProps, ...props}} onPress={props.onPress} style={{...iconButtonStyles.touchableOpacity, ...props.style}}>
+      <View style={{...iconButtonStyles.view, width: props.size, height: props.size, borderRadius: props.size}}>
           {content}
       </View>
-      {(props.label)? <Text variant="label">{props.label}</Text> : null}
+      {!!(props.label) && <Text variant="label">{props.label}</Text>}
     </TouchableOpacity>
   );
 }
@@ -48,6 +38,7 @@ IconButton.propTypes = {
   name: PropTypes.string,
   counterValue: PropTypes.number,
   size: PropTypes.number,
+  color: PropTypes.string,
   onPress: PropTypes.func,
 };
 
@@ -55,6 +46,7 @@ IconButton.defaultProps = {
   variant: "counter",
   name: "md-pin",
   size: 42,
+  color: theme.colors.green,
   counterValue: 0,
 };
 
@@ -72,19 +64,10 @@ const iconButtonStyles = StyleSheet.create({
   },
   view: {
     flex: 0,
-    width: 0,
-    height: 0,
-    borderRadius: 0,
-    alignItems: "center", 
-    justifyContent: "center", 
-    overflow: "hidden",
-  },
-  icon: {
-    color: theme.colors.green,
+    overflow: "hidden"
   },
   counterView: {
-    alignSelf: "stretch",
-    backgroundColor: theme.colors.green,
+    alignSelf: "stretch"
   },
 });
 
