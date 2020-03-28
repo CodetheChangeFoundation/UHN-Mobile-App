@@ -27,20 +27,17 @@ const UsingScreen = props => {
       location.coords === null ||
       (location.coords.lat === 0 && location.coords.lng === 0)
     ) {
-      Alert.alert(
-        "Cannot start alarm",
-        "Your location is not set. Please set your location in the 'locations' page' and enable location services on your device.",
-        [
-          {
-            text: "Set my location now",
-            onPress: () => {
-              Actions.location();
-            }
+      Actions.alert({
+        alertTitle: "Cannot start alarm",
+        alertBody: "Your location is not set. Please set your location in the 'locations' page' and enable location services on your device.",
+        positiveButton: {
+          text: "Set my location now",
+          onPress: () => {
+            Actions.location();
           },
-          { text: "Cancel", onPress: () => {} }
-        ],
-        { cancelable: false }
-      );
+          cancelable: false
+        },
+      });
       return null;
     }
 
