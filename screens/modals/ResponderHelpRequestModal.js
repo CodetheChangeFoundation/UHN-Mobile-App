@@ -11,6 +11,7 @@ import { convertToAddress } from "../../utils";
 import { connect } from "react-redux";
 import { dismissNotification } from "../../store/actions";
 import { addResponderToHelpRequest } from "../../services/help-request.service";
+import { HELP_REQUEST_RESPONDER_LIMIT } from "../../constants/helpRequest";
 
 const ResponderHelpRequestModal = (props) => {
   if (
@@ -34,7 +35,6 @@ const ResponderHelpRequestModal = (props) => {
         // Handle error where there are already 6 responders who accepted
         if (!!response) {
           if (response.status == statusCodes.ok) {
-            Actions.pop()
             Actions.assignment();
           } else if ((response.status == statusCodes.badRequest) 
             && (response.data.statusCode == statusCodes.limitReachedError)) {
