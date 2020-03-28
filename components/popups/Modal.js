@@ -6,16 +6,15 @@ import { View } from "../layout";
 import { Text } from "../typography";
 
 const Modal = (props) => {
-
   return (
     <RNModal animationType="fade" 
       transparent={true} 
       visible={props.modalVisible} 
-      onRequestClose={props.onBackButtonPress} 
-      style={styles.modal}
+      onRequestClose={props.onBackButtonPress}
     >
       <TouchableWithoutFeedback onPress={props.onBackdropPress}>
         <View style={styles.backdrop}>
+          {/* onStartShouldSetResponder enables touch-responsive components inside the modal body */}
           <View style={styles.container} onStartShouldSetResponder={() => true}>
             
             <View style={styles.header}>
@@ -61,8 +60,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)"
-  },
-  modal: {
   },
   container: {
     flex: 0,
