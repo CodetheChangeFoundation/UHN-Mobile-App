@@ -7,24 +7,20 @@ import { Text } from "../typography";
 import View from "./View";
 
 const Segment = (props) => {
-  const leftButtonCombinedProps = {
-    side: "left",
-    text: props.leftText,
-    status: (props.active == "left")? "active" : "inactive",
-    onPress: props.onLeftButtonPress
-  };
-
-  const rightButtonCombinedProps = {
-    side: "right",
-    text: props.rightText,
-    status: (props.active == "right")? "active" : "inactive",
-    onPress: props.onRightButtonPress
-  }
-
   return (
     <View style={segmentStyles.view}>
-      <SegmentButton {...leftButtonCombinedProps} />
-      <SegmentButton {...rightButtonCombinedProps} />
+      <SegmentButton 
+        side="left"
+        text={props.leftText}
+        status={(props.active == "left")? "active" : "inactive"}
+        onPress={props.onLeftButtonPress}
+      />
+      <SegmentButton 
+        side="right"
+        text={props.rightText}
+        status={(props.active == "right")? "active" : "inactive"}
+        onPress={props.onRightButtonPress}
+      />
     </View>
   );
 }
@@ -53,26 +49,15 @@ const segmentStyles = StyleSheet.create({
 });
 
 ///////////////////////////////////////////
+/* SegmentButton component used in Segment */
 
 const SegmentButton = (props) => {
-  const combinedProps = {
-    ...segmentButtonProps,
-    ...props
-  }
-
-  const combinedStyles = {
-    ...segmentButtonStyles[props.side],
-    ...segmentButtonStyles[props.status]
-  }
-
-  const combinedTextStyles = {
-    ...textStyles,
-    ...segmentButtonTextStyles[props.status]
-  }
-
   return (
-    <TouchableOpacity {...combinedProps} style={combinedStyles}>
-        <Text style={combinedTextStyles}>{props.text}</Text>
+    <TouchableOpacity 
+      {...{...segmentButtonProps, ...props}} 
+      style={{...segmentButtonStyles[props.side], ...segmentButtonStyles[props.status]}}
+    >
+      <Text style={{...textStyles, ...segmentButtonTextStyles[props.status]}}>{props.text}</Text>
     </TouchableOpacity>
   );
 }
