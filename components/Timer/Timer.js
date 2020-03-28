@@ -100,7 +100,7 @@ function mapStateToProps(state) {
   return {
     time: state.timer,
     token: state.auth.token,
-    currentAlarmLog: state.alarm.currentAlarmLog
+    currentAlarmLog: state.metricAlarm.currentAlarmLog
   }
 }
 

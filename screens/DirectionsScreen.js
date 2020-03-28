@@ -84,6 +84,8 @@ const DirectionsScreen = props => {
   const handleArrived = () => {
     updateStatusOfHelpRequest(props.token, "arrived", helpRequestId);
     props.dismissNotification();
+    
+    //TODO: arrival log create
 
     Actions.alert({
       alertTitle: `Thank you for attending to ${client}!`,
