@@ -8,30 +8,30 @@ const SearchBar = (props) => {
   const [showClearButton, setShowClearButton] = useState(false);
   let textInput = React.createRef();
 
-  onFocus = () => { setShowClearButton(true); }
-  onBlur = () => { setShowClearButton(false); }
-  
-  const combinedProps = {
-    ...searchBarProps,
-    onFocus: this.onFocus,
-    onBlur: this.onBlur,
-    ...props
-  }
+  const onFocus = () => { setShowClearButton(true); }
+  const onBlur = () => { setShowClearButton(false); }
 
-  onClearButtonPress = () => {
+  const onClearButtonPress = () => {
     textInput._root.clear();
     props.onClearButtonPress();
-
   }
 
   return (
     <Item style={searchBarStyles.item}>
-      <Icon {...iconProps} style={searchBarStyles.icon} />
-      <Input {...combinedProps} style={[searchBarStyles.input, props.style]}
-      ref={(input) => {textInput = input}} />
+      <Icon name="md-search" style={searchBarStyles.icon} />
+      <Input
+        {...{
+          ...searchBarProps,
+          ...props
+        }}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        style={{...searchBarStyles.input, ...props.style}}
+        ref={(input) => {textInput = input}} 
+      />
         {props.enableClearButton && showClearButton && 
-          <TouchableOpacity onPress={this.onClearButtonPress}>
-            <Icon {...clearButtonProps} style={searchBarStyles.icon} />
+          <TouchableOpacity onPress={() => onClearButtonPress()}>
+            <Icon name="md-close-circle" style={searchBarStyles.icon} />
           </TouchableOpacity>
         }
     </Item>
@@ -59,14 +59,6 @@ const searchBarProps = {
   placeholderTextColor: theme.colors.darkGrey,
 }
 
-const iconProps = {
-  name: "md-search",
-}
-
-const clearButtonProps = {
-  name: "md-close-circle"
-}
-
 /* Styles */
 
 const baseStyles = {
@@ -78,15 +70,15 @@ const baseStyles = {
 const searchBarStyles = StyleSheet.create({
   icon: {
     color: theme.colors.lightGrey,
-    fontSize: theme.iconSizes.body,
+    fontSize: theme.iconSizes.body
   },
   item: {
     ...baseStyles,
     marginBottom: theme.layout.margin
   },
   input: {
-    ...baseStyles,
-  },
+    ...baseStyles
+  }
 });
 
 export default SearchBar;
