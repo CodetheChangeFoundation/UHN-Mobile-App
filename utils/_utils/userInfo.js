@@ -1,15 +1,6 @@
 import axios from "axios";
 import { SERVER_ROOT } from "react-native-dotenv";
-import { Alert } from "react-native";
-
-const userInfoError = (error) => {
-  Alert.alert(
-      "User info error",
-      error.response?.data?.errors[0]?.message || '',
-      [{ text: "OK" }],
-      { cancelable: true }
-    );
-}
+import { Actions } from "react-native-router-flux";
 
 const getUserInfo = async (userId, token) => {
   return axios.get(`${SERVER_ROOT}/users/${userId}`,
@@ -19,7 +10,14 @@ const getUserInfo = async (userId, token) => {
     .then((response) => {
       return response;
     })
-    .catch((error) => {userInfoError(error)});
+    .catch((err) => {
+      Actions.alert({
+        alertTitle: "Error getting user!!",
+        alertBody: error.response?.data?.errors[0]?.message || '',
+        positiveButton: { text: "OK" },
+        cancelable: true
+      });
+    });
 };
 
 const getWatchingFor = async (userId, token) => {

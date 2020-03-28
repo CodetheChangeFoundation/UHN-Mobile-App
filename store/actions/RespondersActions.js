@@ -2,16 +2,14 @@ import * as axios from 'axios';
 import { SERVER_ROOT } from 'react-native-dotenv';
 import { SET_MY_RESPONDERS, RESPONDERS_ERROR } from "./Types"
 import { Actions } from 'react-native-router-flux';
-import { Alert } from 'react-native';
 
 
 export const respondersError = (error) => {
-  Alert.alert(
-    "Responders request failed!",
-    error.response?.data?.errors[0]?.message || '',
-    [{ text: "OK" }],
-    { cancelable: true }
-  )
+  Actions.alert({
+    alertTitle: "Responders request failed!",
+    alertBody: error.response?.data?.errors[0]?.message || '',
+    positiveButton: { text: "OK" }
+  });
   return {
     type: RESPONDERS_ERROR,
     data: {

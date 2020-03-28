@@ -14,6 +14,7 @@ export const SET_LOADING = "SET_LOADING";
 
 // User Data types
 export const SET_LOCATION = "SET_LOCATION";
+export const SET_NUMBER_OF_RESPONDERS = "SET_NUMBER_OF_RESPONDERS";
 
 // RespondersActions types
 export const SET_MY_RESPONDERS = "SET_MY_RESPONDERS";

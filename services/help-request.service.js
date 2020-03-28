@@ -38,8 +38,25 @@ const addResponderToHelpRequest = (userId, token, helpRequestId) => {
       }
     });
 }
+
+const updateStatusOfHelpRequest = (token, newStatus, helpRequestId) => {
+  return axios
+    .put(`${SERVER_ROOT}/help-requests/${helpRequestId}`,
+      {
+        status: newStatus
+      },
+      {
+        headers: { "Authorization": token }
+      }
+    )
+    .then(response => {
+      return response;
+    })
+    .catch(err => console.error(err));
+}
   
 module.exports = {
   sendHelpRequest,
-  addResponderToHelpRequest
+  addResponderToHelpRequest,
+  updateStatusOfHelpRequest
 };
