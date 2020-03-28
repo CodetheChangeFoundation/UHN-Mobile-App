@@ -61,12 +61,12 @@ export const getNumberOfAvailableResponders = (userId, token) => {
         dispatch(setAvailableResponderCount(response.data.count));
       })
       .catch(error => {
-        Alert.alert(
-          "Failed to fetch number of available responders.",
-          error.response?.data?.errors[0]?.message || '',
-          [{ text: "OK" }],
-          { cancelable: true }
-        );
+        Actions.alert({
+          alertTitle: "Failed to fetch number of available responders.",
+          alertBody:  error.response?.data?.errors[0]?.message || '',
+          positiveButton: { text: "OK", onPress: () => Actions.main() },
+          cancelable: true
+        });
       })
   }
 }
