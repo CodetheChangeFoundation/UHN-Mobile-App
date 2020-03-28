@@ -4,14 +4,15 @@ import theme from "../../styles/base";
 import { StyleSheet, Switch as RNSwitch, Platform } from "react-native";
 
 const Switch = (props) => {
-  const combinedProps = {
-    ...props,
-    ...switchProps,
-    thumbColor: props.value? theme.colors.green : theme.colors.lightGrey,
-  }
-
   return (
-    <RNSwitch {...combinedProps} style={[switchStyles.switch, props.style]} />
+    <RNSwitch
+      {...{
+        ...props,
+        ...switchProps,
+        thumbColor: props.value? theme.colors.green : theme.colors.lightGrey
+      }} 
+      style={props.style}
+    />
   );
 }
 
@@ -25,7 +26,6 @@ Switch.propTypes = {
 Switch.defaultProps = {
   value: false,
 };
-
 
 /* Props */ 
 
@@ -41,12 +41,5 @@ const switchProps = {
   borderRadius: 16,
   borderColor: theme.colors.lightGrey,
 }
-
-/* Styles */
-
-const switchStyles = StyleSheet.create({
-  switch: {
-  },
-});
 
 export default Switch;
