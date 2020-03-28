@@ -1,5 +1,5 @@
 import * as Location from "expo-location";
-import { Alert } from 'react-native'
+import { Actions } from "react-native-router-flux";
 
 /**
  * Both have the same pattern:
@@ -13,12 +13,12 @@ export const convertToCoordinates = (address, success, fail) => {
     Location.geocodeAsync(address)
     .then((results) => {
         if( !results[0] ) {
-            Alert.alert(
-                'Address not found!',
-                'Please check for spelling errors, or enter address in more detail!',
-                [{ text: 'OK' }],
-                {cancelable: false},
-            )
+            Actions.alert({
+                alertTitle: 'Address not found!',
+                alertBody: 'Please check for spelling errors, or enter address in more detail!',
+                positiveButton: { text: 'OK' },
+                cancelable: false,
+            });
             fail && fail(null)
         }
         else {
@@ -44,12 +44,12 @@ export const convertToAddress = (coordinates, success, fail) => {
     Location.reverseGeocodeAsync(coords)
     .then((results) => {
         if(!results[0]) {
-            Alert.alert(
-                'Coordinates could not be read!',
-                'Please check your coordinates!',
-                [{ text: 'OK' }],
-                {cancelable: false},
-            )
+            Actions.alert({
+                alertTitle: 'Coordinates could not be read!',
+                alertBody: 'Please check your coordinates!',
+                positiveButton: { text: 'OK' },
+                cancelable: false,
+            });
             fail && fail(null)
         } else {
             // street, name, city, region, country, postalCode, name

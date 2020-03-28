@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { StyleSheet, Alert } from "react-native";
+import { StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import { Actions } from "react-native-router-flux";
 import Timer from "../components/Timer/Timer"
@@ -17,22 +17,35 @@ const AlarmScreen = (props) => {
   const sendHelp = () => {
     sendHelpRequest(userId, token)
       .then((response) => {
-        Alert.alert("Help request sent", "Help request has been sent to your responder network", [
-          { text: 'OK' }
-        ], { cancelable: false });
+        Actions.alert({
+          alertTitle: "Help request sent",
+          alertBody: "A help request has been sent to your responder network.",
+          positiveButton: { text: "OK", onPress: () => Actions.main() },
+          cancelable: false 
+        });
+        
         props.updateAlarmLog(0, true, props.currentAlarmLog, token)
         Actions.main()
       })
   }
   
   const exitAlarm = () => {
-    Alert.alert("Are you sure you want to exit?", "This will reset the timer", [
-      { text: 'Yes', onPress: () => {
-        Actions.main();
-        props.updateAlarmLog(0, null, props.currentAlarmLog, token)
-      }},
-      { text: 'No', style: 'cancel' }
-    ], { cancelable: false });
+    Actions.alert({
+      alertTitle: "Are you sure you want to exit?",
+      alertBody: "This will reset the timer.",
+      positiveButton: {
+        text: "Yes",
+        onPress: () => {
+          Actions.main();
+          props.updateAlarmLog(0, null, props.currentAlarmLog, token)
+        }
+      },
+      negativeButton: {
+        text: "No",
+        style: "cancel"
+      },
+      cancelable: false
+    });
   }
   
   return (

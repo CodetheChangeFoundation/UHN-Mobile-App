@@ -3,7 +3,7 @@ import { LOGIN, LOGIN_FAILED, SIGNUP_FAILED, SET_LOADING } from "./Types"
 import { setStatus } from '../../store/actions/UserDataActions.js'
 import { SERVER_ROOT } from 'react-native-dotenv';
 import { Actions } from "react-native-router-flux";
-import { AsyncStorage, Alert } from "react-native";
+import { AsyncStorage } from "react-native";
 import { sendPushToken } from "../../services/push-token.service";
 
 const login = (data, rememberMe) => {
@@ -16,13 +16,13 @@ const login = (data, rememberMe) => {
 
 const loginFailed = (error) => {
   console.log("login failed:", error);
-  Alert.alert(
-    "Login failed!",
-    (error.response?.data?.errors[0]?.message || '')
+  Actions.alert({
+    alertTitle: "Login failed!",
+    alertBody: (error.response?.data?.errors[0]?.message || '')
     + "\nPlease check that you've entered each field correctly.",
-    [{ text: "OK" }],
-    { cancelable: true }
-  )
+    positiveButton: { text: "OK" },
+    cancelable: true 
+  });
   return {
     type: LOGIN_FAILED
   }
@@ -37,13 +37,13 @@ export const setLoading = (isLoading) => {
 
 const signupFailed = (error) => {
   console.log("signup failed: ", error);
-  Alert.alert(
-    "Signup failed!",
-    (error.response?.data?.errors[0]?.message || '')
+  Actions.alert({
+    alertTitle: "Signup failed!",
+    alertBody: (error.response?.data?.errors[0]?.message || '')
     + "\nPlease check that you've entered each field correctly.",
-    [{ text: "OK" }],
-    { cancelable: true }
-  )
+    positiveButton: { text: "OK" },
+    cancelable: true
+  });
   return {
     type: SIGNUP_FAILED
   }
