@@ -21,45 +21,19 @@ const UsingScreen = props => {
   const { timeRemaining } = time;
 
   const startAlarm = () => {
-    // Check if location has been set
-    console.log({ location });
-    if (
-      location === null ||
-      location.coords === null ||
-      (location.coords.lat !== 0 && location.coords.lng !== 0)
-    ) {
-      Alert.alert(
-        "Cannot start alarm",
-        "Your location is not set. Please set your location in the 'locations' page' and enable location services on your device.",
-        [
-          {
-            text: "Set my location now",
-            onPress: () => {
-              Actions.location();
-            }
-          },
-          { text: "Cancel", onPress: () => {} }
-        ],
-        { cancelable: false }
-      );
-      return null;
+    const distance = computeDistance(fredVictorCoordinates, props.location.coords)
+    if( distance > MAXIMUM_DISTANCE ) {
+      Actions.alert({
+        alertTitle: "Cannot start alarm",
+        alertBody: "There are no responders within your area",
+        positiveButton: { text: 'OK' },
+        cancelable: false
+      });
+    } else {
+      Actions.alarm();
+
+      props.makeAlarmLog(userId, timeRemaining, token);
     }
-
-    // Check for responders in the area (for beta-testing, compare to the coordinates of the Fred Victor Building)
-    const distance = computeDistance(fredVictorCoordinates, location.coords);
-    if (distance > MAXIMUM_DISTANCE) {
-      Alert.alert(
-        "Cannot start alarm",
-        "There are no responders within your area",
-        [{ text: "OK" }],
-        { cancelable: false }
-      );
-      return null;
-    }
-
-    Actions.alarm();
-
-    props.makeAlarmLog(userId, timeRemaining, token);
   };
 
   useEffect(() => {
