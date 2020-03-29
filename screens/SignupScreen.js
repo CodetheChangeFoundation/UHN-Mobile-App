@@ -11,38 +11,67 @@ import { signupHandler, setLoading } from '../store/actions';
 import { connect } from 'react-redux';
 import accountRules from "../constants/accountRules";
 import accountConstraints from "../constants/accountConstraints";
-import validate from "validate.js";
 
 class SignupScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
       phoneNumber: "",
+      email: "",
       username: "",
       password: "",
-      emailError: null,
-      phoneNumberError: null,
-      usernameError: null,
-      passwordError: null
+      emailIsValid: false,
+      phoneNumberIsValid: false,
+      usernameIsValid: false,
+      passwordIsValid: false
+      // inputIsValid: {
+      //   email: true,
+      //   phoneNumber: true,
+      //   username: true,
+      //   password: true
+      // },
+      // signupAttempted: false
     };
   }
 
-  validateInputs = () => {
-    const { email, phoneNumber, username, password } = this.state;
-    return validate({email, phoneNumber, username, password}, accountConstraints.signup, {fullMessages: false});
+  // componentDidUpdate(prevProps, prevState) {
+  //   if (   (this.state.email !== prevState.email)
+  //       || (this.state.phoneNumber !== prevState.phoneNumber)
+  //       || (this.state.username !== prevState.username)
+  //       || (this.state.password !== prevState.password)
+  //       || (this.state.signupAttempted != prevState.signupAttempted)) {
+  //     this.setState({inputIsValid: this.checkIfInputIsValid(this.state.signupAttempted)});
+  //   }
+  // }
+
+  // checkIfInputIsValid = (signupAttempted) => {
+  //   const {email, phoneNumber, username, password} = this.state;
+  //   let inputIsValid = {
+  //     email: (!signupAttempted && email === "") || ((typeof email !== "undefined") && (accountRules.email.regex.test(email))),
+  //     phoneNumber: (!signupAttempted && phoneNumber === "") || ((typeof phoneNumber !== "undefined") && (accountRules.phoneNumber.regex.test(phoneNumber))),
+  //     username: (!signupAttempted && username === "") || ((typeof username !== "undefined") && (accountRules.username.regex.test(username))),
+  //     password: (!signupAttempted && password === "") || ((typeof password !== "undefined") && (accountRules.password.regex.test(password))),
+  //   };
+  //   return inputIsValid;
+  // }
+
+  allInputsValid = () => {
+    const { emailIsValid, phoneNumberIsValid, usernameIsValid, passwordIsValid } = this.state;
+    return (emailIsValid && phoneNumberIsValid && usernameIsValid && passwordIsValid);
   }
 
   onSignUpButtonPress = () => {
-    const validationError = this.validateInputs();
-    console.log("validationError:", validationError)
+    // if (this.state.signupAttempted == false) {
+    //   this.setState({signupAttempted: true});
+    // }
     const { email, phoneNumber, username, password } = this.state;
     console.log("[DEBUG] SignUp Button pressed.");
     console.log("\tEmail: " + email + "\n\tPhoneNumber: " + phoneNumber + "\n\tUsername: " + username + "\n\tPassword: " + password);
-    if (!!validationError) {
+    // const inputIsValidAndFilled = this.checkIfInputIsValid(true);
+    // if (!inputIsValidAndFilled.email || !inputIsValidAndFilled.phoneNumber || !inputIsValidAndFilled.username || !inputIsValidAndFilled.password) {
+    if (!this.allInputsValid()) {
       console.log("Signup rejected");
-      this.setState({emailError: validationError.email, phoneNumberError: validationError.phoneNumber,
-        usernameError: validationError.username, passwordError: validationError.password});
+      // this.setState({inputIsValid: inputIsValidAndFilled});
     } else {
       console.log("Signup accepted");
       this.props.setLoading(true);
@@ -85,39 +114,51 @@ class SignupScreen extends Component {
               <Input variant="email"
                 label="Email"
                 hasNext
-                onChangeText={email => {
-                  this.setState({ email, emailError: validate.single(email, accountConstraints.signup.email) });
-                }}
-                validationError={this.state.emailError?.[0]}
+                // hasError={!this.state.inputIsValid.email}
+                // errorText="Email format is invalid."
+                // onChangeText={email => {
+                //   this.setState({ email });
+                // }}
+                constraints={accountConstraints.signup.email}
+                onChangeText={(email, emailIsValid) => {this.setState({email, emailIsValid})}}
                 onSubmitEditing={() => phoneNumberInputRef._root.focus()}
               />
               <Input variant="number"
                 label="Phone Number"
                 ref={(input) => phoneNumberInputRef = input}
                 hasNext
-                onChangeText={phoneNumber => {
-                  this.setState({ phoneNumber, phoneNumberError: validate.single(phoneNumber, accountConstraints.signup.phoneNumber) });
-                }}
-                validationError={this.state.phoneNumberError?.[0]}
+                // hasError={!this.state.inputIsValid.phoneNumber}
+                // errorText="Invalid. Example format: 4163403131"
+                // onChangeText={phoneNumber => {
+                //   this.setState({ phoneNumber });
+                // }}
+                constraints={accountConstraints.signup.phoneNumber}
+                onChangeText={(phoneNumber, phoneNumberIsValid) => {this.setState({phoneNumber, phoneNumberIsValid})}}
                 onSubmitEditing={() => usernameInputRef._root.focus()}
               />
               <Input variant="text"
                 label="Username"
                 ref={(input) => usernameInputRef = input}
                 hasNext
-                onChangeText={username => {
-                  this.setState({ username, usernameError: validate.single(username, accountConstraints.signup.username) });
-                }}
-                validationError={this.state.usernameError?.[0]}
+                // hasError={!this.state.inputIsValid.username}
+                // errorText="Must be 5-20 characters."
+                // onChangeText={username => {
+                //   this.setState({ username });
+                // }}
+                constraints={accountConstraints.signup.username}
+                onChangeText={(username, usernameIsValid) => {this.setState({username, usernameIsValid})}}
                 onSubmitEditing={() => passwordInputRef._root.focus()}
               />
               <Input variant="password"
                 label="Password"
                 ref={(input) => passwordInputRef = input}
-                onChangeText={password => {
-                  this.setState({ password, passwordError: validate.single(password, accountConstraints.signup.password) });
-                }}
-                validationError={this.state.passwordError?.[0]}
+                // hasError={!this.state.inputIsValid.password}
+                // errorText="Must be 5-20 characters."
+                // onChangeText={password => {
+                //   this.setState({ password });
+                // }}
+                constraints={accountConstraints.signup.password}
+                onChangeText={(password, passwordIsValid) => {this.setState({password, passwordIsValid})}}
                 onSubmitEditing={this.onSignUpButtonPress}
               />
             </View>

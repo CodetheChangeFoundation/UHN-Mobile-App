@@ -4,17 +4,22 @@ import theme from "../../styles/base";
 import { Animated, StyleSheet, Platform } from "react-native";
 import { Item, Input as NBInput, Label, Icon } from "native-base";
 import { Text } from "../typography";
+import validate from "validate.js";
 
 const Input = React.forwardRef((props, ref) => {
   const [passwordHidden, setPasswordHidden] = useState(true);
-  const [validationError, setValidationError] = useState(props.validationError);
+  const [error, setError] = useState(null);
 
-  const inputStyles = (!!props.validationError)? errorInputStyles : noErrorInputStyles;
+  // const inputStyles = (props.hasError)? errorInputStyles : noErrorInputStyles;
+  const inputStyles = (!!error)? errorInputStyles : noErrorInputStyles;
 
-  useEffect(() => {
-    if (props.validationError !== validationError) {
-      setValidationError(props.validationError);
-    }
+  // Wrapper for onChangeText
+  const onChangeText = ((newValue) => {
+    // Validate the value
+    // setValue(newValue);
+    setError(validate.single(newValue, props.constraints, {fullMessages: false}));
+    // Pass the value on to parent
+    props.onChangeText(newValue, !!error);
   })
 
   return (
@@ -31,7 +36,7 @@ const Input = React.forwardRef((props, ref) => {
           secureTextEntry={(props.variant == "password" && passwordHidden)}
           style={{...inputStyles.input, ...props.style}}
           getRef={ref}
-          onChangeText={props.onChangeText}
+          onChangeText={onChangeText}
         />
 
         {/* For password inputs, add an icon to show/hide password */}
@@ -43,9 +48,13 @@ const Input = React.forwardRef((props, ref) => {
         )}
 
       </Item>
+{/* 
+      <AnimatedView style={inputStyles.view} viewIsShowing={props.hasError}>
+        {props.errorText && <Text style={inputStyles.text}>{props.errorText}</Text>}
+      </AnimatedView> */}
 
-      <AnimatedView style={inputStyles.view} viewIsShowing={!!props.validationError}>
-        {!!props.validationError && <Text style={inputStyles.text}>{props.validationError}</Text>}
+      <AnimatedView style={inputStyles.view} viewIsShowing={!!error}>
+        {!!error && <Text style={inputStyles.text}>{error[0]}</Text>}
       </AnimatedView>
 
     </Fragment>
@@ -58,7 +67,9 @@ Input.propTypes = {
   variant: PropTypes.oneOf([ "text", "email", "password", "number"]),
   label: PropTypes.string.isRequired,
   hasNext: PropTypes.bool,
-  validationError: PropTypes.string
+  // hasError: PropTypes.bool,
+  // errorText: PropTypes.string,
+  constraints: PropTypes.object
 };
 
 Input.defaultProps = {

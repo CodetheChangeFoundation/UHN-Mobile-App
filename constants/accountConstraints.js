@@ -6,6 +6,7 @@ const PASSWORD_MAX_LENGTH = 20;
 const signup = {
   email: {
     presence: {
+      allowEmpty: false,
       message: "Email is required."
     },
     email: {
@@ -14,6 +15,7 @@ const signup = {
   },
   phoneNumber: {
     presence: {
+      allowEmpty: false,
       message: "Phone number is required."
     },
     format: {
