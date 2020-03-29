@@ -24,54 +24,24 @@ class SignupScreen extends Component {
       phoneNumberIsValid: false,
       usernameIsValid: false,
       passwordIsValid: false
-      // inputIsValid: {
-      //   email: true,
-      //   phoneNumber: true,
-      //   username: true,
-      //   password: true
-      // },
-      // signupAttempted: false
     };
-  }
-
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (   (this.state.email !== prevState.email)
-  //       || (this.state.phoneNumber !== prevState.phoneNumber)
-  //       || (this.state.username !== prevState.username)
-  //       || (this.state.password !== prevState.password)
-  //       || (this.state.signupAttempted != prevState.signupAttempted)) {
-  //     this.setState({inputIsValid: this.checkIfInputIsValid(this.state.signupAttempted)});
-  //   }
-  // }
-
-  // checkIfInputIsValid = (signupAttempted) => {
-  //   const {email, phoneNumber, username, password} = this.state;
-  //   let inputIsValid = {
-  //     email: (!signupAttempted && email === "") || ((typeof email !== "undefined") && (accountRules.email.regex.test(email))),
-  //     phoneNumber: (!signupAttempted && phoneNumber === "") || ((typeof phoneNumber !== "undefined") && (accountRules.phoneNumber.regex.test(phoneNumber))),
-  //     username: (!signupAttempted && username === "") || ((typeof username !== "undefined") && (accountRules.username.regex.test(username))),
-  //     password: (!signupAttempted && password === "") || ((typeof password !== "undefined") && (accountRules.password.regex.test(password))),
-  //   };
-  //   return inputIsValid;
-  // }
-
-  allInputsValid = () => {
-    const { emailIsValid, phoneNumberIsValid, usernameIsValid, passwordIsValid } = this.state;
-    return (emailIsValid && phoneNumberIsValid && usernameIsValid && passwordIsValid);
+    this.emailInputRef = React.createRef();
+    this.phoneNumberInputRef = React.createRef();
+    this.usernameInputRef = React.createRef();
+    this.passwordInputRef = React.createRef();
   }
 
   onSignUpButtonPress = () => {
-    // if (this.state.signupAttempted == false) {
-    //   this.setState({signupAttempted: true});
-    // }
     const { email, phoneNumber, username, password } = this.state;
+    const { emailIsValid, phoneNumberIsValid, usernameIsValid, passwordIsValid } = this.state;
+
     console.log("[DEBUG] SignUp Button pressed.");
     console.log("\tEmail: " + email + "\n\tPhoneNumber: " + phoneNumber + "\n\tUsername: " + username + "\n\tPassword: " + password);
-    // const inputIsValidAndFilled = this.checkIfInputIsValid(true);
-    // if (!inputIsValidAndFilled.email || !inputIsValidAndFilled.phoneNumber || !inputIsValidAndFilled.username || !inputIsValidAndFilled.password) {
-    if (!this.allInputsValid()) {
+
+    console.log(emailIsValid, phoneNumberIsValid, usernameIsValid, passwordIsValid)
+
+    if (!(emailIsValid && phoneNumberIsValid && usernameIsValid && passwordIsValid)) {
       console.log("Signup rejected");
-      // this.setState({inputIsValid: inputIsValidAndFilled});
     } else {
       console.log("Signup accepted");
       this.props.setLoading(true);
@@ -95,8 +65,6 @@ class SignupScreen extends Component {
   }
 
   render() {
-    let usernameInputRef = React.createRef();
-    let passwordInputRef = React.createRef();
     return (
       <Container>
         <Header leftButton="arrow" 
@@ -113,50 +81,35 @@ class SignupScreen extends Component {
             <View style={styles.loginInfo}>
               <Input variant="email"
                 label="Email"
+                value={this.state.email}
+                ref={(input) => emailInputRef = input}
                 hasNext
-                // hasError={!this.state.inputIsValid.email}
-                // errorText="Email format is invalid."
-                // onChangeText={email => {
-                //   this.setState({ email });
-                // }}
                 constraints={accountConstraints.signup.email}
                 onChangeText={(email, emailIsValid) => {this.setState({email, emailIsValid})}}
                 onSubmitEditing={() => phoneNumberInputRef._root.focus()}
               />
               <Input variant="number"
                 label="Phone Number"
+                value={this.state.phoneNumber}
                 ref={(input) => phoneNumberInputRef = input}
                 hasNext
-                // hasError={!this.state.inputIsValid.phoneNumber}
-                // errorText="Invalid. Example format: 4163403131"
-                // onChangeText={phoneNumber => {
-                //   this.setState({ phoneNumber });
-                // }}
                 constraints={accountConstraints.signup.phoneNumber}
                 onChangeText={(phoneNumber, phoneNumberIsValid) => {this.setState({phoneNumber, phoneNumberIsValid})}}
                 onSubmitEditing={() => usernameInputRef._root.focus()}
               />
               <Input variant="text"
                 label="Username"
+                value={this.state.username}
                 ref={(input) => usernameInputRef = input}
                 hasNext
-                // hasError={!this.state.inputIsValid.username}
-                // errorText="Must be 5-20 characters."
-                // onChangeText={username => {
-                //   this.setState({ username });
-                // }}
                 constraints={accountConstraints.signup.username}
                 onChangeText={(username, usernameIsValid) => {this.setState({username, usernameIsValid})}}
                 onSubmitEditing={() => passwordInputRef._root.focus()}
               />
               <Input variant="password"
                 label="Password"
+                value={this.state.password}
                 ref={(input) => passwordInputRef = input}
-                // hasError={!this.state.inputIsValid.password}
-                // errorText="Must be 5-20 characters."
-                // onChangeText={password => {
-                //   this.setState({ password });
-                // }}
                 constraints={accountConstraints.signup.password}
                 onChangeText={(password, passwordIsValid) => {this.setState({password, passwordIsValid})}}
                 onSubmitEditing={this.onSignUpButtonPress}

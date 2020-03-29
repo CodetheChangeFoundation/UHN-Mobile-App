@@ -6,7 +6,6 @@ const PASSWORD_MAX_LENGTH = 20;
 const signup = {
   email: {
     presence: {
-      allowEmpty: false,
       message: "Email is required."
     },
     email: {
@@ -15,7 +14,6 @@ const signup = {
   },
   phoneNumber: {
     presence: {
-      allowEmpty: false,
       message: "Phone number is required."
     },
     format: {
@@ -31,7 +29,7 @@ const signup = {
     length: {
       minimum: USERNAME_MIN_LENGTH,
       maximum: USERNAME_MAX_LENGTH,
-      message: `Username should be ${USERNAME_MIN_LENGTH}-${USERNAME_MAX_LENGTH} characters.`
+      message: `Username must be ${USERNAME_MIN_LENGTH}-${USERNAME_MAX_LENGTH} characters.`
     }
   },
   password: {
@@ -42,7 +40,7 @@ const signup = {
     length: {
       minimum: PASSWORD_MIN_LENGTH,
       maximum: PASSWORD_MAX_LENGTH,
-      message: `Password should be ${PASSWORD_MIN_LENGTH}-${PASSWORD_MAX_LENGTH} characters.`
+      message: `Password must be ${PASSWORD_MIN_LENGTH}-${PASSWORD_MAX_LENGTH} characters.`
     }
   }
 }

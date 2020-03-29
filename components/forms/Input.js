@@ -10,17 +10,20 @@ const Input = React.forwardRef((props, ref) => {
   const [passwordHidden, setPasswordHidden] = useState(true);
   const [error, setError] = useState(null);
 
-  // const inputStyles = (props.hasError)? errorInputStyles : noErrorInputStyles;
   const inputStyles = (!!error)? errorInputStyles : noErrorInputStyles;
 
   // Wrapper for onChangeText
   const onChangeText = ((newValue) => {
-    // Validate the value
-    // setValue(newValue);
-    setError(validate.single(newValue, props.constraints, {fullMessages: false}));
-    // Pass the value on to parent
-    props.onChangeText(newValue, !!error);
-  })
+    // Validate input and signal parent whether it's valid or not
+    if (!!props.constraints) {
+      const result = validate.single(newValue, props.constraints, {fullMessages: false});
+      setError(result);
+      props.onChangeText(newValue, !result);
+    } else {
+      // No validation needed
+      props.onChangeText(newValue);
+    }
+  });
 
   return (
     <Fragment>
@@ -48,13 +51,9 @@ const Input = React.forwardRef((props, ref) => {
         )}
 
       </Item>
-{/* 
-      <AnimatedView style={inputStyles.view} viewIsShowing={props.hasError}>
-        {props.errorText && <Text style={inputStyles.text}>{props.errorText}</Text>}
-      </AnimatedView> */}
 
       <AnimatedView style={inputStyles.view} viewIsShowing={!!error}>
-        {!!error && <Text style={inputStyles.text}>{error[0]}</Text>}
+        {<Text style={inputStyles.text}>{error?.[0]}</Text>}
       </AnimatedView>
 
     </Fragment>
@@ -67,15 +66,12 @@ Input.propTypes = {
   variant: PropTypes.oneOf([ "text", "email", "password", "number"]),
   label: PropTypes.string.isRequired,
   hasNext: PropTypes.bool,
-  // hasError: PropTypes.bool,
-  // errorText: PropTypes.string,
   constraints: PropTypes.object
 };
 
 Input.defaultProps = {
   variant: "text",
-  hasNext: false,
-  // hasError: false
+  hasNext: false
 };
 
 /* Props */
