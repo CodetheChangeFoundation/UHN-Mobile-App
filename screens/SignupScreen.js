@@ -9,7 +9,6 @@ import * as axios from 'axios';
 import { SERVER_ROOT } from 'react-native-dotenv';
 import { signupHandler, setLoading } from '../store/actions';
 import { connect } from 'react-redux';
-import accountRules from "../constants/accountRules";
 import accountConstraints from "../constants/accountConstraints";
 
 class SignupScreen extends Component {
@@ -23,12 +22,9 @@ class SignupScreen extends Component {
       emailIsValid: false,
       phoneNumberIsValid: false,
       usernameIsValid: false,
-      passwordIsValid: false
+      passwordIsValid: false,
+      refresh: false
     };
-    this.emailInputRef = React.createRef();
-    this.phoneNumberInputRef = React.createRef();
-    this.usernameInputRef = React.createRef();
-    this.passwordInputRef = React.createRef();
   }
 
   onSignUpButtonPress = () => {
@@ -38,12 +34,10 @@ class SignupScreen extends Component {
     console.log("[DEBUG] SignUp Button pressed.");
     console.log("\tEmail: " + email + "\n\tPhoneNumber: " + phoneNumber + "\n\tUsername: " + username + "\n\tPassword: " + password);
 
-    console.log(emailIsValid, phoneNumberIsValid, usernameIsValid, passwordIsValid)
-
     if (!(emailIsValid && phoneNumberIsValid && usernameIsValid && passwordIsValid)) {
-      console.log("Signup rejected");
+      // Force all Inputs to validate and show error messages
+      this.setState({refresh: !this.state.refresh});
     } else {
-      console.log("Signup accepted");
       this.props.setLoading(true);
       this.props.signupHandler({
         email: email,
@@ -81,35 +75,35 @@ class SignupScreen extends Component {
             <View style={styles.loginInfo}>
               <Input variant="email"
                 label="Email"
-                value={this.state.email}
                 ref={(input) => emailInputRef = input}
                 hasNext
+                refresh={this.state.refresh}
                 constraints={accountConstraints.signup.email}
                 onChangeText={(email, emailIsValid) => {this.setState({email, emailIsValid})}}
                 onSubmitEditing={() => phoneNumberInputRef._root.focus()}
               />
               <Input variant="number"
                 label="Phone Number"
-                value={this.state.phoneNumber}
                 ref={(input) => phoneNumberInputRef = input}
                 hasNext
+                refresh={this.state.refresh}
                 constraints={accountConstraints.signup.phoneNumber}
                 onChangeText={(phoneNumber, phoneNumberIsValid) => {this.setState({phoneNumber, phoneNumberIsValid})}}
                 onSubmitEditing={() => usernameInputRef._root.focus()}
               />
               <Input variant="text"
                 label="Username"
-                value={this.state.username}
                 ref={(input) => usernameInputRef = input}
                 hasNext
+                refresh={this.state.refresh}
                 constraints={accountConstraints.signup.username}
                 onChangeText={(username, usernameIsValid) => {this.setState({username, usernameIsValid})}}
                 onSubmitEditing={() => passwordInputRef._root.focus()}
               />
               <Input variant="password"
                 label="Password"
-                value={this.state.password}
                 ref={(input) => passwordInputRef = input}
+                refresh={this.state.refresh}
                 constraints={accountConstraints.signup.password}
                 onChangeText={(password, passwordIsValid) => {this.setState({password, passwordIsValid})}}
                 onSubmitEditing={this.onSignUpButtonPress}

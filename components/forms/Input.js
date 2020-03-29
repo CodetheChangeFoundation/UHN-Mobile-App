@@ -3,27 +3,43 @@ import PropTypes from "prop-types";
 import theme from "../../styles/base";
 import { Animated, StyleSheet, Platform } from "react-native";
 import { Item, Input as NBInput, Label, Icon } from "native-base";
+import { View } from "../layout";
 import { Text } from "../typography";
 import validate from "validate.js";
 
 const Input = React.forwardRef((props, ref) => {
+  const [refresh, setRefresh] = useState(props.refresh);
   const [passwordHidden, setPasswordHidden] = useState(true);
-  const [error, setError] = useState(null);
+  const [value, setValue] = useState("");
+  const [error, setError] = useState("");
 
   const inputStyles = (!!error)? errorInputStyles : noErrorInputStyles;
 
+  useEffect(() => {
+    // Force a validation
+    if (props.refresh !== refresh) {
+      setRefresh(props.refresh);
+      validateInput(value);
+    }
+  })
+
   // Wrapper for onChangeText
   const onChangeText = ((newValue) => {
+    setValue(newValue);
     // Validate input and signal parent whether it's valid or not
     if (!!props.constraints) {
-      const result = validate.single(newValue, props.constraints, {fullMessages: false});
-      setError(result);
-      props.onChangeText(newValue, !result);
+      validateInput(newValue);
     } else {
       // No validation needed
       props.onChangeText(newValue);
     }
   });
+
+  const validateInput = ((value) => {
+    const result = validate.single(value, props.constraints, {fullMessages: false});
+    setError(result);
+    props.onChangeText(value, !result);
+  })
 
   return (
     <Fragment>
@@ -33,7 +49,7 @@ const Input = React.forwardRef((props, ref) => {
         <Label style={inputStyles.label}>{props.label}</Label>
 
         <NBInput
-          {...{...inputProps[props.variant], ...props}} 
+          {...{...inputProps[props.variant], ...props}}
           returnKeyType={props.hasNext? "next" : "done"}
           blurOnSubmit={props.hasNext? false : true}
           secureTextEntry={(props.variant == "password" && passwordHidden)}
@@ -53,7 +69,7 @@ const Input = React.forwardRef((props, ref) => {
       </Item>
 
       <AnimatedView style={inputStyles.view} viewIsShowing={!!error}>
-        {<Text style={inputStyles.text}>{error?.[0]}</Text>}
+        {(!!props.constraints) && <Text style={inputStyles.text}>{error?.[0]}</Text>}
       </AnimatedView>
 
     </Fragment>
@@ -66,7 +82,9 @@ Input.propTypes = {
   variant: PropTypes.oneOf([ "text", "email", "password", "number"]),
   label: PropTypes.string.isRequired,
   hasNext: PropTypes.bool,
-  constraints: PropTypes.object
+  refresh: PropTypes.bool,
+  constraints: PropTypes.object,
+  onChangeText: PropTypes.func
 };
 
 Input.defaultProps = {
@@ -174,7 +192,7 @@ const AnimatedView = (props) => {
       style={{...props.style, zIndex: -1, transform: [{
         translateY: animatedHeight.interpolate({
           inputRange: [0, 1],
-          outputRange: [-(theme.layout.errorTextHeight), 0]
+          outputRange: [-(theme.layout.errorTextHeight + theme.layout.padding), 0]
         })
       }]}}
     >

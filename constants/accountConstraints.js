@@ -17,8 +17,9 @@ const signup = {
       message: "Phone number is required."
     },
     format: {
+      // TODO: This might need to be change to fit well with Twillio implementation
       pattern: /^[0-9]{10}$/,
-      message: "Phone number format is invalid."
+      message: "Invalid format. Example: 4163403131"
     }
   },
   username: {
