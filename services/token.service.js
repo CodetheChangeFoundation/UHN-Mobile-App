@@ -6,6 +6,15 @@ import { SERVER_ROOT } from "react-native-dotenv";
 const REFRESH_TOKEN_KEY = "refreshToken";
 const ACCESS_TOKEN_KEY = "token";
 
+export const getHeader = accessToken => {
+  return {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json"
+    }
+  };
+};
+
 export const setAccessToken = accessToken => {
   return new Promise(async (res, rej) => {
     await AsyncStorage.setItem(ACCESS_TOKEN_KEY, accessToken);

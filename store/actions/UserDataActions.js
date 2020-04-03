@@ -2,6 +2,7 @@ import { SET_LOCATION, SET_NALOXONE_AVAILABILITY, SET_NUMBER_OF_RESPONDERS } fro
 import * as axios from "axios";
 import { SERVER_ROOT } from "react-native-dotenv";
 import { Actions } from "react-native-router-flux";
+import * as TokenService from "../../services/token.service";
 
 export const setLocalLocation = location => {
   return {
@@ -20,9 +21,7 @@ const setNaloxoneAvailabilityHandler = naloxoneAvailability => {
 export const setStatus = (userId, token, statusToChange) => {
   return dispatch => {
     axios
-      .post(`${SERVER_ROOT}/users/${userId}/status`, statusToChange, {
-        headers: { Authorization: token }
-      })
+      .post(`${SERVER_ROOT}/users/${userId}/status`, statusToChange, TokenService.getHeader(token))
       .then(response => {
         if (statusToChange.naloxoneAvailability != undefined) {
           dispatch(setNaloxoneAvailabilityHandler(statusToChange.naloxoneAvailability));
@@ -47,15 +46,9 @@ export const setAvailableResponderCount = count => {
 
 export const getNumberOfAvailableResponders = (userId, token) => {
   var url = `${SERVER_ROOT}/users/${userId}/responders/count`;
-  var header = {
-    headers: {
-      "Authorization": "Bearer " + token,
-      "Content-Type": "application/json"
-    }
-  };
   return dispatch => {
     axios
-      .get(url, header)
+      .get(url, TokenService.getHeader(token))
       .then(response => {
         dispatch(setAvailableResponderCount(response.data.count));
       })
