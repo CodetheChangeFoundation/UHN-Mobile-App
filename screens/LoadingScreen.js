@@ -9,6 +9,10 @@ import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
 import { Container, Content, View } from "../components/layout";
 import { Text } from "../components/typography";
+var jwtDecode = require("jwt-decode");
+import { Notifications } from "expo";
+import { tokenRedirect, setLocalLocation, receiveNotification } from "../store/actions";
+import { connect } from "react-redux";
 import { getDeviceLocation } from "../utils/index";
 import * as LocalStorageService from "../services/localStorage.service";
 
@@ -22,8 +26,7 @@ const LoadingScreen = props => {
   }, []);
 
   _handleNotification = notification => {
-    props.setNotification(notification.data);
-    Actions.responderHelpRequestModal();
+    props.receiveNotification(notification.data);
   };
 
   _loadFonts = async () => {
@@ -116,6 +119,6 @@ mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { tokenRedirect, setLocalLocation, setNotification })(
+export default connect(mapStateToProps, { tokenRedirect, setLocalLocation, receiveNotification })(
   LoadingScreen
 );

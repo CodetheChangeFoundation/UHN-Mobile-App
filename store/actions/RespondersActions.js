@@ -5,6 +5,11 @@ import { Actions } from 'react-native-router-flux';
 
 
 export const respondersError = (error) => {
+  Actions.alert({
+    alertTitle: "Responders request failed!",
+    alertBody: error.response?.data?.errors[0]?.message || '',
+    positiveButton: { text: "OK" }
+  });
   return {
     type: RESPONDERS_ERROR,
     data: {

@@ -27,15 +27,28 @@ expo start --clear
 **Button**
 
 ```
-<Button variant="alarm" />
+<Button
+  variant="warning"
+  size="large"
+  textStyles={{fontSize: 32}}
+>
+  Stop
+</Button>
 ```
 
 Props:
 
 - variant: changes the appearance of the button
   - optional
-  - type: one of "primary", "secondary", "alarm", "urgent"
-  - default: "primary"
+  - type: one of "dark", "light", "affirmation", "warning"
+  - default: "dark"
+- size: changes the size of the button
+  - optional
+  - type: one of "medium", "large"
+  - default: "medium"
+- textStyles: additional styles to pass onto the Text component inside the Button
+  - optional
+  - type: object
 
 
 **Switch**
@@ -178,13 +191,13 @@ Props:
   - default: true
 - onChangeText: when the text is edited, captures the new value
   - required
-  - type: func
+  - type: function
 - onClearButtonPress: when the clear button is pressed, the search bar text will be cleared. Use this to reset whatever variable you're using to capture the text
   - optional
-  - type: func
+  - type: function
 - onSubmitEditing: callback for when the user enters text then presses the enter key
   - required
-  - type: func
+  - type: function
 
 **Checkbox**
 
@@ -202,10 +215,10 @@ Props:
 
 - checked: true if the checkbox is currently checked
   - required
-  - type: bool
+  - type: boolean
 - onPress: callback for when the checkbox is pressed
   - required
-  - type: func
+  - type: function
 
 ## Layout
 
@@ -320,15 +333,17 @@ const modalBody = (<Text>Are you sure?</Text>);
 const modalFooterLeft = (<Button variant="secondary" onPress={() => setModalVisible(false)}>Cancel</Button>);
 const modalFooterRight = (<Button variant="primary" onPress={() => Actions.auth()}>Logout</Button>);
 
-<Modal
-  modalVisible={modalVisible}
-  modalHeader={modalHeader}
-  modalBody={modalBody}
-  modalFooterLeft={modalFooterLeft}
-  modalFooterRight={modalFooterRight}
-  onBackdropPress={() => setModalVisible(false)}
-  onBackButtonPress={() => setModalVisible(false)}
-/>
+return (
+  <Modal
+    modalVisible={modalVisible}
+    modalHeader={modalHeader}
+    modalBody={modalBody}
+    modalFooterLeft={modalFooterLeft}
+    modalFooterRight={modalFooterRight}
+    onBackdropPress={() => setModalVisible(false)}
+    onBackButtonPress={() => setModalVisible(false)}
+  />
+);
 ```
 
 Props: 
@@ -346,6 +361,54 @@ Props:
   - type: element
   - default: none
 
+**Alert**
+
+
+```
+const alertTitle = "Reminder";
+const alertBody = "Please update your profile.",
+const positiveButton = {
+  text: "OK",
+  onPress: () => {console.log("Woo!")}
+};
+const negativeButton = {
+  text: "Cancel",
+  style: "cancel"
+};
+const neutralButton = {
+  text: "Later"
+}
+
+return (
+  <Alert
+    alertTitle={alertTitle}
+    alertBody={alertBody}
+    positiveButton={positiveButton}
+    negativeButton={negativeButton}
+    neutralButton={neutralButton}
+    cancelable={true}
+  /> 
+);
+```
+
+Props: 
+- alertTitle: the title of the alert popup
+  - required
+  - type: string
+- alertBody: the message inside the alert body
+  - required
+  - type: string
+- positiveButton, negativeButton, neutralButton: buttons to dismiss the modal or perform other actions
+  - positiveButton is required
+  - if neutralButton is defined, then negativeButton must also be defined
+  - type: object with properties
+    - text: string (required)
+    - style: one of "default", "cancel", "destructive"
+    - onPress: function
+- cancelable: if true, allows Android users to dismiss the alert by tapping on the background or pressing the hardware back button
+  - type: boolean
+  - default: true
+
 ## Typography
 
 **Text**
@@ -362,8 +425,7 @@ Props:
   - type: one of
     - "body", "footnote", "title" (used for displaying text on screen)
     - "header" (used in the Header component)
-    - "primary", "secondary", "alarm", "urgent", "snooze" (used in the Button component)
-    - "label" (used in the IconButton component)
+    - "label" (used for very small text, e.g. button labels)
   - default: "body"
 
 ## Timer

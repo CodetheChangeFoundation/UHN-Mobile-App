@@ -1,13 +1,12 @@
 {
   "expo": {
-    "name": "UHN-Mobile-App",
-    "slug": "UHN-Mobile-App",
+    "name": "UHN Overdose Response Network",
+    "slug": "UHN-Overdose-Response-Network",
     "privacy": "public",
     "sdkVersion": "35.0.0",
     "platforms": [
       "ios",
-      "android",
-      "web"
+      "android"
     ],
     "version": "1.0.0",
     "orientation": "portrait",
@@ -24,12 +23,18 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.uhnopenlab.overdoseresponsenetwork",
+      "buildNumber": "1.0.0",
       "supportsTablet": true,
       "infoPlist": {
         "UIBackgroundModes": [
           "location"
         ]
       }
+    },
+    "android": {
+      "package": "com.uhnopenlab.overdoseresponsenetwork",
+      "versionCode": 1
     }
   }
 }

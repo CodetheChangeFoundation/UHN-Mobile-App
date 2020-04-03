@@ -19,10 +19,15 @@ const login = (data, rememberMe) => {
   };
 };
 
-const loginFailed = error => {
-  // TODO: Render error message (not "error" variable, something intuitive to a non-programmer) to prompt user to try again
-  console.log("login failed: ");
-  console.log(error);
+const loginFailed = (error) => {
+  console.log("login failed:", error);
+  Actions.alert({
+    alertTitle: "Login failed!",
+    alertBody: (error.response?.data?.errors[0]?.message || '')
+    + "\nPlease check that you've entered each field correctly.",
+    positiveButton: { text: "OK" },
+    cancelable: true 
+  });
   return {
     type: LOGIN_FAILED
   };
@@ -35,10 +40,15 @@ export const setLoading = isLoading => {
   };
 };
 
-const signupFailed = error => {
-  // TODO: Render error message (not "error" variable, something intuitive to a non-programmer) to prompt user to try again
-  console.log("signup failed: ");
-  console.log(error);
+const signupFailed = (error) => {
+  console.log("signup failed: ", error);
+  Actions.alert({
+    alertTitle: "Signup failed!",
+    alertBody: (error.response?.data?.errors[0]?.message || '')
+    + "\nPlease check that you've entered each field correctly.",
+    positiveButton: { text: "OK" },
+    cancelable: true
+  });
   return {
     type: SIGNUP_FAILED
   };
@@ -52,12 +62,13 @@ export const tokenRedirect = (userid, token, rememberMe) => {
 };
 
 export const loginHandler = (credential, rememberMe) => {
-  console.log("i am here")
-  return dispatch => {
-    axios
-      .post(SERVER_ROOT + "/login", credential)
-      .then(async response => {
-        console.log("inside response")
+  console.log('http://' + SERVER_ROOT + '/login')
+  return (dispatch) => {
+    axios.post(SERVER_ROOT + '/login', credential)
+      .then(async (response) => {
+        if (response.data.metricError) {
+          console.log("Metric Error:", response.data.metricError);
+        }
         dispatch(setLoading(false));
         dispatch(login(response.data, rememberMe));
         dispatch(
@@ -83,6 +94,9 @@ export const signupHandler = userData => {
     axios
       .post(SERVER_ROOT + "/signup", userData)
       .then(response => {
+        if (response.data.metricError) {
+          console.log("Metric Error:", response.data.metricError);
+        }
         dispatch(setLoading(false));
         Actions.login();
       })
