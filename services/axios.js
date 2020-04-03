@@ -1,61 +1,63 @@
 import axios from "axios";
 import { SERVER_ROOT } from "react-native-dotenv";
 import { Actions } from "react-native-router-flux";
+import jwtDecode from "jwt-decode";
 
 import * as LocalStorageService from "./localStorage.service";
 
-var axiosInstance = axios.create();
-
-axiosInstance.interceptors.request.use(
-  config => {
-    console.log("interceptor request")
-    LocalStorageService.getAccessToken().then(token => {
-      if (token) {
-        config.headers["Authorization"] = "Bearer " + token;
+export const setupInterceptors = () => {
+  // axios.interceptors.request.use(
+  //   config => {
+  //     console.log("interceptor request");
+  //     LocalStorageService.getAccessToken().then(token => {
+  //       if (token) {
+  //         config.headers["Authorization"] = "Bearer " + token;
+  //       }
+  //       config.headers["Content-Type"] = "application/json";
+  //       return config;
+  //     });
+  //   },
+  //   error => {
+  //     Promise.reject(error);
+  //   }
+  // );
+  axios.interceptors.response.use(
+    response => {
+      return response;
+    },
+    error => {
+      if (error.response.status != 401) {
+        Promise.reject(error);
       }
-      config.headers["Content-Type"] = "application/json";
-      return config;
-    });
-  },
-  error => {
-    Promise.reject(error);
-  }
-);
 
-axiosInstance.interceptors.response.use(
-  response => {
-    return response;
-  },
-  async error => {
-    const originalRequest = error.config;
+      console.log("error config", error.config.headers["Authorization"]);
+      let userId = jwtDecode(error.config.headers["Authorization"], { complete: true }).id
 
-    if (error.response.status === 401 && originalRequest.url === `${SERVER_ROOT}/refresh-token`) {
-      Actions.auth();
-      return Promise.reject(error);
-    }
+      if (error.config.url == `${SERVER_ROOT}/refresh-token`) {
+        Actions.auth();
+        return Promise.reject(error);
+      }
 
-    if (error.response.status == 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-      console.log("originalRequest: ", originalRequest);
-      let refreshToken = await LocalStorageService.getRefreshToken();
-      return axiosInstance
-        .post(SERVER_ROOT + "/refresh-token", { refreshToken: refreshToken })
-        .then(async response => {
-          if (response.status == 200) {
-            LocalStorageService.setAccessToken(response.data.token);
-            axiosInstance.defaults.headers.common["Authorization"] =
-              "Bearer " + LocalStorageService.getAccessToken();
-            return axiosInstance(originalRequest);
-          }
+      return LocalStorageService.getNewAccessToken(userId)
+        .then(newAccessToken => {
+          const config = error.config;
+          console.log("config: ", config);
+          config.headers["Authorization"] = `Bearer ${newAccessToken}`;
+
+          return new Promise((res, rej) => {
+            axios
+              .request(config)
+              .then(response => {
+                res(response);
+              })
+              .catch(error => {
+                rej(error);
+              });
+          });
         })
         .catch(error => {
-          dispatch(refreshTokenFailed(error));
+          Promise.reject(error);
         });
     }
-
-    console.log("axios instance error: ", error);
-    return Promise.reject(error);
-  }
-);
-
-export default axiosInstance;
+  );
+};
