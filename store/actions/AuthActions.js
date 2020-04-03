@@ -4,7 +4,7 @@ import { setStatus } from "../../store/actions/UserDataActions.js";
 import { SERVER_ROOT } from "react-native-dotenv";
 import { Actions } from "react-native-router-flux";
 import { sendPushToken } from "../../services/push-token.service";
-import * as LocalStorageService from "../../services/localStorage.service";
+import * as TokenService from "../../services/token.service";
 
 const login = (data, rememberMe) => {
   console.log("in login dispatch")
@@ -77,8 +77,8 @@ export const loginHandler = (credential, rememberMe) => {
           })
         );
         sendPushToken(response.data.id);
-        await LocalStorageService.setAccessToken(response.data.token);
-        await LocalStorageService.setRefreshToken(response.data.refreshToken);
+        await TokenService.setAccessToken(response.data.token);
+        await TokenService.setRefreshToken(response.data.refreshToken);
         Actions.main();
       })
       .catch(error => {

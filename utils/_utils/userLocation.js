@@ -16,7 +16,7 @@ const locationsError = (error) => {
 // response --> location: { coords: { lat, lng }, note }
 export const getUserLocation = (payload) => {
     const accessToken = {
-        headers: { 'x-access-token': 'Bearer ' + payload.token }
+        headers: { 'Authorization': 'Bearer ' + payload.token }
     }
 
     return (
@@ -31,7 +31,7 @@ export const getUserLocation = (payload) => {
 export const updateUserLocation = (payload) => {
 
     const config = {
-        headers: { 'x-access-token': 'Bearer ' + payload.token }
+        headers: { 'Authorization': 'Bearer ' + payload.token }
     }
     
     return (

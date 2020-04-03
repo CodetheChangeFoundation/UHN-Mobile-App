@@ -49,7 +49,7 @@ export const getNumberOfAvailableResponders = (userId, token) => {
   var url = `${SERVER_ROOT}/users/${userId}/responders/count`;
   var header = {
     headers: {
-      "x-access-token": "Bearer " + token,
+      "Authorization": "Bearer " + token,
       "Content-Type": "application/json"
     }
   };

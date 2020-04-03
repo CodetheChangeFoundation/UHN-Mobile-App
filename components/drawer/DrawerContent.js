@@ -7,7 +7,7 @@ import { Button } from "../buttons";
 import { Text } from "../typography";
 import { connect } from 'react-redux';
 import { removePushToken } from "../../services/push-token.service"
-import * as LocalStorageService from "../../services/localStorage.service";
+import * as TokenService from "../../services/token.service";
 import { setStatus } from '../../store/actions'
 import { List, ListItem } from '../layout'
 import theme from "../../styles/base";
@@ -21,7 +21,7 @@ const DrawerContent = (props) => {
       variant="dark" size="medium"
       onPress={async () => {
         Actions.auth();
-        LocalStorageService.clearToken();
+        TokenService.clearToken();
         removePushToken(props.auth.userId);
         if (props.naloxoneAvailability)
           props.setStatus(props.auth.userId, props.auth.token, { "online": false })

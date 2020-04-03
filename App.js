@@ -23,7 +23,7 @@ import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import reducers from "./store/reducers";
 import axios from "axios";
-import * as LocalStorageService from "./services/localStorage.service";
+import * as TokenService from "./services/token.service";
 import { SERVER_ROOT } from "react-native-dotenv";
 import { setupInterceptors } from "./services/axios";
 

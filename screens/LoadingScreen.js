@@ -10,7 +10,7 @@ import { Container, Content, View } from "../components/layout";
 import { Text } from "../components/typography";
 import { tokenRedirect, setLocalLocation, receiveNotification } from "../store/actions";
 import { getDeviceLocation } from "../utils/index";
-import * as LocalStorageService from "../services/localStorage.service";
+import * as TokenService from "../services/token.service";
 
 const LoadingScreen = props => {
   const fontsLoaded = false;
@@ -41,7 +41,7 @@ const LoadingScreen = props => {
   };
 
   _checkToken = async () => {
-    const token = await LocalStorageService.getAccessToken();
+    const token = await TokenService.getAccessToken();
 
     if (token) {
       let isExpired = false;
