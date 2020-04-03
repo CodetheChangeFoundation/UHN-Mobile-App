@@ -3,7 +3,7 @@ import { LOGIN, LOGIN_FAILED, SIGNUP_FAILED, SET_LOADING, REFRESH_TOKEN_FAILED }
 import { setStatus } from "../../store/actions/UserDataActions.js";
 import { SERVER_ROOT } from "react-native-dotenv";
 import { Actions } from "react-native-router-flux";
-import { sendPushToken } from "../../services/push-token.service";
+import { sendNotificationToken } from "../../services/notification-token.service";
 import * as TokenService from "../../services/token.service";
 
 const login = (data, rememberMe) => {
@@ -57,7 +57,7 @@ const signupFailed = (error) => {
 export const tokenRedirect = (userid, token, rememberMe) => {
   return async dispatch => {
     dispatch(login({ id: userid, token: token }, rememberMe));
-    sendPushToken(userid);
+    sendNotificationToken(userid);
   };
 };
 
@@ -76,7 +76,7 @@ export const loginHandler = (credential, rememberMe) => {
             naloxoneAvailability: response.data.naloxoneAvailability
           })
         );
-        sendPushToken(response.data.id);
+        sendNotificationToken(response.data.id);
         await TokenService.setAccessToken(response.data.token);
         await TokenService.setRefreshToken(response.data.refreshToken);
         Actions.main();
