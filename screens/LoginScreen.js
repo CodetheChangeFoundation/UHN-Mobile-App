@@ -8,7 +8,7 @@ import { Button, Switch } from "../components/buttons";
 import { Form, Input } from "../components/forms";
 import { connect } from 'react-redux';
 import { loginHandler, setLoading, setLocalLocation, setStatus } from '../store/actions';
-import { getDeviceLocation } from '../utils/index'
+import { promptLocationPermissions } from '../utils/index'
 
 class LoginScreen extends Component {
 
@@ -29,11 +29,11 @@ class LoginScreen extends Component {
     }
   }
 
-  onLoginButtonPress = () => {
+  onLoginButtonPress = async () => {
     const { username, password, rememberMe } = this.state;
     console.log("[DEBUG] LOGIN Button pressed.");
     console.log("[DEBUG] username is " + username + ", password is " + password);
-    getDeviceLocation((coords) => { this.props.setLocalLocation({ coords }) })
+    await promptLocationPermissions();
     this.props.setLoading(true);
     this.props.loginHandler({ username: username, password: password }, rememberMe);
   }
