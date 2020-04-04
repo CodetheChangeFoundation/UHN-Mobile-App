@@ -61,7 +61,7 @@ const Input = React.forwardRef((props, ref) => {
 
   return (
     <Fragment>
-    <Item floatingLabel {...combinedProps.item} last={props.last} style={combinedStyles.item}>
+    <Item floatingLabel {...combinedProps.item} last={props.last} style={[combinedStyles.item, props.itemStyle]}>
       <Label style={combinedStyles.label}>{props.label}</Label>
       <NBInput {...combinedProps} style={[combinedStyles.input, props.style]} getRef={ref}/>
         {(props.variant == "password") && ((passwordHidden)? 

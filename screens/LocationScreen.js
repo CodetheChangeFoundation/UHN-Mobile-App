@@ -173,6 +173,8 @@ const LocationScreen = (props) => {
                 onChangeText={text => { setAddressConfirm(false); setAddress(text) }}
                 placeholder="Enter Address"
                 value={address}
+                itemStyle={styles.inputItem}
+                style={styles.inputText}
                 onSubmitEditing={() => {
                     if(!addressConfirm) handleSearch()
                     notesInputRef._root.focus() }}
@@ -184,11 +186,13 @@ const LocationScreen = (props) => {
                 placeholder="note"
                 defaultValue={registeredNote}
                 value={note}
+                itemStyle={styles.inputItem}
+                style={styles.inputText}
                 onSubmitEditing={addressConfirm ? handleConfirm : handleSearch}
             />
             { registeredAddress ? (
             <React.Fragment>
-                <Text style={{marginVertical: 20, width: "80%", height: 20}}>Registered Location:</Text>
+                <Text style={{marginVertical: 20, width: "80%"}}>Registered Location:</Text>
                 <TouchableOpacity onPress={pickRegistered}>
                     <TextInput  editable={false}
                                 style={styles.clickableText}
@@ -197,7 +201,7 @@ const LocationScreen = (props) => {
                 </TouchableOpacity>
             </React.Fragment>
             ) : (
-                <Text style={{marginVertical: 20, width: "80%", height: 20}}>No Registered Location Found!</Text>
+                <Text style={{marginVertical: 20, width: "80%"}}>No Registered Location Found!</Text>
             )
         }
         </Form>
@@ -220,16 +224,23 @@ const styles = StyleSheet.create({
     height: "30%",
   },
   inputWrapper: {
-      width: "100%",
-      flex: 6,
+    width: "100%",
+    marginTop: 10,
+    flex: 5,
+  },
+  inputItem: {
+    marginLeft: 0,
+    marginTop: 0,
+  },
+  inputText: {
+    height: "auto",
+    top: 0,
+    paddingBottom: 0,
   },
   clickableText: {
-    height: 40,
     width: "100%",
     borderBottomColor: 'lightgrey',
     borderBottomWidth: 1,
-    padding: 10,
-    margin: 5,
     fontFamily: theme.fonts.body,
     fontSize: theme.fontSizes.medium,
     color: theme.colors.darkGrey,
@@ -238,8 +249,8 @@ const styles = StyleSheet.create({
     flex: 3,
   },
   rowFlex: {
-      display: 'flex',
-      flexDirection: 'row',
+    display: 'flex',
+    flexDirection: 'row',
   }
 });
 
