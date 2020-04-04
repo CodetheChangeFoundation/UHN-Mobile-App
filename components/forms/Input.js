@@ -79,7 +79,7 @@ const Input = React.forwardRef((props, ref) => {
 /* Prop Types */
 
 Input.propTypes = {
-  variant: PropTypes.oneOf([ "text", "email", "password", "number"]),
+  variant: PropTypes.oneOf([ "text", "password", "number"]),
   label: PropTypes.string.isRequired,
   hasNext: PropTypes.bool,
   hasError: PropTypes.bool,
@@ -105,10 +105,6 @@ const inputProps = {
     ...baseProps,
     autoCapitalize: "none",
     autoCorrect: false,
-  },
-  email: {
-    ...baseProps,
-    keyboardType: "email-address",
   },
   number: {
     ...baseProps,
