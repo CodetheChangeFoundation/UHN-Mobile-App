@@ -61,7 +61,7 @@ const Input = React.forwardRef((props, ref) => {
 
   return (
     <Fragment>
-    <Item floatingLabel {...combinedProps.item} last={props.last} style={combinedStyles.item}>
+    <Item floatingLabel {...combinedProps.item} last={props.last} style={[combinedStyles.item, props.itemStyle]}>
       <Label style={combinedStyles.label}>{props.label}</Label>
       <NBInput {...combinedProps} style={[combinedStyles.input, props.style]} getRef={ref}/>
         {(props.variant == "password") && ((passwordHidden)? 
@@ -79,7 +79,7 @@ const Input = React.forwardRef((props, ref) => {
 /* Prop Types */
 
 Input.propTypes = {
-  variant: PropTypes.oneOf([ "text", "email", "password", "number"]),
+  variant: PropTypes.oneOf([ "text", "password", "number"]),
   label: PropTypes.string.isRequired,
   hasNext: PropTypes.bool,
   hasError: PropTypes.bool,
@@ -105,10 +105,6 @@ const inputProps = {
     ...baseProps,
     autoCapitalize: "none",
     autoCorrect: false,
-  },
-  email: {
-    ...baseProps,
-    keyboardType: "email-address",
   },
   number: {
     ...baseProps,
