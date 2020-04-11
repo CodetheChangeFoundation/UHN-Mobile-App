@@ -1,7 +1,6 @@
 import React, { Fragment } from "react";
-import { StyleSheet, AsyncStorage, TouchableOpacity } from "react-native";
+import { StyleSheet, AsyncStorage, TouchableOpacity, Image } from "react-native";
 import { Actions } from "react-native-router-flux";
-import { Modal } from "../popups";
 import { View } from "../layout";
 import { Button } from "../buttons";
 import { Text } from "../typography";
@@ -51,7 +50,7 @@ const DrawerContent = (props) => {
   return (
     <Fragment>
       <View style={styles.topContainer}>
-        <Text>Logo here</Text>
+        <Image source={require("../../assets/logo.png")} resizeMode="contain"></Image>
       </View>
       <View style={styles.bottomContainer}>
         <List style={styles.list}>

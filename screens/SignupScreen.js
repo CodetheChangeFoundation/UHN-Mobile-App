@@ -18,14 +18,12 @@ class SignupScreen extends Component {
     super(props);
     this.initialState = {
       phoneNumber: "",
-      email: "",
       username: "",
       password: "",
     }
     this.state = {
       ...this.initialState,
       inputIsValid: {
-        email: true,
         phoneNumber: true,
         username: true,
         password: true
@@ -35,8 +33,7 @@ class SignupScreen extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (   (this.state.email !== prevState.email)
-        || (this.state.phoneNumber !== prevState.phoneNumber)
+    if (   (this.state.phoneNumber !== prevState.phoneNumber)
         || (this.state.username !== prevState.username)
         || (this.state.password !== prevState.password)
         || (this.state.signupAttempted != prevState.signupAttempted)) {
@@ -45,9 +42,8 @@ class SignupScreen extends Component {
   }
 
   checkIfInputIsValid = (signupAttempted) => {
-    const {email, phoneNumber, username, password} = this.state;
+    const {phoneNumber, username, password} = this.state;
     let inputIsValid = {
-      email: (!signupAttempted && email === "") || ((typeof email !== "undefined") && (accountRules.email.regex.test(email))),
       phoneNumber: (!signupAttempted && phoneNumber === "") || ((typeof phoneNumber !== "undefined") && (accountRules.phoneNumber.regex.test(phoneNumber))),
       username: (!signupAttempted && username === "") || ((typeof username !== "undefined") && (accountRules.username.regex.test(username))),
       password: (!signupAttempted && password === "") || ((typeof password !== "undefined") && (accountRules.password.regex.test(password))),
@@ -59,18 +55,17 @@ class SignupScreen extends Component {
     if (this.state.signupAttempted == false) {
       this.setState({signupAttempted: true});
     }
-    const { email, phoneNumber, username, password } = this.state;
+    const { phoneNumber, username, password } = this.state;
     console.log("[DEBUG] SignUp Button pressed.");
-    console.log("\tEmail: " + email + "\n\tPhoneNumber: " + phoneNumber + "\n\tUsername: " + username + "\n\tPassword: " + password);
+    console.log("\tPhoneNumber: " + phoneNumber + "\n\tUsername: " + username + "\n\tPassword: " + password);
     const inputIsValidAndFilled = this.checkIfInputIsValid(true);
-    if (!inputIsValidAndFilled.email || !inputIsValidAndFilled.phoneNumber || !inputIsValidAndFilled.username || !inputIsValidAndFilled.password) {
+    if (!inputIsValidAndFilled.phoneNumber || !inputIsValidAndFilled.username || !inputIsValidAndFilled.password) {
       console.log("Signup rejected");
       this.setState({inputIsValid: inputIsValidAndFilled});
     } else {
       console.log("Signp accepted");
       this.props.setLoading(true);
       this.props.signupHandler({
-        email: email,
         phone: phoneNumber,
         username: username,
         password: password,
@@ -105,15 +100,6 @@ class SignupScreen extends Component {
               <Text variant="title">Create your account</Text>
             </View>
             <View style={styles.loginInfo}>
-              <Input variant="email"
-                label="Email"
-                hasNext hasError={!this.state.inputIsValid.email}
-                errorText="Email format is invalid."
-                onChangeText={email => {
-                  this.setState({ email });
-                }}
-                onSubmitEditing={() => phoneNumberInputRef._root.focus()}
-              />
               <Input variant="number"
                 label="Phone Number"
                 ref={(input) => phoneNumberInputRef = input}

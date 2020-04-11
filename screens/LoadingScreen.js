@@ -9,8 +9,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { Container, Content, View } from "../components/layout";
 import { Text } from "../components/typography";
 import { tokenRedirect, setLocalLocation, receiveNotification } from "../store/actions";
-import { getDeviceLocation } from "../utils/index";
 import * as TokenService from "../services/token.service";
+import { promptLocationPermissions } from "../utils/index";
 
 const LoadingScreen = props => {
   const fontsLoaded = false;
@@ -54,9 +54,8 @@ const LoadingScreen = props => {
       if (!isExpired) {
         // TODO: Set actual remember me
         props.tokenRedirect(decodedToken.id, token, false);
-        getDeviceLocation(coords => {
-          props.setLocalLocation({ coords });
-        });
+        // Prompt for location permissions but don't save it to redux.
+        await promptLocationPermissions();
         Actions.main();
       } else {
         console.log("token expired")
