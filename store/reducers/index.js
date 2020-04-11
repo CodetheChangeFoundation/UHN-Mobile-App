@@ -6,6 +6,7 @@ import UserDataReducer from "./UserDataReducer";
 
 import AlarmReducer from "./metrics/AlarmReducer";
 import ResponseReducer from "./metrics/ResponseReducer";
+import ArrivalReducer from "./metrics/ArrivalReducer";
 
 import NotificationReducer from "./NotificationReducer";
 
@@ -16,5 +17,6 @@ export default combineReducers({
     userData: UserDataReducer,
     metricAlarm: AlarmReducer,
     metricResponse: ResponseReducer,
+    metricArrival: ArrivalReducer,
     notification: NotificationReducer
 });

@@ -9,7 +9,7 @@ import { Button } from "../components/buttons";
 import { Text } from "../components/typography";
 import theme from "../styles/base";
 import { convertToAddress } from "../utils/index";
-import { dismissNotification } from "../store/actions";
+import { dismissNotification, makeArrivalLog } from "../store/actions";
 import { updateStatusOfHelpRequest } from "../services/help-request.service";
 
 import mapMarkerIcon from "../components/icons/mapMarker";
@@ -85,7 +85,7 @@ const DirectionsScreen = props => {
     updateStatusOfHelpRequest(props.token, "arrived", helpRequestId);
     props.dismissNotification();
     
-    //TODO: arrival log create
+    props.makeArrivalLog(props.currentResponseLog, props.token);
 
     Actions.alert({
       alertTitle: `Thank you for attending to ${client}!`,
@@ -173,7 +173,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state, currentProps) => {
   const { token, userId } = state.auth;
   const notification = state.notification;
-  return { ...currentProps, token, userId, notification };
+  const currentResponseLog = state.metricResponse.currentResponseLog;
+  return { ...currentProps, token, userId, notification, currentResponseLog };
 };
 
-export default connect(mapStateToProps, { dismissNotification })(DirectionsScreen);
+export default connect(mapStateToProps, { dismissNotification, makeArrivalLog })(DirectionsScreen);

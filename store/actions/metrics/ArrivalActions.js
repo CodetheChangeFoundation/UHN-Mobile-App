@@ -3,7 +3,7 @@ import { SERVER_ROOT } from "react-native-dotenv";
 import { METRIC_ARRIVAL_FAILED, SET_ARRIVALLOG_ID } from "../Types";
 import { metricAlarmError } from "./AlarmActions";
 
-export const makeArrivalLog = (responseID) => {
+export const makeArrivalLog = (responseID, token) => {
   let time = new Date().toUTCString();
 
   let data = {
