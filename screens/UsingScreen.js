@@ -91,7 +91,7 @@ const UsingScreen = props => {
       // If all the checks pass, finally redirect to alarm page
       setButtonDisabled(false);
       props.makeAlarmLog(userId, timeRemaining, token);
-      
+
       Actions.alarm();
     })
     .catch(err => {
@@ -106,29 +106,6 @@ const UsingScreen = props => {
 
       setButtonDisabled(false);
     })
-
-    // getDeviceLocation(async (deviceCoords) => {
-    //   // Check if the device location is valid first
-    //   if (deviceCoords === null || (deviceCoords.lat === 0 && deviceCoords.lng === 0)) {
-    //     await locationErrorAlert();
-    //     return null;
-    //   }
-    //   convertToAddress(deviceCoords, async (address) => {
-    //     await confirmAddressAlert(address, deviceCoords);
-
-    // // SECOND CHECK: check for responders in the area (by distance)
-    //     const distance = computeDistance(fredVictorCoordinates, props.location.coords)
-    //     if( distance > MAXIMUM_DISTANCE ) {
-    //       await responderErrorAlert();
-    //       return null;
-    //     }
-
-    //     // If all the checks pass, finally redirect to alarm page
-    //     Actions.alarm();
-    //     props.makeAlarmLog(userId, timeRemaining, token);
-    //   })
-      
-    // })
   }
 
   useEffect(() => {
