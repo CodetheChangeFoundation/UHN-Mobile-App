@@ -55,7 +55,7 @@ const UsingScreen = props => {
         cancelable: true,
         // set redux address when confirmed
         onPress: () => {
-          props.setLocalLocation(coords);
+          props.setLocalLocation({ coords: coords });
           resolve('confirmed');
         }
       },
