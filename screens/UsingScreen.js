@@ -40,7 +40,7 @@ const UsingScreen = props => {
   const responderErrorAlert = () => {
     Actions.alert({
       alertTitle: "Cannot start alarm",
-      alertBody: "There are no responders within your area",
+      alertBody: "There are not enough available responders within your area.",
       positiveButton: { text: 'OK' },
       cancelable: false
     });
@@ -93,12 +93,7 @@ const UsingScreen = props => {
       const { location, responders } = props;
 
       // filter the validResponders
-      const validResponders = responders.filter((responder) => {
-        if(!responder.location || !responder.location.coords || !responder.location.coords.lat || !responder.location.coords.lng) return false;
-        const distance = computeDistance(responder.location.coords, location.coords)
-        // Check if responder is available and within distance
-        return responder.availbilityStatus === true &&  distance < MAXIMUM_RESPONDER_DISTANCE
-      })
+      const validResponders = responders.filter((responder) => responder.availbilityStatus)
       // check that there are minimum number of responders
       if(validResponders.length < MINIMUM_RESPONDERS ) throw "ResponderError"
 
@@ -123,7 +118,7 @@ const UsingScreen = props => {
     })
   }
 
-  // GET RESPONDERS COUNT
+  // GET RESPONDERS
 
   useEffect(() => {
     props.getMyResponders(userId, token);
