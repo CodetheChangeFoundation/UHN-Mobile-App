@@ -10,7 +10,6 @@ import theme from "../styles/base";
 
 const DEFAULT_USER_INFO = {
   username: "",
-  email: "",
   phone: ""
 };
 
@@ -44,11 +43,6 @@ const ProfileScreen = (props) => {
         <View style={styles.row}>
           <Text style={styles.attribute}>Username:</Text>
           <Text style={styles.value}>{userInfo.username}</Text>
-        </View>
-
-        <View style={styles.row}>
-          <Text style={styles.attribute}>Email:</Text>
-          <Text style={styles.value}>{userInfo.email}</Text>
         </View>
 
         <View style={styles.row}>

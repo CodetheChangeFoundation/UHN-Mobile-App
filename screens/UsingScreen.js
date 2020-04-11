@@ -21,6 +21,27 @@ const UsingScreen = props => {
   const { timeRemaining } = time;
 
   const startAlarm = () => {
+    // Check if location has been set
+    if (
+      location === null ||
+      location.coords === null ||
+      (location.coords.lat === 0 && location.coords.lng === 0)
+    ) {
+      Actions.alert({
+        alertTitle: "Cannot start alarm",
+        alertBody: "Your location is not set. Please set your location in the 'locations' page' and enable location services on your device.",
+        positiveButton: {
+          text: "Set my location now",
+          onPress: () => {
+            Actions.location();
+          },
+          cancelable: false
+        },
+      });
+      return null;
+    }
+
+    // Check for responders in the area
     const distance = computeDistance(fredVictorCoordinates, props.location.coords)
     if( distance > MAXIMUM_DISTANCE ) {
       Actions.alert({
@@ -29,12 +50,13 @@ const UsingScreen = props => {
         positiveButton: { text: 'OK' },
         cancelable: false
       });
-    } else {
-      Actions.alarm();
-
-      props.makeAlarmLog(userId, timeRemaining, token);
+      return null;
     }
-  };
+
+    Actions.alarm();
+
+    props.makeAlarmLog(userId, timeRemaining, token);
+  }
 
   useEffect(() => {
     let interval = setInterval(

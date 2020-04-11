@@ -4,6 +4,7 @@ import { SERVER_ROOT } from "react-native-dotenv";
 import { Actions } from "react-native-router-flux";
 
 export const setLocalLocation = location => {
+  console.log('setting', {location})
   return {
     type: SET_LOCATION,
     data: { location: location }

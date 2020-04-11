@@ -109,9 +109,23 @@ const convertToAddress = (coordinates, success, fail) => {
     })
 }
 
+const promptLocationPermissions = async () => {
+    Location.requestPermissionsAsync()
+    .then(() => { console.log("User permissions enabled!")})
+    .catch((error)  => {
+        Actions.alert({
+            alertTitle: "Please allow location services!",
+            alertBody: (error.response?.data?.errors[0]?.message || ''),
+            positiveButton: { text: "OK" },
+            cancelable: true 
+        });
+    })
+}
+
 module.exports = {
     getDeviceLocation,
     computeDistance,
     convertToAddress,
-    convertToCoordinates
+    convertToCoordinates,
+    promptLocationPermissions
 }
