@@ -14,16 +14,14 @@ const locationsError = (error) => {
 
 // GET Request from db, returns promise
 // response --> location: { coords: { lat, lng }, note }
-export const getUserLocation = (payload) => {
+export const getUserLocationAsync = (payload) => {
     const accessToken = {
         headers: { 'x-access-token': 'Bearer ' + payload.token }
     }
 
-    return (
-        axios.get(SERVER_ROOT + '/users/' + payload.id + '/location', accessToken)
-        .then(response => { return response.data })
-        .catch(error => { locationsError(error) })
-    )
+    return axios.get(SERVER_ROOT + '/users/' + payload.id + '/location', accessToken)
+            .then(response => { return response.data })
+            .catch(error => { locationsError(error) })
 }
 
 // PUT Request to db, returns promise
