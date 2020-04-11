@@ -10,10 +10,10 @@ import { Form, Input } from "../components/forms"
 import { Text } from "../components/typography"
 import theme from '../styles/base'
 import {
-    getDeviceLocation,
+    getDeviceLocationAsync,
     convertToCoordinates,
     convertToAddress,
-    getUserLocation,
+    getUserLocationAsync,
     updateUserLocation
 } from '../utils/index'
 import { setLocalLocation } from '../store/actions'
@@ -53,7 +53,7 @@ const LocationScreen = (props) => {
         setLocation(props.location.coords)
 
         // Get registered data from the database
-        getUserLocation({id: props.userId, token: props.token})
+        getUserLocationAsync({id: props.userId, token: props.token})
             .then( (res) => {
                 if(res.location && res.location.coords) {
                     res.location.coords.lat && res.location.coords.lng && convertToAddress(res.location.coords, setRegisteredAddress)
@@ -67,7 +67,9 @@ const LocationScreen = (props) => {
     // Function to get device location
     // Sets map coordinates
     const refreshDeviceLocation = () => {
-        getDeviceLocation((coords) => {
+        getDeviceLocationAsync()
+        .then((coords) => {
+            console.log({coords})
             convertToAddress({ latitude: coords.lat, longitude: coords.lng }, setAddress)
             setLocation({ lat: coords.lat, lng: coords.lng })
         })

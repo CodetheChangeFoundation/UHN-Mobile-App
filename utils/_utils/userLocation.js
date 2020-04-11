@@ -15,7 +15,7 @@ const locationsError = error => {
 
 // GET Request from db, returns promise
 // response --> location: { coords: { lat, lng }, note }
-export const getUserLocation = payload => {
+export const getUserLocationAsyc = payload => {
   return axios
     .get(SERVER_ROOT + "/users/" + payload.id + "/location", TokenService.getHeader(payload.token))
     .then(response => {
