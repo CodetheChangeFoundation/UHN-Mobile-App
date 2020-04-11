@@ -5,7 +5,7 @@ import { Actions } from "react-native-router-flux";
 import Timer from "../components/Timer/Timer";
 import { Container, Content, Header, View, Segment, Banner } from "../components/layout";
 import { Button, IconButton } from "../components/buttons";
-import { computeDistance, getDeviceLocationAsync, convertToAddressAsync } from "../utils";
+import { updateUserLocation, getDeviceLocationAsync, convertToAddressAsync } from "../utils";
 import { makeAlarmLog, getNumberOfAvailableResponders, setLocalLocation, getMyResponders } from "../store/actions";
 
 const fredVictorCoordinates = {
@@ -56,6 +56,7 @@ const UsingScreen = props => {
         // set redux address when confirmed
         onPress: () => {
           props.setLocalLocation({ coords: coords });
+          updateUserLocation({ data: { coords }, id: userId, token })
           resolve('confirmed');
         }
       },
