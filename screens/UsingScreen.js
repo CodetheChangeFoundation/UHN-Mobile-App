@@ -1,12 +1,12 @@
-import React, { Component, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Alert } from "react-native";
 import { connect } from "react-redux";
 import { Actions } from "react-native-router-flux";
 import Timer from "../components/Timer/Timer";
 import { Container, Content, Header, View, Segment, Banner } from "../components/layout";
 import { Button, IconButton } from "../components/buttons";
-import { computeDistance } from "../utils";
-import { makeAlarmLog, getNumberOfAvailableResponders } from "../store/actions";
+import { computeDistance, getDeviceLocationAsync, convertToAddressAsync } from "../utils";
+import { makeAlarmLog, getNumberOfAvailableResponders, setLocalLocation } from "../store/actions";
 
 const fredVictorCoordinates = {
   lat: 43.6536212,
@@ -14,48 +14,121 @@ const fredVictorCoordinates = {
 };
 
 // TODO: Remember to change this to 500 prior to Beta testing
-const MAXIMUM_DISTANCE = 1000000000; // meters
+const MAXIMUM_DISTANCE = 10000000000000000; // meters
 
 const UsingScreen = props => {
-  const { location, time, userId, token } = props;
+  const { time, userId, token } = props;
   const { timeRemaining } = time;
 
-  const startAlarm = () => {
-    // Check if location has been set
-    if (
-      location === null ||
-      location.coords === null ||
-      (location.coords.lat === 0 && location.coords.lng === 0)
-    ) {
-      Actions.alert({
-        alertTitle: "Cannot start alarm",
-        alertBody: "Your location is not set. Please set your location in the 'locations' page' and enable location services on your device.",
-        positiveButton: {
-          text: "Set my location now",
-          onPress: () => {
-            Actions.location();
-          },
-          cancelable: false
-        },
-      });
-      return null;
-    }
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
-    // Check for responders in the area
-    const distance = computeDistance(fredVictorCoordinates, props.location.coords)
-    if( distance > MAXIMUM_DISTANCE ) {
-      Actions.alert({
-        alertTitle: "Cannot start alarm",
-        alertBody: "There are no responders within your area",
-        positiveButton: { text: 'OK' },
+  const locationErrorAlert = () => {
+    Actions.alert({
+      alertTitle: "Cannot start alarm",
+      alertBody: "Your location is not set/invalid. Please set your location in the 'locations' page' and enable location services on your device.",
+      positiveButton: {
+        text: "Set my location now",
+        onPress: () => { Actions.location() },
         cancelable: false
-      });
-      return null;
-    }
+      },
+    });
+  }
 
-    Actions.alarm();
+  const responderErrorAlert = () => {
+    Actions.alert({
+      alertTitle: "Cannot start alarm",
+      alertBody: "There are no responders within your area",
+      positiveButton: { text: 'OK' },
+      cancelable: false
+    });
+  }
 
-    props.makeAlarmLog(userId, timeRemaining, token);
+  const confirmAddressAlert = async (address, coords) => new Promise((resolve) => {
+    Actions.alert({
+      alertTitle: "Confirm your location!",
+      alertBody: `Your location is currently \n${address}.\nIs this correct? You will be directed to the locations page if it is not.`,
+      positiveButton: {
+        text: "Correct",
+        cancelable: true,
+        // set redux address when confirmed
+        onPress: () => {
+          props.setLocalLocation(coords);
+          resolve('confirmed');
+        }
+      },
+      negativeButton: {
+        text: "No",
+        style: "cancel",
+        onPress: () => {
+          resolve('unconfirmed');
+        }
+      }
+    });
+  })
+
+  const startAlarm = () => {
+
+    // Disable button presses
+    setButtonDisabled(true);
+
+    // FIRST CHECK: Get the device location and confirm with the user
+    getDeviceLocationAsync()
+    .then(async (deviceCoords) => {
+      if (deviceCoords === null || (deviceCoords.lat === 0 && deviceCoords.lng === 0)) throw "LocationError"
+      const address = await convertToAddressAsync(deviceCoords)
+      return {address, deviceCoords};
+    })
+    // Confirm with the user
+    .then(async ({address, deviceCoords}) => {
+      const confirmation = await confirmAddressAlert(address, deviceCoords);
+      if(confirmation === 'unconfirmed') throw "LocationScreen"
+    })
+    // SECOND CHECK: check for responders in the area (by distance)
+    .then(() => {
+      const distance = computeDistance(fredVictorCoordinates, props.location.coords)
+      if( distance > MAXIMUM_DISTANCE ) throw "ResponderError"
+
+      // If all the checks pass, finally redirect to alarm page
+      setButtonDisabled(false);
+      props.makeAlarmLog(userId, timeRemaining, token);
+      
+      Actions.alarm();
+    })
+    .catch(err => {
+      if(err === 'ExitPromise') return null;
+      else if(err === 'LocationScreen') {
+        Actions.location();
+        return null;
+      }
+      else if(err === 'LocationError') locationErrorAlert();
+      else if(err === 'ResponderError') responderErrorAlert();
+      else console.error(err);
+
+      setButtonDisabled(false);
+    })
+
+    // getDeviceLocation(async (deviceCoords) => {
+    //   // Check if the device location is valid first
+    //   if (deviceCoords === null || (deviceCoords.lat === 0 && deviceCoords.lng === 0)) {
+    //     await locationErrorAlert();
+    //     return null;
+    //   }
+    //   convertToAddress(deviceCoords, async (address) => {
+    //     await confirmAddressAlert(address, deviceCoords);
+
+    // // SECOND CHECK: check for responders in the area (by distance)
+    //     const distance = computeDistance(fredVictorCoordinates, props.location.coords)
+    //     if( distance > MAXIMUM_DISTANCE ) {
+    //       await responderErrorAlert();
+    //       return null;
+    //     }
+
+    //     // If all the checks pass, finally redirect to alarm page
+    //     Actions.alarm();
+    //     props.makeAlarmLog(userId, timeRemaining, token);
+    //   })
+      
+    // })
   }
 
   useEffect(() => {
@@ -104,8 +177,12 @@ const UsingScreen = props => {
         </View>
 
         <View style={styles.startButton}>
-          <Button variant="affirmation" size="large" onPress={startAlarm}>
-            start
+          <Button
+            variant={buttonDisabled ? "dark" : "affirmation"}
+            size="large"
+            onPress={() => {!buttonDisabled && startAlarm()}}
+          >
+            { buttonDisabled ? "wait..." : "start"}
           </Button>
         </View>
       </Content>
@@ -133,6 +210,6 @@ const mapStateToProps = (state, currentProps) => {
   };
 };
 
-export default connect(mapStateToProps, { makeAlarmLog, getNumberOfAvailableResponders })(
+export default connect(mapStateToProps, { makeAlarmLog, getNumberOfAvailableResponders, setLocalLocation })(
   UsingScreen
 );
