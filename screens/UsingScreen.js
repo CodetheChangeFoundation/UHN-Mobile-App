@@ -6,21 +6,24 @@ import Timer from "../components/Timer/Timer";
 import { Container, Content, Header, View, Segment, Banner } from "../components/layout";
 import { Button, IconButton } from "../components/buttons";
 import { computeDistance, getDeviceLocationAsync, convertToAddressAsync } from "../utils";
-import { makeAlarmLog, getNumberOfAvailableResponders, setLocalLocation } from "../store/actions";
+import { makeAlarmLog, getNumberOfAvailableResponders, setLocalLocation, getMyResponders } from "../store/actions";
 
 const fredVictorCoordinates = {
   lat: 43.6536212,
   lng: -79.3751693
 };
 
-// TODO: Remember to change this to 500 prior to Beta testing
-const MAXIMUM_DISTANCE = 10000000000000000; // meters
+// TODO: Remember to change this prior to Beta testing
+const MAXIMUM_RESPONDER_DISTANCE = 10000000000000000; // meters
+const MINIMUM_RESPONDERS = 1;
 
 const UsingScreen = props => {
   const { time, userId, token } = props;
   const { timeRemaining } = time;
 
   const [buttonDisabled, setButtonDisabled] = useState(false);
+
+  // ERROR FUNCTIONS
 
   const locationErrorAlert = () => {
     Actions.alert({
@@ -66,6 +69,8 @@ const UsingScreen = props => {
     });
   })
 
+  // ALARM START FUNCTION
+
   const startAlarm = () => {
 
     // Disable button presses
@@ -74,7 +79,7 @@ const UsingScreen = props => {
     // FIRST CHECK: Get the device location and confirm with the user
     getDeviceLocationAsync()
     .then(async (deviceCoords) => {
-      if (deviceCoords === null || (deviceCoords.lat === 0 && deviceCoords.lng === 0)) throw "LocationError"
+      if (!deviceCoords || (deviceCoords.lat === 0 && deviceCoords.lng === 0)) throw "LocationError"
       const address = await convertToAddressAsync(deviceCoords)
       return {address, deviceCoords};
     })
@@ -84,9 +89,18 @@ const UsingScreen = props => {
       if(confirmation === 'unconfirmed') throw "LocationScreen"
     })
     // SECOND CHECK: check for responders in the area (by distance)
-    .then(() => {
-      const distance = computeDistance(fredVictorCoordinates, props.location.coords)
-      if( distance > MAXIMUM_DISTANCE ) throw "ResponderError"
+    .then(async () => {
+      const { location, responders } = props;
+
+      // filter the validResponders
+      const validResponders = responders.filter((responder) => {
+        if(!responder.location || !responder.location.coords || !responder.location.coords.lat || !responder.location.coords.lng) return false;
+        const distance = computeDistance(responder.location.coords, location.coords)
+        // Check if responder is available and within distance
+        return responder.availbilityStatus === true &&  distance < MAXIMUM_RESPONDER_DISTANCE
+      })
+      // check that there are minimum number of responders
+      if(validResponders.length < MINIMUM_RESPONDERS ) throw "ResponderError"
 
       // If all the checks pass, finally redirect to alarm page
       setButtonDisabled(false);
@@ -105,10 +119,15 @@ const UsingScreen = props => {
       else console.error(err);
 
       setButtonDisabled(false);
+      return null;
     })
   }
 
+  // GET RESPONDERS COUNT
+
   useEffect(() => {
+    props.getMyResponders(userId, token);
+
     let interval = setInterval(
       () => props.getNumberOfAvailableResponders(props.userId, props.token),
       5000
@@ -117,7 +136,7 @@ const UsingScreen = props => {
     return (cleanUp = () => {
       clearInterval(interval);
     });
-  });
+  }, []);
 
   return (
     <Container>
@@ -183,10 +202,14 @@ const mapStateToProps = (state, currentProps) => {
     userId: state.auth.userId,
     time: state.timer,
     token: state.auth.token,
-    respondersAvailable: state.userData.respondersAvailable
+    respondersAvailable: state.userData.respondersAvailable,
+    responders: state.responders.myResponders
   };
 };
 
-export default connect(mapStateToProps, { makeAlarmLog, getNumberOfAvailableResponders, setLocalLocation })(
-  UsingScreen
-);
+export default connect(mapStateToProps, {
+  makeAlarmLog,
+  getNumberOfAvailableResponders,
+  setLocalLocation,
+  getMyResponders
+})(UsingScreen);
