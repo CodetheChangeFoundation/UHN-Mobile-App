@@ -61,12 +61,12 @@ export const addResponders = (userId, token, respondersToAdd, myResponders) => {
 
 export const removeResponders = (userId, token, respondersToDelete, myResponders) => {
   return dispatch => {
-    let header = TokenService.getHeader(token);
+    let headers = TokenService.getHeader(token).headers;
     axios
       .request({
         method: "delete",
         url: `${SERVER_ROOT}/users/${userId}/responders`,
-        header,
+        headers,
         data: { respondersToDelete }
       })
       .then(response => {
