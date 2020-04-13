@@ -19,15 +19,8 @@ import DrawerContent from "./components/drawer/DrawerContent";
 import Modal from "./components/popups/Modal";
 import Alert from "./components/popups/Alert";
 import { Provider } from "react-redux";
-import { createStore, applyMiddleware } from "redux";
-import thunk from "redux-thunk";
-import reducers from "./store/reducers";
-import axios from "axios";
-import * as TokenService from "./services/token.service";
-import { SERVER_ROOT } from "react-native-dotenv";
+import { store } from "./store/store";
 import { setupInterceptors } from "./services/axios";
-
-const store = createStore(reducers, applyMiddleware(thunk));
 
 export default function App() {
   useEffect(() => {

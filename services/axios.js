@@ -4,6 +4,17 @@ import { Actions } from "react-native-router-flux";
 import jwtDecode from "jwt-decode";
 
 import * as TokenService from "./token.service";
+import { store } from "../store/store";
+import { SET_NEW_ACCESS_TOKEN } from "../store/actions/Types";
+
+const setNewAccessToken = (token) => {
+  return {
+    type: SET_NEW_ACCESS_TOKEN,
+    data: {
+      token: token
+    }
+  }
+}
 
 export const setupInterceptors = () => {
   axios.interceptors.response.use(
@@ -30,15 +41,19 @@ export const setupInterceptors = () => {
           return new Promise((res, rej) => {
             axios
               .request(config)
-              .then(response => {
+              .then(async (response) => {
+                store.dispatch(setNewAccessToken(newAccessToken))
+                await TokenService.setAccessToken(newAccessToken);
                 res(response);
               })
               .catch(error => {
+                Actions.auth();
                 rej(error);
               });
           });
         })
         .catch(error => {
+          Actions.auth();
           Promise.reject(error);
         });
     }

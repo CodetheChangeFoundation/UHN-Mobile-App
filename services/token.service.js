@@ -53,8 +53,6 @@ export const getNewAccessToken = async userId => {
       })
       .then(response => {
         setAccessToken(response.data.token);
-        setRefreshToken(response.data.refreshToken);
-
         res(response.data.token);
       })
       .catch(error => {
