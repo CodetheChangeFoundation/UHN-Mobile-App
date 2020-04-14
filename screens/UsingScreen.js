@@ -8,13 +8,13 @@ import { Button, IconButton } from "../components/buttons";
 import { updateUserLocation, getDeviceLocationAsync, convertToAddressAsync } from "../utils";
 import { makeAlarmLog, getNumberOfAvailableResponders, setLocalLocation, getMyResponders } from "../store/actions";
 
-const fredVictorCoordinates = {
-  lat: 43.6536212,
-  lng: -79.3751693
-};
+// const fredVictorCoordinates = {
+//   lat: 43.6536212,
+//   lng: -79.3751693
+// };
 
 // TODO: Remember to change this prior to Beta testing
-const MAXIMUM_RESPONDER_DISTANCE = 10000000000000000; // meters
+// const MAXIMUM_RESPONDER_DISTANCE = 10000000000000000; // meters
 const MINIMUM_RESPONDERS = 1;
 
 const UsingScreen = props => {
@@ -79,44 +79,40 @@ const UsingScreen = props => {
 
     // FIRST CHECK: Get the device location and confirm with the user
     getDeviceLocationAsync()
-    .then(async (deviceCoords) => {
-      if (!deviceCoords || (deviceCoords.lat === 0 && deviceCoords.lng === 0)) throw "LocationError"
-      const address = await convertToAddressAsync(deviceCoords)
-      return {address, deviceCoords};
-    })
-    // Confirm with the user
-    .then(async ({address, deviceCoords}) => {
-      const confirmation = await confirmAddressAlert(address, deviceCoords);
-      if(confirmation === 'unconfirmed') throw "LocationScreen"
-    })
-    // SECOND CHECK: check for responders in the area (by distance)
-    .then(async () => {
-      const { location, responders } = props;
+      .then(async (deviceCoords) => {
+        if (!deviceCoords || (deviceCoords.lat === 0 && deviceCoords.lng === 0)) throw "LocationError"
+        const address = await convertToAddressAsync(deviceCoords)
+        return { address, deviceCoords };
+      })
+      // Confirm with the user
+      .then(async ({ address, deviceCoords }) => {
+        const confirmation = await confirmAddressAlert(address, deviceCoords);
+        if (confirmation === 'unconfirmed') throw "LocationScreen"
+      })
+      // SECOND CHECK: check for responders in the area (by distance)
+      .then(async () => {
+        // check that there are minimum number of responders
+        if (props.respondersAvailable < MINIMUM_RESPONDERS) throw "ResponderError"
 
-      // filter the validResponders
-      const validResponders = responders.filter((responder) => responder.availbilityStatus)
-      // check that there are minimum number of responders
-      if(validResponders.length < MINIMUM_RESPONDERS ) throw "ResponderError"
+        // If all the checks pass, finally redirect to alarm page
+        setButtonDisabled(false);
+        props.makeAlarmLog(userId, timeRemaining, token);
 
-      // If all the checks pass, finally redirect to alarm page
-      setButtonDisabled(false);
-      props.makeAlarmLog(userId, timeRemaining, token);
+        Actions.alarm();
+      })
+      .catch(err => {
+        if (err === 'ExitPromise') return null;
+        else if (err === 'LocationScreen') {
+          Actions.location();
+          return null;
+        }
+        else if (err === 'LocationError') locationErrorAlert();
+        else if (err === 'ResponderError') responderErrorAlert();
+        else console.error(err);
 
-      Actions.alarm();
-    })
-    .catch(err => {
-      if(err === 'ExitPromise') return null;
-      else if(err === 'LocationScreen') {
-        Actions.location();
+        setButtonDisabled(false);
         return null;
-      }
-      else if(err === 'LocationError') locationErrorAlert();
-      else if(err === 'ResponderError') responderErrorAlert();
-      else console.error(err);
-
-      setButtonDisabled(false);
-      return null;
-    })
+      })
   }
 
   // GET RESPONDERS
@@ -172,9 +168,9 @@ const UsingScreen = props => {
           <Button
             variant={buttonDisabled ? "dark" : "affirmation"}
             size="large"
-            onPress={() => {!buttonDisabled && startAlarm()}}
+            onPress={() => { !buttonDisabled && startAlarm() }}
           >
-            { buttonDisabled ? "wait..." : "start"}
+            {buttonDisabled ? "wait..." : "start"}
           </Button>
         </View>
       </Content>
