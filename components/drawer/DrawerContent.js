@@ -20,10 +20,10 @@ const DrawerContent = (props) => {
       variant="dark" size="medium"
       onPress={async () => {
         Actions.auth();
-        TokenService.clearToken();
-        removeNotificationToken(props.auth.userId);
         if (props.naloxoneAvailability)
           props.setStatus(props.auth.userId, props.auth.token, { "online": false })
+        TokenService.clearToken();
+        removeNotificationToken(props.auth.userId);
       }}
     >
       logout
