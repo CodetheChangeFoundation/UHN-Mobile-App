@@ -5,7 +5,8 @@ import { View } from "../layout";
 import { Button } from "../buttons";
 import { Text } from "../typography";
 import { connect } from 'react-redux';
-import { removePushToken } from "../../services/push-token.service"
+import { removeNotificationToken } from "../../services/notification-token.service"
+import * as TokenService from "../../services/token.service";
 import { setStatus } from '../../store/actions'
 import { List, ListItem } from '../layout'
 import theme from "../../styles/base";
@@ -19,10 +20,15 @@ const DrawerContent = (props) => {
       variant="dark" size="medium"
       onPress={async () => {
         Actions.auth();
-        await AsyncStorage.removeItem("token");
-        removePushToken(props.auth.userId);
-        if (props.naloxoneAvailability)
+        if (props.naloxoneAvailability) {
           props.setStatus(props.auth.userId, props.auth.token, { "online": false })
+        }
+
+        // In the case that current token expired, we need the refresh token to make another request to set status
+        setTimeout(() => {
+          removeNotificationToken(props.auth.userId);
+          TokenService.clearToken();
+        }, 1500)
       }}
     >
       logout
@@ -39,11 +45,11 @@ const DrawerContent = (props) => {
   }
 
   const routes = [
-    {name: 'Using', function: Actions.using},
-    {name: 'Responding', function: Actions.responding},
-    {name: 'User Profile', function: Actions.profile},
-    {name: 'Resource', function: Actions.resource},
-    {name: 'Logout', function: () => {Actions.modal(modalParams)}},
+    { name: 'Using', function: Actions.using },
+    { name: 'Responding', function: Actions.responding },
+    { name: 'User Profile', function: Actions.profile },
+    { name: 'Resource', function: Actions.resource },
+    { name: 'Logout', function: () => { Actions.modal(modalParams) } },
   ]
 
   return (
@@ -53,20 +59,20 @@ const DrawerContent = (props) => {
       </View>
       <View style={styles.bottomContainer}>
         <List style={styles.list}>
-        {routes.map((route) => (
-          <TouchableOpacity
-            key={`list-${route.name}`}
-            onPress={route.function}
-            style={styles.stretch}
-          >
-            <ListItem
-              style={styles.list}
-              leftText={route.name}
-              leftTextStyle={styles.item}
-              rightText=""
-            />
+          {routes.map((route) => (
+            <TouchableOpacity
+              key={`list-${route.name}`}
+              onPress={route.function}
+              style={styles.stretch}
+            >
+              <ListItem
+                style={styles.list}
+                leftText={route.name}
+                leftTextStyle={styles.item}
+                rightText=""
+              />
             </TouchableOpacity>
-        ))}
+          ))}
         </List>
       </View>
     </Fragment>
