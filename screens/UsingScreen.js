@@ -43,7 +43,7 @@ const UsingScreen = props => {
 
     // Check for responders in the area
     const distance = computeDistance(fredVictorCoordinates, props.location.coords)
-    if( distance > MAXIMUM_DISTANCE ) {
+    if (distance > MAXIMUM_DISTANCE) {
       Actions.alert({
         alertTitle: "Cannot start alarm",
         alertBody: "There are no responders within your area",

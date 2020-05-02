@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import { Actions } from "react-native-router-flux";
 import Timer from "../components/Timer/Timer";
 import { Container, Content, Header, View, Banner } from "../components/layout";
 import { Button } from "../components/buttons";
-import { Text } from "../components/typography";
 import { sendHelpRequest } from "../services/help-request.service";
 import { updateAlarmLog } from "../store/actions";
 
