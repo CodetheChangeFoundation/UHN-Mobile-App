@@ -9,7 +9,7 @@ import { Modal } from "../../components/popups";
 import { Button } from "../../components/buttons";
 import { convertToAddress } from "../../utils";
 import { connect } from "react-redux";
-import { dismissNotification } from "../../store/actions";
+import { dismissNotification, makeResponseLog } from "../../store/actions";
 import { addResponderToHelpRequest } from "../../services/help-request.service";
 import { HELP_REQUEST_RESPONDER_LIMIT } from "../../constants/helpRequest";
 
@@ -35,6 +35,8 @@ const ResponderHelpRequestModal = (props) => {
         // Handle error where there are already 6 responders who accepted
         if (!!response) {
           if (response.status == statusCodes.ok) {
+            props.makeResponseLog(props.auth.userId, incomingNotification.alarmMetricId, "true", props.auth.token);
+
             Actions.assignment();
           } else if ((response.status == statusCodes.badRequest) 
             && (response.data.statusCode == statusCodes.limitReachedError)) {
@@ -55,6 +57,7 @@ const ResponderHelpRequestModal = (props) => {
 
   declineRequest = () => {
     props.dismissNotification();
+    props.makeResponseLog(props.auth.userId, incomingNotification.alarmMetricId, "false", props.auth.token);
   }
 
   const modalHeader = `${userWhoNeedsHelp.username}\nis unresponsive`;
@@ -101,8 +104,9 @@ const styles = StyleSheet.create({
 mapStateToProps = state => {
   return {
     notification: state.notification,
+    currentResponseLog: state.metricResponse.currentResponseLog,
     auth: state.auth
   };
 };
 
-export default connect(mapStateToProps, { dismissNotification })(ResponderHelpRequestModal);
+export default connect(mapStateToProps, { dismissNotification, makeResponseLog })(ResponderHelpRequestModal);

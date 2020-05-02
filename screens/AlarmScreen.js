@@ -85,8 +85,8 @@ function mapStateToProps(state) {
     time: state.timer,
     userId: state.auth.userId,
     token: state.auth.token,
-    currentAlarmLog: state.alarm.currentAlarmLog
-  };
+    currentAlarmLog: state.metricAlarm.currentAlarmLog
+  }
 }
 
 export default connect(mapStateToProps, { updateAlarmLog })(AlarmScreen);
