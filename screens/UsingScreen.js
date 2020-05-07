@@ -46,17 +46,14 @@ const UsingScreen = props => {
     });
   }
 
-  const confirmAddressAlert = async (address, coords) => new Promise((resolve) => {
+  const confirmAddressAlert = async (address, note) => new Promise((resolve) => {
     Actions.alert({
       alertTitle: "Confirm your location!",
-      alertBody: `Your location is currently \n${address}.\nIs this correct? You will be directed to the locations page if it is not.`,
+      alertBody: `Location: \n${address}\nNote: \n${note}\n\nIs this correct?`,
       positiveButton: {
         text: "Correct",
         cancelable: true,
-        // set redux address when confirmed
         onPress: () => {
-          props.setLocalLocation({ coords: coords });
-          updateUserLocation({ data: { coords }, id: userId, token })
           resolve('confirmed');
         }
       },
@@ -77,16 +74,16 @@ const UsingScreen = props => {
     // Disable button presses
     setButtonDisabled(true);
 
-    // FIRST CHECK: Get the device location and confirm with the user
-    getDeviceLocationAsync()
-      .then(async (deviceCoords) => {
-        if (!deviceCoords || (deviceCoords.lat === 0 && deviceCoords.lng === 0)) throw "LocationError"
-        const address = await convertToAddressAsync(deviceCoords)
-        return { address, deviceCoords };
+    // FIRST CHECK: Get last known user location from Redux and confirm with the user
+    Promise.resolve(props.location)
+      .then(async ({ coords, note }) => {
+        if (!coords || (coords.lat === 0 && coords.lng === 0)) throw "LocationError"
+        const address = await convertToAddressAsync(coords)
+        return { address, note };
       })
       // Confirm with the user
-      .then(async ({ address, deviceCoords }) => {
-        const confirmation = await confirmAddressAlert(address, deviceCoords);
+      .then(async ({ address, note }) => {
+        const confirmation = await confirmAddressAlert(address, note);
         if (confirmation === 'unconfirmed') throw "LocationScreen"
       })
       // SECOND CHECK: check for responders in the area (by distance)
@@ -104,6 +101,7 @@ const UsingScreen = props => {
         if (err === 'ExitPromise') return null;
         else if (err === 'LocationScreen') {
           Actions.location();
+          setButtonDisabled(false);
           return null;
         }
         else if (err === 'LocationError') locationErrorAlert();
@@ -188,14 +186,12 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state, currentProps) => {
-  const { location } = state.userData;
   return {
-    location,
     userId: state.auth.userId,
     time: state.timer,
     token: state.auth.token,
     respondersAvailable: state.userData.respondersAvailable,
-    responders: state.responders.myResponders
+    location: state.userData.location
   };
 };
 
