@@ -66,6 +66,8 @@ export default function App() {
                 component={ResourceScreen}
                 title="Resource"
               />
+            </Scene>
+            <Scene key="location" hideNavBar>
               <Scene key="location"
                 component={LocationScreen}
                 title="Location"

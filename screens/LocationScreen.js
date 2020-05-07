@@ -48,10 +48,15 @@ const LocationScreen = (props) => {
     const [registeredNote, setRegisteredNote] = useState(null)
     
     useEffect(() => {
-        // Gets location data from redux (device location on log in)
-        convertToAddress({ latitude: props.location.coords.lat, longitude: props.location.coords.lng }, setAddress)
-        setLocation(props.location.coords)
-
+        if (!props.location.coords.lat || !props.location.coords.lng) {
+            refreshDeviceLocation();
+        } else {
+            // Gets location data from Redux
+            convertToAddress({ latitude: props.location.coords.lat, longitude: props.location.coords.lng }, setAddress)
+            setLocation(props.location.coords)
+            setNote(props.location.note);
+        }
+        
         // Get registered data from the database
         getUserLocationAsync({id: props.userId, token: props.token})
             .then( (res) => {
@@ -69,7 +74,6 @@ const LocationScreen = (props) => {
     const refreshDeviceLocation = () => {
         getDeviceLocationAsync()
         .then((coords) => {
-            console.log({coords})
             convertToAddress({ latitude: coords.lat, longitude: coords.lng }, setAddress)
             setLocation({ lat: coords.lat, lng: coords.lng })
         })
@@ -149,7 +153,7 @@ const LocationScreen = (props) => {
 
   return (
     <Container>
-    <Header leftButton="menu" onLeftButtonPress={() => Actions.drawerOpen()}>Location</Header>
+    <Header leftButton="arrow" onLeftButtonPress={() => Actions.main()}>Location</Header>
 
     <Content>
         <View style={styles.rowFlex}>
@@ -186,7 +190,6 @@ const LocationScreen = (props) => {
                 variant="text"
                 onChangeText={text => setNote(text)}
                 placeholder="note"
-                defaultValue={registeredNote}
                 value={note}
                 itemStyle={styles.inputItem}
                 style={styles.inputText}
