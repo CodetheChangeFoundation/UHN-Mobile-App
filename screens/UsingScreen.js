@@ -5,7 +5,7 @@ import { Actions } from "react-native-router-flux";
 import Timer from "../components/Timer/Timer";
 import { Container, Content, Header, View, Segment, Banner } from "../components/layout";
 import { Button, IconButton } from "../components/buttons";
-import { updateUserLocation, getDeviceLocationAsync, convertToAddressAsync } from "../utils";
+import { convertToAddressAsync } from "../utils";
 import { makeAlarmLog, getNumberOfAvailableResponders, setLocalLocation, getMyResponders } from "../store/actions";
 
 // const fredVictorCoordinates = {
@@ -28,7 +28,7 @@ const UsingScreen = props => {
   const locationErrorAlert = () => {
     Actions.alert({
       alertTitle: "Cannot start alarm",
-      alertBody: "Your location is not set/invalid. Please set your location in the 'locations' page' and enable location services on your device.",
+      alertBody: "Your location is invalid.",
       positiveButton: {
         text: "Set my location now",
         onPress: () => { Actions.location() },
@@ -49,9 +49,9 @@ const UsingScreen = props => {
   const confirmAddressAlert = async (address, note) => new Promise((resolve) => {
     Actions.alert({
       alertTitle: "Confirm your location!",
-      alertBody: `Location: \n${address}\nNote: \n${note}\n\nIs this correct?`,
+      alertBody: `Location: \n${address}\n\nNote: \n${note}\n\nIs this correct?`,
       positiveButton: {
-        text: "Correct",
+        text: "Yes",
         cancelable: true,
         onPress: () => {
           resolve('confirmed');

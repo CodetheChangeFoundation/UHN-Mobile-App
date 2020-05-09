@@ -12,8 +12,8 @@ import theme from '../styles/base'
 import {
     getDeviceLocationAsync,
     convertToCoordinates,
-    convertToAddress,
     getUserLocationAsync,
+    convertToAddressAsync,
     updateUserLocation
 } from '../utils/index'
 import { setLocalLocation } from '../store/actions'
@@ -41,41 +41,35 @@ const LocationScreen = (props) => {
     const [mapMarkers, setMapMarkers] = useState([])
 
     const [address, setAddress] = useState(null)
-    const [addressConfirm, setAddressConfirm] = useState(false) 
     const [note, setNote] = useState(null)
 
-    const [registeredAddress, setRegisteredAddress] = useState(null)
-    const [registeredNote, setRegisteredNote] = useState(null)
+    const [loading, setLoading] = useState(false)
     
     useEffect(() => {
-        if (!props.location.coords.lat || !props.location.coords.lng) {
+        if (!props.location?.coords?.lat || !props.location?.coords?.lng) {
+            // No location in Redux --  use current device location
             refreshDeviceLocation();
         } else {
-            // Gets location data from Redux
-            convertToAddress({ latitude: props.location.coords.lat, longitude: props.location.coords.lng }, setAddress)
-            setLocation(props.location.coords)
-            setNote(props.location.note);
+            // Use location data from Redux
+            convertToAddressAsync({ latitude: props.location.coords.lat, longitude: props.location.coords.lng })
+                .then((address) => {
+                  setAddress(address);
+                  setMapLocation(props.location.coords)
+                  setNote(props.location.note);
+                })
         }
-        
-        // Get registered data from the database
-        getUserLocationAsync({id: props.userId, token: props.token})
-            .then( (res) => {
-                if(res.location && res.location.coords) {
-                    res.location.coords.lat && res.location.coords.lng && convertToAddress(res.location.coords, setRegisteredAddress)
-                    // Simply saves the note to be used later
-                    res.location.note && setRegisteredNote(res.location.note)
-                }
-            })
-            .catch( (err) => { console.error(err) })
-    }, [])
+    }, [props.location, props.userId, props.token])
 
     // Function to get device location
     // Sets map coordinates
     const refreshDeviceLocation = () => {
         getDeviceLocationAsync()
         .then((coords) => {
-            convertToAddress({ latitude: coords.lat, longitude: coords.lng }, setAddress)
-            setLocation({ lat: coords.lat, lng: coords.lng })
+          setMapLocation({ lat: coords.lat, lng: coords.lng });
+          return convertToAddressAsync({ latitude: coords.lat, longitude: coords.lng });
+        })
+        .then((address) => {
+            setAddress(address);
         })
     }
 
@@ -85,7 +79,7 @@ const LocationScreen = (props) => {
     }
 
     // Function to set map location
-    const setLocation = (location) => {
+    const setMapLocation = (location) => {
         const { lat, lng } = location
         // Set new location and map zoom
         setMapCenterPosition({ lat, lng })
@@ -101,64 +95,36 @@ const LocationScreen = (props) => {
         // console.log("App Recieved", message)
     }
 
-    // Handler for when the registered location is picked
-    // Sets map coordinates and note
-    const pickRegistered = () => {
-        if(!registeredAddress) return
-        setAddress(registeredAddress)
-        convertToCoordinates(address, (coords) => {
-            setLocation(coords)
-            setNote(registeredNote)
-            setAddressConfirm(true)
-        }, () => {
-            setAddressConfirm(false)
-        })
-    }
-
-    // Handler for when user searches for an address
-    // Converts string address to coordinates and sets map coordinates
-    const handleSearch = () => {
-        convertToCoordinates(address, (coords) => {
-            setLocation(coords)
-            setAddressConfirm(true)
-        }, () => {
-            setAddressConfirm(false)
-        })
-    }
-
     // Submit handler
     // Converts string address to coordinates and updates online and redux db
     const handleConfirm = () => {
-        const params = {
-            data: {
-                coords: {},
-                note: note && note
-            },
-            id: props.userId,
-            token: props.token,
-        }
-
+        const { userId: id, token } = props;
+        setLoading(true);
         convertToCoordinates(address, (coords) => {
-            params.data.coords.lat = coords.lat
-            params.data.coords.lng = coords.lng
-            updateUserLocation(params)
-            props.setLocalLocation(params.data)
+            const location = {
+              coords: {
+                lat: coords.lat,
+                lng: coords.lng
+              },
+              note
+            }
+            props.setLocalLocation(location)
+            updateUserLocation({ id, token, data: location })
+            setLoading(false);
+            Actions.using();
         })
-        Actions.using()
     }
 
-    let addressInputRef = React.createRef()
     let notesInputRef = React.createRef()
-
 
   return (
     <Container>
     <Header leftButton="arrow" onLeftButtonPress={() => Actions.main()}>Location</Header>
 
     <Content>
-        <View style={styles.rowFlex}>
-            <Text style={{margin: 10}}>Please confirm your location</Text>
-            <IconButton variant="icon" name="md-refresh" size={20} onPress={refreshDeviceLocation}/>
+        <View style={styles.row}>
+            <Text>Please confirm your location</Text>
+            <IconButton variant="icon" name="md-refresh" size={20} style={styles.refreshIcon} onPress={refreshDeviceLocation}/>
         </View>
         <View style={styles.map}>
             <WebViewLeaflet
@@ -174,55 +140,44 @@ const LocationScreen = (props) => {
         </View>
         <Form style={styles.inputWrapper}>
             <Input label=""
-                ref={(input) => addressInputRef = input}
                 variant="text"
-                onChangeText={text => { setAddressConfirm(false); setAddress(text) }}
+                onChangeText={text => setAddress(text)}
                 placeholder="Enter Address"
                 value={address}
                 itemStyle={styles.inputItem}
                 style={styles.inputText}
-                onSubmitEditing={() => {
-                    if(!addressConfirm) handleSearch()
-                    notesInputRef._root.focus() }}
+                onSubmitEditing={() => { notesInputRef._root.focus() }}
             />
             <Input label=""
                 ref={(input) => notesInputRef = input}
                 variant="text"
                 onChangeText={text => setNote(text)}
-                placeholder="note"
+                placeholder='Note, e.g. "2nd floor"'
                 value={note}
                 itemStyle={styles.inputItem}
                 style={styles.inputText}
-                onSubmitEditing={addressConfirm ? handleConfirm : handleSearch}
+                onSubmitEditing={ handleConfirm }
             />
-            { registeredAddress ? (
-            <React.Fragment>
-                <Text style={{marginVertical: 20, width: "80%"}}>Registered Location:</Text>
-                <TouchableOpacity onPress={pickRegistered}>
-                    <TextInput  editable={false}
-                                style={styles.clickableText}
-                                pointerEvents="none"
-                    >{registeredAddress}</TextInput>
-                </TouchableOpacity>
-            </React.Fragment>
-            ) : (
-                <Text style={{marginVertical: 20, width: "80%"}}>No Registered Location Found!</Text>
-            )
-        }
         </Form>
 
         <View style={styles.searchButton}>
-            { addressConfirm ? 
-                (<Button variant="affirmation" size="large" onPress={handleConfirm}>confirm</Button>)
-                : (<Button variant="affirmation" size="large" onPress={handleSearch}>search</Button>)
-            }
-         </View>
+            <Button variant={ loading? "dark" : "affirmation" } size="medium" onPress={handleConfirm} disabled={loading}>
+              { loading? 'wait...' : 'confirm' }
+            </Button>
+        </View>
     </Content>
     </Container>
   );
 }
 
 const styles = StyleSheet.create({
+  row: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  refreshIcon: {
+    marginLeft: 10
+  },
   map: {
     flex: 3,
     width: "100%",
@@ -232,6 +187,7 @@ const styles = StyleSheet.create({
     width: "100%",
     marginTop: 10,
     flex: 5,
+    // flex: 0,
   },
   inputItem: {
     marginLeft: 0,
@@ -242,20 +198,9 @@ const styles = StyleSheet.create({
     top: 0,
     paddingBottom: 0,
   },
-  clickableText: {
-    width: "100%",
-    borderBottomColor: 'lightgrey',
-    borderBottomWidth: 1,
-    fontFamily: theme.fonts.body,
-    fontSize: theme.fontSizes.medium,
-    color: theme.colors.darkGrey,
-  },
   searchButton: {
     flex: 3,
-  },
-  rowFlex: {
-    display: 'flex',
-    flexDirection: 'row',
+    // flex: 0
   }
 });
 
