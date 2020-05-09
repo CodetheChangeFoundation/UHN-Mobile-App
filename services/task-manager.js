@@ -49,8 +49,8 @@ export const startLocationTask = () => {
   console.log("starting location task")
   return Location.startLocationUpdatesAsync(TaskNames.LOCATION_TASK_NAME, {
     accuracy: Location.Accuracy.High,
-    // distanceInterval: 50     // Receive updates only when the location has changed by at least this distance in meters
-    timeInterval: 10*1000     // Minimum time to wait between each update in milliseconds (Android only)
+    distanceInterval: 50     // Receive updates only when the location has changed by at least this distance in meters
+    // timeInterval: 10*1000     // More useful for testing -- Minimum time to wait between each update in milliseconds (Android only)
   })
     // On iOS, the Expo client does not include TaskManager and will throw an error.
     // TODO: iOS requires a custom Expo client https://docs.expo.io/guides/adhoc-builds/ 
