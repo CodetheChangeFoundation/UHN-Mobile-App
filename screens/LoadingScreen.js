@@ -10,7 +10,8 @@ import { Container, Content, View } from "../components/layout";
 import { Text } from "../components/typography";
 import { tokenRedirect, setLocalLocation, receiveNotification } from "../store/actions";
 import * as TokenService from "../services/token.service";
-import { promptLocationPermissions } from "../utils/index";
+import { promptLocationPermissions, getUserLocationAsync } from "../utils/index";
+import { startLocationTask } from "../services/task-manager";
 
 const LoadingScreen = props => {
   const fontsLoaded = false;
@@ -56,6 +57,9 @@ const LoadingScreen = props => {
         props.tokenRedirect(decodedToken.id, token, false);
         // Prompt for location permissions but don't save it to redux.
         await promptLocationPermissions();
+        await startLocationTask();
+        const registeredLocation = await getUserLocationAsync({ id: decodedToken.id, token: token});
+        props.setLocalLocation(registeredLocation.location);
         Actions.main();
       } else {
         console.log("token expired")

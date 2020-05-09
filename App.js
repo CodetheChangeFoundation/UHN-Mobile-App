@@ -21,6 +21,10 @@ import Alert from "./components/popups/Alert";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
 import { setupInterceptors } from "./services/axios";
+import { registerLocationTask } from "./services/task-manager";
+
+// Task manager needs to be defined in the global scope
+registerLocationTask();
 
 export default function App() {
   useEffect(() => {

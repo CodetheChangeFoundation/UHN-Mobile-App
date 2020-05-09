@@ -84,18 +84,17 @@ export const convertToAddressAsync = async (coordinates) => {
                 positiveButton: { text: 'OK' },
                 cancelable: false,
             });
-            fail && fail(null)
+            return null
         } else {
             // street, name, city, region, country, postalCode, name
             const { name, street, city, country } = results[0]
             let address = `${name} ${street}, ${city}`
             if (name.includes(street)) address = `${name}, ${city}`
     
-            // accepts a success callback, otherwise just returns the value
             return address
         }
 
-    } catch(err) {
+    } catch(error) {
         console.error('cannot reverse geocode coordinates!', {error})
     }
 }
