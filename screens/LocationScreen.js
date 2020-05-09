@@ -138,7 +138,7 @@ const LocationScreen = (props) => {
                 zoom={mapZoom}
             />
         </View>
-        <Form style={styles.inputWrapper}>
+        <Form style={styles.form}>
             <Input label=""
                 variant="text"
                 onChangeText={text => setAddress(text)}
@@ -146,6 +146,8 @@ const LocationScreen = (props) => {
                 value={address}
                 itemStyle={styles.inputItem}
                 style={styles.inputText}
+                hasNext
+                multiline textAlignVertical="top"
                 onSubmitEditing={() => { notesInputRef._root.focus() }}
             />
             <Input label=""
@@ -174,20 +176,17 @@ const styles = StyleSheet.create({
   row: {
     display: 'flex',
     flexDirection: 'row',
+    flex: 0
   },
   refreshIcon: {
     marginLeft: 10
   },
   map: {
-    flex: 3,
-    width: "100%",
-    height: "30%",
+    flex: 1,
+    marginVertical: 20
   },
-  inputWrapper: {
-    width: "100%",
-    marginTop: 10,
-    flex: 5,
-    // flex: 0,
+  form: {
+    flex: 0,
   },
   inputItem: {
     marginLeft: 0,
@@ -195,12 +194,11 @@ const styles = StyleSheet.create({
   },
   inputText: {
     height: "auto",
-    top: 0,
     paddingBottom: 0,
+    top: 0,
   },
   searchButton: {
-    flex: 3,
-    // flex: 0
+    flex: 0
   }
 });
 
