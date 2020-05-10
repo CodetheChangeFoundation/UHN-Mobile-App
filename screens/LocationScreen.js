@@ -158,6 +158,7 @@ const LocationScreen = (props) => {
                 value={note}
                 itemStyle={styles.inputItem}
                 style={styles.inputText}
+                multiline textAlignVertical="top"
                 onSubmitEditing={ handleConfirm }
             />
         </Form>
