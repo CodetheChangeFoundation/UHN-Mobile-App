@@ -49,7 +49,7 @@ const UsingScreen = props => {
   const confirmAddressAlert = async (address, note) => new Promise((resolve) => {
     Actions.alert({
       alertTitle: "Confirm your location!",
-      alertBody: `Location: \n${address}\n\nNote: \n${note}\n\nIs this correct?`,
+      alertBody: `Location: \n${address}\n\nNote: \n${note ? note : "You have not set a note"}\n\nIs this correct?`,
       positiveButton: {
         text: "Yes",
         cancelable: true,
