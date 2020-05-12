@@ -4,11 +4,12 @@ import { Actions } from "react-native-router-flux";
 import { View } from "../layout";
 import { Button } from "../buttons";
 import { Text } from "../typography";
-import { connect } from 'react-redux';
-import { removeNotificationToken } from "../../services/notification-token.service"
+import { connect } from "react-redux";
+import { removeNotificationToken } from "../../services/notification-token.service";
 import * as TokenService from "../../services/token.service";
-import { setStatus } from '../../store/actions'
-import { List, ListItem } from '../layout'
+import { stopLocationTask } from "../../services/task-manager";
+import { setStatus } from "../../store/actions";
+import { List, ListItem } from "../layout";
 import theme from "../../styles/base";
 
 const DrawerContent = (props) => {
@@ -20,6 +21,7 @@ const DrawerContent = (props) => {
       variant="dark" size="medium"
       onPress={async () => {
         Actions.auth();
+        await stopLocationTask();
         if (props.naloxoneAvailability) {
           props.setStatus(props.auth.userId, props.auth.token, { "online": false })
         }
@@ -45,11 +47,11 @@ const DrawerContent = (props) => {
   }
 
   const routes = [
-    { name: 'Using', function: Actions.using },
-    { name: 'Responding', function: Actions.responding },
-    { name: 'User Profile', function: Actions.profile },
-    { name: 'Resource', function: Actions.resource },
-    { name: 'Logout', function: () => { Actions.modal(modalParams) } },
+    { name: "Using", function: Actions.using },
+    { name: "Responding", function: Actions.responding },
+    { name: "User Profile", function: Actions.profile },
+    { name: "Resource", function: Actions.resource },
+    { name: "Logout", function: () => { Actions.modal(modalParams) } },
   ]
 
   return (
@@ -90,15 +92,15 @@ const styles = StyleSheet.create({
     flex: 2,
   },
   stretch: {
-    alignSelf: 'stretch',
+    alignSelf: "stretch",
   },
   list: {
-    alignSelf: 'stretch',
+    alignSelf: "stretch",
     borderBottomColor: theme.colors.fadedGrey,
   },
   item: {
-    alignSelf: 'stretch',
-    textAlign: 'center',
+    alignSelf: "stretch",
+    textAlign: "center",
     paddingRight: 0,
     marginLeft: 0,
     flex: 0,

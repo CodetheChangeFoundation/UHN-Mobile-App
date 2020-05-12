@@ -5,6 +5,8 @@ import { SERVER_ROOT } from "react-native-dotenv";
 import { Actions } from "react-native-router-flux";
 import { sendNotificationToken } from "../../services/notification-token.service";
 import * as TokenService from "../../services/token.service";
+import { setLocalLocation } from "./UserDataActions";
+import { getUserLocationAsync } from "../../utils";
 
 const login = (data, rememberMe) => {
   console.log("in login dispatch")
@@ -79,6 +81,8 @@ export const loginHandler = (credential, rememberMe) => {
         sendNotificationToken(response.data.id);
         await TokenService.setAccessToken(response.data.token);
         await TokenService.setRefreshToken(response.data.refreshToken);
+        const registeredLocation = await getUserLocationAsync({ id: response.data.id, token: response.data.token});
+        dispatch(setLocalLocation(registeredLocation.location));
         Actions.main();
       })
       .catch(error => {

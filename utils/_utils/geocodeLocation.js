@@ -65,3 +65,36 @@ export const convertToAddress = (coordinates, success, fail) => {
         console.error('cannot reverse geocode coordinates!', {error})
     })
 }
+
+export const convertToAddressAsync = async (coordinates) => {
+    try {
+
+        let coords = {coordinates}
+        if (coordinates && coordinates.lat || coordinates.lng) {
+            coords = { latitude: coordinates.lat, longitude: coordinates.lng }
+        }
+        else coords = { latitude: coordinates.latitude, longitude: coordinates.longitude }
+    
+        const results = await Location.reverseGeocodeAsync(coords)
+
+        if(!results[0]) {
+            Actions.alert({
+                alertTitle: 'Coordinates could not be read!',
+                alertBody: 'Please check your coordinates!',
+                positiveButton: { text: 'OK' },
+                cancelable: false,
+            });
+            return null
+        } else {
+            // street, name, city, region, country, postalCode, name
+            const { name, street, city, country } = results[0]
+            let address = `${name} ${street}, ${city}`
+            if (name.includes(street)) address = `${name}, ${city}`
+    
+            return address
+        }
+
+    } catch(error) {
+        console.error('cannot reverse geocode coordinates!', {error})
+    }
+}

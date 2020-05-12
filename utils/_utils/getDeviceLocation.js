@@ -14,28 +14,19 @@ export const promptLocationPermissions = async () => {
     })
 }
 
-export const getDeviceLocation = (success) => {
-    Location.requestPermissionsAsync()
-    .then(() => {
-        Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest })
-        .then((location) => {
-            const coordinates = { lat: location.coords.latitude, lng: location.coords.longitude }
+export const getDeviceLocationAsync = async () => {
+    // Get permissions first
+    await Location.requestPermissionsAsync();
 
-            if (success) success(coordinates)
-            return coordinates
-        })
-        .catch((error) => {
-            Actions.alert({
-                alertTitle: "Cannot get location!",
-                alertBody: (error.response?.data?.errors[0]?.message || ''),
-                positiveButton: { text: "OK" },
-                cancelable: true 
-            });
-        })
+    // Return promise
+    return Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest })
+    .then((location) => {
+        const coordinates = { lat: location.coords.latitude, lng: location.coords.longitude }
+        return coordinates
     })
     .catch((error) => {
         Actions.alert({
-            alertTitle: "Please allow location services!",
+            alertTitle: "Cannot get location!",
             alertBody: (error.response?.data?.errors[0]?.message || ''),
             positiveButton: { text: "OK" },
             cancelable: true 
