@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Alert, AppState, Platform } from "react-native";
+import { StyleSheet, AppState, Platform } from "react-native";
 import { Actions } from "react-native-router-flux";
 import theme from "../../styles/base";
 import statusCodes from "../../constants/statusCodes";
@@ -9,7 +9,7 @@ import { Modal } from "../../components/popups";
 import { Button } from "../../components/buttons";
 import { convertToAddress } from "../../utils";
 import { connect } from "react-redux";
-import { dismissNotification } from "../../store/actions";
+import { dismissNotification, makeResponseLog } from "../../store/actions";
 import { addResponderToHelpRequest } from "../../services/help-request.service";
 import { HELP_REQUEST_RESPONDER_LIMIT } from "../../constants/helpRequest";
 
@@ -35,17 +35,16 @@ const ResponderHelpRequestModal = (props) => {
         // Handle error where there are already 6 responders who accepted
         if (!!response) {
           if (response.status == statusCodes.ok) {
+            props.makeResponseLog(props.auth.userId, incomingNotification.alarmMetricId, "true", props.auth.token);
+
             Actions.assignment();
           } else if ((response.status == statusCodes.badRequest) 
             && (response.data.statusCode == statusCodes.limitReachedError)) {
-            Alert.alert(
-              "Response Not Needed",
-              `Thanks, but ${HELP_REQUEST_RESPONDER_LIMIT} people have already responded. Your help is not needed at this time.`,
-              [{
-                text: "OK",
-                onPress: () => props.dismissNotification()
-              }]
-            );
+            Actions.alert({
+              alertTitle: "No Help Required",
+              alertBody: `${userWhoNeedsHelp.username} does not need your help anymore. Thanks!`,
+              positiveButton: { text: "OK", onPress: () => props.dismissNotification() },
+            });
           } else {
             props.dismissNotification();
           }
@@ -58,6 +57,7 @@ const ResponderHelpRequestModal = (props) => {
 
   declineRequest = () => {
     props.dismissNotification();
+    props.makeResponseLog(props.auth.userId, incomingNotification.alarmMetricId, "false", props.auth.token);
   }
 
   const modalHeader = `${userWhoNeedsHelp.username}\nis unresponsive`;
@@ -78,8 +78,6 @@ const ResponderHelpRequestModal = (props) => {
       </View>
   );
 
-  // Wait until location coordinates have been converted into an address
-  // if (userWhoNeedsHelp.location && !address) return null;
   return (
     <Modal
       modalVisible={true}
@@ -106,8 +104,9 @@ const styles = StyleSheet.create({
 mapStateToProps = state => {
   return {
     notification: state.notification,
+    currentResponseLog: state.metricResponse.currentResponseLog,
     auth: state.auth
   };
 };
 
-export default connect(mapStateToProps, { dismissNotification })(ResponderHelpRequestModal);
+export default connect(mapStateToProps, { dismissNotification, makeResponseLog })(ResponderHelpRequestModal);

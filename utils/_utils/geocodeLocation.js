@@ -1,5 +1,5 @@
 import * as Location from "expo-location";
-import { Alert } from 'react-native'
+import { Actions } from "react-native-router-flux";
 
 /**
  * Both have the same pattern:
@@ -13,12 +13,12 @@ export const convertToCoordinates = (address, success, fail) => {
     Location.geocodeAsync(address)
     .then((results) => {
         if( !results[0] ) {
-            Alert.alert(
-                'Address not found!',
-                'Please check for spelling errors, or enter address in more detail!',
-                [{ text: 'OK' }],
-                {cancelable: false},
-            )
+            Actions.alert({
+                alertTitle: 'Address not found!',
+                alertBody: 'Please check for spelling errors, or enter address in more detail!',
+                positiveButton: { text: 'OK' },
+                cancelable: false,
+            });
             fail && fail(null)
         }
         else {
@@ -44,12 +44,12 @@ export const convertToAddress = (coordinates, success, fail) => {
     Location.reverseGeocodeAsync(coords)
     .then((results) => {
         if(!results[0]) {
-            Alert.alert(
-                'Coordinates could not be read!',
-                'Please check your coordinates!',
-                [{ text: 'OK' }],
-                {cancelable: false},
-            )
+            Actions.alert({
+                alertTitle: 'Coordinates could not be read!',
+                alertBody: 'Please check your coordinates!',
+                positiveButton: { text: 'OK' },
+                cancelable: false,
+            });
             fail && fail(null)
         } else {
             // street, name, city, region, country, postalCode, name
@@ -64,4 +64,37 @@ export const convertToAddress = (coordinates, success, fail) => {
     .catch((error) => {
         console.error('cannot reverse geocode coordinates!', {error})
     })
+}
+
+export const convertToAddressAsync = async (coordinates) => {
+    try {
+
+        let coords = {coordinates}
+        if (coordinates && coordinates.lat || coordinates.lng) {
+            coords = { latitude: coordinates.lat, longitude: coordinates.lng }
+        }
+        else coords = { latitude: coordinates.latitude, longitude: coordinates.longitude }
+    
+        const results = await Location.reverseGeocodeAsync(coords)
+
+        if(!results[0]) {
+            Actions.alert({
+                alertTitle: 'Coordinates could not be read!',
+                alertBody: 'Please check your coordinates!',
+                positiveButton: { text: 'OK' },
+                cancelable: false,
+            });
+            return null
+        } else {
+            // street, name, city, region, country, postalCode, name
+            const { name, street, city, country } = results[0]
+            let address = `${name} ${street}, ${city}`
+            if (name.includes(street)) address = `${name}, ${city}`
+    
+            return address
+        }
+
+    } catch(error) {
+        console.error('cannot reverse geocode coordinates!', {error})
+    }
 }

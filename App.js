@@ -1,5 +1,5 @@
-import React from "react";
-import { Router, Scene, Lightbox, ActionConst } from "react-native-router-flux";
+import React, { useEffect } from "react";
+import { Router, Scene, Actions, Lightbox, ActionConst } from "react-native-router-flux";
 import LoginScreen from "./screens/LoginScreen";
 import SignupScreen from "./screens/SignupScreen";
 import LoadingScreen from "./screens/LoadingScreen";
@@ -10,21 +10,28 @@ import SnoozeScreen from "./screens/SnoozeScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import ResourceScreen from "./screens/ResourceScreen";
 import MyRespondersScreen from "./screens/MyRespondersScreen";
-import LocationScreen from './screens/LocationScreen';
+import LocationScreen from "./screens/LocationScreen";
 import AddRespondersScreen from "./screens/AddRespondersScreen";
 import RemoveRespondersScreen from "./screens/RemoveRespondersScreen";
 import ResponderHelpRequestModal from "./screens/modals/ResponderHelpRequestModal";
-import GenericModal from "./screens/modals/GenericModal";
 import DirectionsScreen from "./screens/DirectionsScreen";
 import DrawerContent from "./components/drawer/DrawerContent";
+import Modal from "./components/popups/Modal";
+import Alert from "./components/popups/Alert";
 import { Provider } from "react-redux";
-import { createStore, applyMiddleware } from "redux";
-import thunk from "redux-thunk";
-import reducers from "./store/reducers";
+import { store } from "./store/store";
+import { setupInterceptors } from "./services/axios";
+import { registerLocationTask } from "./services/task-manager";
 
-const store = createStore(reducers, applyMiddleware(thunk));
+// Task manager needs to be defined in the global scope
+registerLocationTask();
 
 export default function App() {
+  useEffect(() => {
+    console.log("use effect App.js");
+    setupInterceptors();
+  });
+
   return (
     <Provider store={store}>
       <Router>
@@ -63,6 +70,8 @@ export default function App() {
                 component={ResourceScreen}
                 title="Resource"
               />
+            </Scene>
+            <Scene key="location" hideNavBar>
               <Scene key="location"
                 component={LocationScreen}
                 title="Location"
@@ -116,7 +125,12 @@ export default function App() {
           />
           <Scene
             key="modal"
-            component={GenericModal}
+            component={Modal}
+            hideNavBar
+          />
+          <Scene
+            key="alert"
+            component={Alert}
             hideNavBar
           />
         </Lightbox>

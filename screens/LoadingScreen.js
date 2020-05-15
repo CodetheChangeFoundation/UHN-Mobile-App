@@ -1,16 +1,17 @@
+var jwtDecode = require("jwt-decode");
+import { AppLoading, Notifications } from "expo";
 import React, { useEffect } from "react";
-import { StyleSheet, AsyncStorage } from "react-native";
+import { StyleSheet } from "react-native";
 import { Actions } from "react-native-router-flux";
+import { connect } from "react-redux";
 import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
-import { AppLoading } from "expo";
 import { Container, Content, View } from "../components/layout";
 import { Text } from "../components/typography";
-var jwtDecode = require("jwt-decode");
-import { Notifications } from "expo";
 import { tokenRedirect, setLocalLocation, receiveNotification } from "../store/actions";
-import { connect } from "react-redux";
-import { getDeviceLocation } from "../utils/index";
+import * as TokenService from "../services/token.service";
+import { promptLocationPermissions, getUserLocationAsync } from "../utils/index";
+import { startLocationTask } from "../services/task-manager";
 
 const LoadingScreen = props => {
   const fontsLoaded = false;
@@ -41,7 +42,7 @@ const LoadingScreen = props => {
   };
 
   _checkToken = async () => {
-    const token = await AsyncStorage.getItem("token");
+    const token = await TokenService.getAccessToken();
 
     if (token) {
       let isExpired = false;
@@ -54,11 +55,14 @@ const LoadingScreen = props => {
       if (!isExpired) {
         // TODO: Set actual remember me
         props.tokenRedirect(decodedToken.id, token, false);
-        getDeviceLocation(coords => {
-          props.setLocalLocation({ coords });
-        });
+        // Prompt for location permissions but don't save it to redux.
+        await promptLocationPermissions();
+        await startLocationTask();
+        const registeredLocation = await getUserLocationAsync({ id: decodedToken.id, token: token});
+        props.setLocalLocation(registeredLocation.location);
         Actions.main();
       } else {
+        console.log("token expired")
         Actions.auth();
       }
     } else {

@@ -3,7 +3,7 @@ import * as Permissions from "expo-permissions";
 import axios from "axios";
 import { SERVER_ROOT } from "react-native-dotenv";
 
-const sendPushToken = async userId => {
+const sendNotificationToken = async userId => {
   const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
 
   if (status !== "granted") {
@@ -25,7 +25,7 @@ const sendPushToken = async userId => {
 };
 
 // TODO: Consider a DELETE endpoint
-const removePushToken = async userId => {
+const removeNotificationToken = async userId => {
   return axios
     .post(SERVER_ROOT + "/users/" + userId + "/notification-token", {
       pushToken: null
@@ -37,6 +37,6 @@ const removePushToken = async userId => {
 };
 
 module.exports = {
-  sendPushToken,
-  removePushToken
+  sendNotificationToken,
+  removeNotificationToken
 };

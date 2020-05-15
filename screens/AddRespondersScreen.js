@@ -10,7 +10,7 @@ import { addResponders, respondersError } from "../store/actions";
 import { connect } from "react-redux";
 import * as axios from 'axios';
 import { SERVER_ROOT } from 'react-native-dotenv';
-
+import * as TokenService from "../services/token.service";
 
 class AddRespondersScreen extends Component {
   constructor(props) {
@@ -26,9 +26,7 @@ class AddRespondersScreen extends Component {
   getAllResponders = async (token) => {
     return await axios.get(
       `${SERVER_ROOT}/users/search`, 
-      {
-        headers: {"Authorization": token},
-      }
+      TokenService.getHeader(token)
     )
     .then((response) => {
       return response.data;

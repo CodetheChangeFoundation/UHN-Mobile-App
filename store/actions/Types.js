@@ -8,6 +8,7 @@ export const RESETTIME = "RESETTIME";
 // AuthAction types
 export const LOGIN = "LOGIN";
 export const LOGIN_FAILED = "LOGIN_FAILED";
+export const SET_NEW_ACCESS_TOKEN = "SET_NEW_ACCESS_TOKEN";
 // export const SIGNUP = "SIGNUP";
 export const SIGNUP_FAILED = "SIGNUP_FAILED";
 export const SET_LOADING = "SET_LOADING";
@@ -24,6 +25,10 @@ export const SET_NALOXONE_AVAILABILITY = 'SET_NALOXONE_AVAILABILITY';
 // MetricActions types
 export const SET_ALARMLOG_ID = "SET_ALARMLOG_ID";
 export const METRIC_ALARM_FAILED = "METRIC_ALARM_FAILED";
+
+// MetricResponse types
+export const SET_RESPONSELOG_ID = "SET_RESPONSELOG_ID";
+export const METRIC_RESPONSE_FAILED = "METRIC_RESPONSE_FAILED";
 
 // Notification types
 export const ADD_NOTIFICATION = "ADD_NOTIFICATION";

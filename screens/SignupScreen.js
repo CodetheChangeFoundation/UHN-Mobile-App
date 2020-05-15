@@ -16,7 +16,6 @@ class SignupScreen extends Component {
     super(props);
     this.state = {
       phoneNumber: "",
-      email: "",
       username: "",
       password: "",
       emailIsValid: false,
@@ -40,7 +39,6 @@ class SignupScreen extends Component {
     } else {
       this.props.setLoading(true);
       this.props.signupHandler({
-        email: email,
         phone: phoneNumber,
         username: username,
         password: password,
@@ -73,15 +71,6 @@ class SignupScreen extends Component {
               <Text variant="title">Create your account</Text>
             </View>
             <View style={styles.loginInfo}>
-              <Input variant="email"
-                label="Email"
-                ref={(input) => emailInputRef = input}
-                hasNext
-                refresh={this.state.refresh}
-                constraints={accountConstraints.signup.email}
-                onChangeText={(email, emailIsValid) => {this.setState({email, emailIsValid})}}
-                onSubmitEditing={() => phoneNumberInputRef._root.focus()}
-              />
               <Input variant="number"
                 label="Phone Number"
                 ref={(input) => phoneNumberInputRef = input}

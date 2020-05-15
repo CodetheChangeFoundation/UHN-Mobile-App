@@ -1,14 +1,15 @@
 import React, { Fragment } from "react";
-import { StyleSheet, AsyncStorage, TouchableOpacity } from "react-native";
+import { StyleSheet, AsyncStorage, TouchableOpacity, Image } from "react-native";
 import { Actions } from "react-native-router-flux";
-import { Modal } from "../popups";
 import { View } from "../layout";
 import { Button } from "../buttons";
 import { Text } from "../typography";
-import { connect } from 'react-redux';
-import { removePushToken } from "../../services/push-token.service"
-import { setStatus } from '../../store/actions'
-import { List, ListItem } from '../layout'
+import { connect } from "react-redux";
+import { removeNotificationToken } from "../../services/notification-token.service";
+import * as TokenService from "../../services/token.service";
+import { stopLocationTask } from "../../services/task-manager";
+import { setStatus } from "../../store/actions";
+import { List, ListItem } from "../layout";
 import theme from "../../styles/base";
 
 const DrawerContent = (props) => {
@@ -20,10 +21,16 @@ const DrawerContent = (props) => {
       variant="dark" size="medium"
       onPress={async () => {
         Actions.auth();
-        await AsyncStorage.removeItem("token");
-        removePushToken(props.auth.userId);
-        if (props.naloxoneAvailability)
+        await stopLocationTask();
+        if (props.naloxoneAvailability) {
           props.setStatus(props.auth.userId, props.auth.token, { "online": false })
+        }
+
+        // In the case that current token expired, we need the refresh token to make another request to set status
+        setTimeout(() => {
+          removeNotificationToken(props.auth.userId);
+          TokenService.clearToken();
+        }, 1500)
       }}
     >
       logout
@@ -40,34 +47,34 @@ const DrawerContent = (props) => {
   }
 
   const routes = [
-    {name: 'Using', function: Actions.using},
-    {name: 'Responding', function: Actions.responding},
-    {name: 'User Profile', function: Actions.profile},
-    {name: 'Resource', function: Actions.resource},
-    {name: 'Logout', function: () => {Actions.modal(modalParams)}},
+    { name: "Using", function: Actions.using },
+    { name: "Responding", function: Actions.responding },
+    { name: "User Profile", function: Actions.profile },
+    { name: "Resource", function: Actions.resource },
+    { name: "Logout", function: () => { Actions.modal(modalParams) } },
   ]
 
   return (
     <Fragment>
       <View style={styles.topContainer}>
-        <Text>Logo here</Text>
+        <Image source={require("../../assets/logo.png")} resizeMode="contain"></Image>
       </View>
       <View style={styles.bottomContainer}>
         <List style={styles.list}>
-        {routes.map((route) => (
-          <TouchableOpacity
-            key={`list-${route.name}`}
-            onPress={route.function}
-            style={styles.stretch}
-          >
-            <ListItem
-              style={styles.list}
-              leftText={route.name}
-              leftTextStyle={styles.item}
-              rightText=""
-            />
+          {routes.map((route) => (
+            <TouchableOpacity
+              key={`list-${route.name}`}
+              onPress={route.function}
+              style={styles.stretch}
+            >
+              <ListItem
+                style={styles.list}
+                leftText={route.name}
+                leftTextStyle={styles.item}
+                rightText=""
+              />
             </TouchableOpacity>
-        ))}
+          ))}
         </List>
       </View>
     </Fragment>
@@ -85,15 +92,15 @@ const styles = StyleSheet.create({
     flex: 2,
   },
   stretch: {
-    alignSelf: 'stretch',
+    alignSelf: "stretch",
   },
   list: {
-    alignSelf: 'stretch',
+    alignSelf: "stretch",
     borderBottomColor: theme.colors.fadedGrey,
   },
   item: {
-    alignSelf: 'stretch',
-    textAlign: 'center',
+    alignSelf: "stretch",
+    textAlign: "center",
     paddingRight: 0,
     marginLeft: 0,
     flex: 0,
