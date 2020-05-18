@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import theme from "../../styles/base";
 import { StyleSheet, TouchableOpacity } from "react-native";
@@ -7,6 +7,8 @@ import { View } from "../layout";
 import { Text } from "../typography";
 
 const IconButton = (props) => {
+  const [disabled, setDisabled] = useState(false);
+  
   // Render the content of the IconButton based on variant
   const iconButtonContent = {
     icon: (
@@ -19,10 +21,20 @@ const IconButton = (props) => {
     ),
   };
   const content = iconButtonContent[props.variant];
+  
+  const onPress = async () => {
+    if (!disabled) {
+      setDisabled(true);
+      await props.onPress();
+      setTimeout(() => setDisabled(false), 300);
+    }
+  };
 
   return (
     <TouchableOpacity 
-      {...{...iconButtonProps, ...props}} 
+      {...{...iconButtonProps, ...props}}
+      onPress={onPress}
+      disabled={disabled}
       style={{...iconButtonStyles.touchableOpacity, ...props.style}}
     >
       <View style={{...iconButtonStyles.view, width: props.size, height: props.size, borderRadius: props.size}}>

@@ -1,12 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import theme from "../../styles/base";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Text } from "../typography";
 
 const Button = (props) => {
+  const [disabled, setDisabled] = useState(false);
+
+  const onPress = async () => {
+    if (!disabled) {
+      setDisabled(true);
+      await props.onPress();
+      setTimeout(() => setDisabled(false), 300);
+    }
+  };
+  
   return (
-    <TouchableOpacity {...{...buttonProps, ...props}}
+    <TouchableOpacity
+      {...{...buttonProps, ...props}}
+      onPress={onPress}
+      disabled={disabled}
       style={{...baseButtonStyles, ...buttonStylesByVariant[props.variant], ...buttonStylesBySize[props.size], ...props.style}}
     >
       <Text variant="body" 
@@ -23,7 +36,8 @@ const Button = (props) => {
 Button.propTypes = {
   variant: PropTypes.oneOf([ "dark", "light", "affirmation", "warning" ]),
   size: PropTypes.oneOf([ "medium", "large" ]),
-  textStyles: PropTypes.object
+  textStyles: PropTypes.object,
+  onPress: PropTypes.func
 };
 
 Button.defaultProps = {
