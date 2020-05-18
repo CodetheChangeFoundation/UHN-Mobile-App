@@ -438,6 +438,7 @@ Props:
     - "body", "footnote", "title" (used for displaying text on screen)
     - "header" (used in the Header component)
     - "label" (used for very small text, e.g. button labels)
+    - "numeral" (used for digits on the countdown timer)
   - default: "body"
 
 ## Timer

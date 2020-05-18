@@ -1,25 +1,21 @@
 import React from "react";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
+import { View } from "../layout";
+import { Text } from "../typography";
+import theme from "../../styles/base";
 
 export default function SetTimeButton({ changeTimeHandler, children }) {
   return (
     <View>
       <TouchableOpacity onPress={changeTimeHandler}>
-        <Text style={style.buttonText}>{children}</Text>
-        <Text style={style.secondsText}>seconds</Text>
+        <Text style={styles.buttonText}>{children} s</Text>
       </TouchableOpacity>
     </View>
-  )
+  );
 };
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
   buttonText: {
-    paddingLeft: 8,
-    fontSize: 22,
-    color: "#67686B",
-  },
-  secondsText: {
-    fontSize: 14,
-    color: "#67686B",
+    fontSize: theme.fontSizes.large
   }
 });

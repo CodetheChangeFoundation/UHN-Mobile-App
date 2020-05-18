@@ -8,6 +8,7 @@ export const theme = {
     white: "#FFFFFF",
     red: "#FF0000",
     lightRed: "rgb(255, 230, 230)",
+    yellow: "#FFA500"
   }, 
   fonts: {
     body: "OpenSans-Regular",
