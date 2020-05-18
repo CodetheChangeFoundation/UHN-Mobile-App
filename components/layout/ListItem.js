@@ -16,7 +16,7 @@ const ListItem = (props) => {
         </View>}
       </View>
   );
-}
+};
 
 /* Prop Types */
 

@@ -8,7 +8,7 @@ const Container = (props) => {
   return (
       <NBContainer {...props} style={{...containerStyles.container, ...props.style}}>{props.children}</NBContainer>
   );
-}
+};
 
 /* Styles */
 

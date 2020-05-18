@@ -10,14 +10,14 @@ const Checkbox = (props) => {
       <Icon name={props.checked? "md-checkbox" : "md-square-outline"} style={checkboxStyles.icon}></Icon>
     </TouchableOpacity>
   );
-}
+};
 
 /* Prop Types */
 
 Checkbox.propTypes = {
   checked: PropTypes.bool.isRequired,
   onPress: PropTypes.func.isRequired
-}
+};
 
 /* Styles */ 
 

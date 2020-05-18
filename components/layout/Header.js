@@ -26,7 +26,7 @@ const Header = (props) => {
 
     </NBHeader>
   );
-}
+};
 
 /* Prop Types */
 

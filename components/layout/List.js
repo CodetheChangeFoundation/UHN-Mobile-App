@@ -12,7 +12,7 @@ const List = (props) => {
       </View>
     </ScrollView>
   );
-}
+};
 
 /* Styles */
 

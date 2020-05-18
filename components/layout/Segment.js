@@ -60,7 +60,7 @@ const SegmentButton = (props) => {
       <Text style={{...textStyles, ...segmentButtonTextStyles[props.status]}}>{props.text}</Text>
     </TouchableOpacity>
   );
-}
+};
 
 /* Prop Types */
 
@@ -79,7 +79,7 @@ SegmentButton.defaultProps = {
 
 const segmentButtonProps = {
   activeOpacity: theme.buttons.buttonPressOpacity
-}
+};
 
 /* Styles */
 
@@ -89,7 +89,7 @@ const buttonStyles = {
   height: theme.layout.segmentHeight,
   padding: theme.layout.padding,
   borderWidth: 1
-}
+};
 
 const segmentButtonStyles = StyleSheet.create({
   left: {
@@ -114,7 +114,7 @@ const segmentButtonStyles = StyleSheet.create({
 
 const textStyles = {
   textAlign: "center"
-}
+};
 
 const segmentButtonTextStyles = StyleSheet.create({
   active: {

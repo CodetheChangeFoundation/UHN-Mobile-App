@@ -16,7 +16,7 @@ const Button = (props) => {
       </Text>
     </TouchableOpacity>
   );
-}
+};
 
 /* Prop Types */
 
@@ -35,7 +35,7 @@ Button.defaultProps = {
 
 const buttonProps = {
   activeOpacity: theme.buttons.buttonPressOpacity
-}
+};
 
 /* Styles */
 
@@ -63,25 +63,6 @@ const buttonStylesByVariant = StyleSheet.create({
   }
 });
 
-const textStylesByVariant = StyleSheet.create({
-  dark: {
-    color: theme.colors.white
-  },
-  light: {
-    color: theme.colors.darkGrey
-  },
-  affirmation: {
-    color: theme.colors.white
-  },
-  warning: {
-    color: theme.colors.white
-  }
-});
-
-const baseTextStyles = {
-  textAlign: "center"
-}
-
 const buttonStylesBySize = StyleSheet.create({
   medium: {
     height: 54,
@@ -94,6 +75,25 @@ const buttonStylesBySize = StyleSheet.create({
     width: 240,
     borderRadius: 72,
     paddingHorizontal: 24
+  }
+});
+
+const baseTextStyles = {
+  textAlign: "center"
+}
+
+const textStylesByVariant = StyleSheet.create({
+  dark: {
+    color: theme.colors.white
+  },
+  light: {
+    color: theme.colors.darkGrey
+  },
+  affirmation: {
+    color: theme.colors.white
+  },
+  warning: {
+    color: theme.colors.white
   }
 });
 

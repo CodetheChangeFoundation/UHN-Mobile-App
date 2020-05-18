@@ -35,7 +35,7 @@ const Modal = (props) => {
       </TouchableWithoutFeedback>
     </RNModal>
   );
-}
+};
 
 /* Prop Types */
 
@@ -51,7 +51,7 @@ Modal.propTypes = {
 
 Modal.defaultProps = {
   modalVisible: true
-}
+};
 
 /* Styles */
 

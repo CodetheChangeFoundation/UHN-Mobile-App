@@ -8,13 +8,13 @@ const SearchBar = (props) => {
   const [showClearButton, setShowClearButton] = useState(false);
   let textInput = React.createRef();
 
-  const onFocus = () => { setShowClearButton(true); }
-  const onBlur = () => { setShowClearButton(false); }
+  const onFocus = () => { setShowClearButton(true); };
+  const onBlur = () => { setShowClearButton(false); };
 
   const onClearButtonPress = () => {
     textInput._root.clear();
     props.onClearButtonPress();
-  }
+  };
 
   return (
     <Item style={searchBarStyles.item}>
@@ -33,7 +33,7 @@ const SearchBar = (props) => {
         }
     </Item>
   );
-}
+};
 
 /* Prop Types */
 
@@ -43,18 +43,18 @@ SearchBar.propTypes = {
   onChangeText: PropTypes.func.isRequired,
   onClearButtonPress: PropTypes.func,
   onSubmitEditing: PropTypes.func.isRequired
-}
+};
 
 SearchBar.defaultProps = {
   enableClearButton: false,
   onClearButtonPress: null
-}
+};
 
 /* Props */
 
 const searchBarProps = {
   placeholderTextColor: theme.colors.darkGrey
-}
+};
 
 /* Styles */
 
@@ -62,7 +62,7 @@ const baseStyles = {
   fontFamily: theme.fonts.body,
   fontSize: theme.fontSizes.medium,
   color: theme.colors.darkGrey
-}
+};
 
 const searchBarStyles = StyleSheet.create({
   icon: {

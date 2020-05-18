@@ -11,7 +11,7 @@ const Switch = (props) => {
       style={props.style}
     />
   );
-}
+};
 
 /* Prop Types */
 
@@ -37,6 +37,6 @@ const switchProps = {
   borderWidth: 1,
   borderRadius: 16,
   borderColor: theme.colors.lightGrey
-}
+};
 
 export default Switch;

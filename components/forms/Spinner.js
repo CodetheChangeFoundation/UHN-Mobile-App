@@ -10,16 +10,16 @@ const Spinner = (props) => {
       <ActivityIndicator size={props.size} />
     </View>
   );
-}
+};
 
 /* Prop Types */
 
 Spinner.propTypes = {
   size: PropTypes.oneOf(["small", "large"])
-}
+};
 
 Spinner.defaultProps = {
   size: "large"
-}
+};
 
 export default Spinner;

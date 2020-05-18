@@ -17,7 +17,7 @@ const Alert = (props) => {
     Actions.pop();        // Pops the invisible alert Scene
     if (!!func) func();   // Runs the onPress prop for that button
     props.checkForNotifications()
-  }
+  };
 
   const renderButtons = (positiveButton, negativeButton, neutralButton) => {
     let buttons = [];
@@ -38,7 +38,7 @@ const Alert = (props) => {
     buttons.push({ text: positiveButton.text, style: positiveButton.style, onPress: () => dismissModal(positiveButton.onPress) });
 
     return buttons;
-  }
+  };
   
   RNAlert.alert(
     alertTitle,
@@ -74,10 +74,10 @@ Alert.propTypes = {
     onPress: PropTypes.func
   }),
   cancelable: PropTypes.bool
-}
+};
 
 Alert.defaultProps = {
   cancelable: true
-}
+};
 
 export default connect(null, { checkForNotifications })(Alert);

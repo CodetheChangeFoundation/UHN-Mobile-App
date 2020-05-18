@@ -20,7 +20,7 @@ const Input = React.forwardRef((props, ref) => {
       setRefresh(props.refresh);
       validateInput(value);
     }
-  })
+  });
 
   // Wrapper for onChangeText
   const onChangeText = ((newValue) => {
@@ -38,7 +38,7 @@ const Input = React.forwardRef((props, ref) => {
     const result = validate.single(value, props.constraints, {fullMessages: false});
     setError(result);
     props.onChangeText(value, !result);
-  })
+  });
 
   return (
     <Fragment>
@@ -117,7 +117,7 @@ const baseStyles = {
   fontFamily: theme.fonts.body,
   fontSize: theme.fontSizes.medium,
   color: theme.colors.darkGrey
-}
+};
 
 const noErrorInputStyles = StyleSheet.create({
   item: {
@@ -199,7 +199,7 @@ const AnimatedView = (props) => {
       {props.children}
     </Animated.View>
   );
-}
+};
 
 ///////////////////////////////////////////
 

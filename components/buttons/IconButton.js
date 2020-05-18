@@ -57,7 +57,7 @@ IconButton.defaultProps = {
 
 const iconButtonProps = {
   activeOpacity: theme.buttons.buttonPressOpacity
-}
+};
 
 /* Styles */
 

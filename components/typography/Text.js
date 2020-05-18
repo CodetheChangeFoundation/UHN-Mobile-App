@@ -8,7 +8,7 @@ const Text = (props) => {
   return (
     <NBText {...props} style={{...textStyles[props.variant], ...props.style}}>{props.children}</NBText>
   );
-}
+};
 
 /* Prop Types */
 
@@ -26,13 +26,13 @@ const regular = {
   fontFamily: theme.fonts.body,
   fontSize: theme.fontSizes.medium,
   color: theme.colors.darkGrey
-}
+};
 
 const big = {
   fontFamily: theme.fonts.header,
   fontSize: theme.fontSizes.large,
   color: theme.colors.darkGrey
-}
+};
 
 const textStyles = StyleSheet.create({
   body: {

@@ -8,7 +8,7 @@ const Form = (props) => {
   return (
       <NBForm {...props} style={{...formStyles.form, ...props.style}}>{props.children}</NBForm>
   );
-}
+};
 
 /* Styles */
 

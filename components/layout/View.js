@@ -8,7 +8,7 @@ const View = (props) => {
   return (
     <NBView {...props} style={{...viewStyles.view, ...props.style}}>{props.children}</NBView>
   );
-}
+};
 
 /* Styles */
 
