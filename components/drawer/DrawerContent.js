@@ -44,7 +44,7 @@ const DrawerContent = (props) => {
     modalFooterRight,
     onBackdropPress: () => Actions.pop(),
     onBackButtonPress: () => Actions.pop()
-  }
+  };
 
   const routes = [
     { name: "Using", function: Actions.using },
@@ -52,7 +52,7 @@ const DrawerContent = (props) => {
     { name: "User Profile", function: Actions.profile },
     { name: "Resource", function: Actions.resource },
     { name: "Logout", function: () => { Actions.modal(modalParams) } },
-  ]
+  ];
 
   return (
     <Fragment>
@@ -60,20 +60,21 @@ const DrawerContent = (props) => {
         <Image source={require("../../assets/logo.png")} resizeMode="contain"></Image>
       </View>
       <View style={styles.bottomContainer}>
-        <List style={styles.list}>
+        <List style={styles.list} scrollEnabled={false}>
           {routes.map((route) => (
-            <TouchableOpacity
-              key={`list-${route.name}`}
-              onPress={route.function}
-              style={styles.stretch}
-            >
-              <ListItem
-                style={styles.list}
-                leftText={route.name}
-                leftTextStyle={styles.item}
-                rightText=""
-              />
-            </TouchableOpacity>
+            <View style={styles.view} key={`list-${route.name}`}>
+              <TouchableOpacity
+                onPress={route.function}
+                style={styles.button}
+              >
+                <ListItem
+                  style={styles.item}
+                  leftText={route.name}
+                  leftTextStyle={styles.itemText}
+                  rightText=""
+                />
+              </TouchableOpacity>
+            </View>
           ))}
         </List>
       </View>
@@ -85,25 +86,32 @@ const styles = StyleSheet.create({
   topContainer: {
     flex: 1,
     justifyContent: "center",
-    alignContent: "center",
     alignItems: "center"
   },
   bottomContainer: {
-    flex: 2,
-  },
-  stretch: {
-    alignSelf: "stretch",
+    flex: 2
   },
   list: {
+    borderTopWidth: 1,
+    borderColor: theme.colors.fadedGrey
+  },
+  view: {
     alignSelf: "stretch",
-    borderBottomColor: theme.colors.fadedGrey,
+    borderBottomWidth: 1,
+    borderColor: theme.colors.fadedGrey
+  },
+  button: {
+    alignSelf: "stretch"
   },
   item: {
+    borderBottomWidth: 0
+  },
+  itemText: {
     alignSelf: "stretch",
     textAlign: "center",
     paddingRight: 0,
     marginLeft: 0,
-    flex: 0,
+    flex: 0
   }
 });
 
@@ -112,6 +120,6 @@ const mapStateToProps = (state) => {
     auth: state.auth,
     naloxoneAvailability: state.userData.naloxoneAvailability
   }
-}
+};
 
 export default connect(mapStateToProps, { setStatus })(DrawerContent);
