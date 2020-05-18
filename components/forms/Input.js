@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import theme from "../../styles/base";
 import { Animated, StyleSheet, Platform } from "react-native";
 import { Item, Input as NBInput, Label, Icon } from "native-base";
-import { View } from "../layout";
 import { Text } from "../typography";
 import validate from "validate.js";
 
@@ -51,9 +50,10 @@ const Input = React.forwardRef((props, ref) => {
         <NBInput
           {...{...inputProps[props.variant], ...props}}
           returnKeyType={props.hasNext? "next" : "done"}
-          blurOnSubmit={props.hasNext? false : true}
+          blurOnSubmit={props.multiline? true : props.hasNext? false : true}
           secureTextEntry={(props.variant == "password" && passwordHidden)}
           style={{...inputStyles.input, ...props.style}}
+          textAlignVertical={props.multiline? "top" : "auto"}
           getRef={ref}
           onChangeText={onChangeText}
         />

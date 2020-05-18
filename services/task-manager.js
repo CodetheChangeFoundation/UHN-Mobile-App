@@ -54,7 +54,7 @@ export const startLocationTask = () => {
   })
     // On iOS, the Expo client does not include TaskManager and will throw an error.
     // TODO: iOS requires a custom Expo client https://docs.expo.io/guides/adhoc-builds/ 
-    .catch((err) => console.error(err));
+    .catch((err) => console.warn(err));
 }
 
 export const stopLocationTask = () => {

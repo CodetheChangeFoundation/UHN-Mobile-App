@@ -112,7 +112,8 @@ const LocationScreen = (props) => {
             updateUserLocation({ id, token, data: location })
             setLoading(false);
             Actions.using();
-        })
+        },
+        () => setLoading(false));
     }
 
     let notesInputRef = React.createRef()
@@ -147,7 +148,7 @@ const LocationScreen = (props) => {
                 itemStyle={styles.inputItem}
                 style={styles.inputText}
                 hasNext
-                multiline textAlignVertical="top"
+                multiline
                 onSubmitEditing={() => { notesInputRef._root.focus() }}
             />
             <Input label=""
@@ -158,7 +159,7 @@ const LocationScreen = (props) => {
                 value={note}
                 itemStyle={styles.inputItem}
                 style={styles.inputText}
-                multiline textAlignVertical="top"
+                multiline
                 onSubmitEditing={ handleConfirm }
             />
         </Form>
