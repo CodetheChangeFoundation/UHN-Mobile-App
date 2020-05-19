@@ -41,7 +41,7 @@ const UsingScreen = props => {
     Actions.alert({
       alertTitle: "Cannot start alarm",
       alertBody: "There are not enough available responders within your area.",
-      positiveButton: { text: 'OK' },
+      positiveButton: { text: "OK" },
       cancelable: false
     });
   }
@@ -49,47 +49,43 @@ const UsingScreen = props => {
   const confirmAddressAlert = async (address, note) => new Promise((resolve) => {
     Actions.alert({
       alertTitle: "Confirm your location!",
-      alertBody: `Location: \n${address}\n\nNote: \n${note ? note : "You have not set a note"}\n\nIs this correct?`,
+      alertBody: `Location: \n${address}\n\nNote: \n${note ? note : "None"}\n\nIs this correct?`,
       positiveButton: {
         text: "Yes",
         cancelable: true,
-        onPress: () => {
-          resolve('confirmed');
-        }
+        onPress: () => resolve("confirmed")
       },
       negativeButton: {
         text: "No",
         style: "cancel",
-        onPress: () => {
-          resolve('unconfirmed');
-        }
-      }
+        onPress: () => resolve("unconfirmed")
+      },
+      onCancel: () => resolve("cancelled")
     });
   })
 
   // ALARM START FUNCTION
 
   const startAlarm = () => {
-
-    // Disable button presses
     setButtonDisabled(true);
 
     // FIRST CHECK: Get last known user location from Redux and confirm with the user
     Promise.resolve(props.location)
       .then(async ({ coords, note }) => {
-        if (!coords || (coords.lat === 0 && coords.lng === 0)) throw "LocationError"
-        const address = await convertToAddressAsync(coords)
+        if (!coords || (coords.lat === 0 && coords.lng === 0)) throw "LocationError";
+        const address = await convertToAddressAsync(coords);
         return { address, note };
       })
       // Confirm with the user
       .then(async ({ address, note }) => {
         const confirmation = await confirmAddressAlert(address, note);
-        if (confirmation === 'unconfirmed') throw "LocationScreen"
+        if (confirmation === "unconfirmed") throw "LocationScreen";
+        if (confirmation === "cancelled") throw "ExitPromise";
       })
       // SECOND CHECK: check for responders in the area (by distance)
       .then(async () => {
         // check that there are minimum number of responders
-        if (props.respondersAvailable < MINIMUM_RESPONDERS) throw "ResponderError"
+        if (props.respondersAvailable < MINIMUM_RESPONDERS) throw "ResponderError";
 
         // If all the checks pass, finally redirect to alarm page
         setButtonDisabled(false);
@@ -98,20 +94,25 @@ const UsingScreen = props => {
         Actions.alarm();
       })
       .catch(err => {
-        if (err === 'ExitPromise') return null;
-        else if (err === 'LocationScreen') {
-          Actions.location();
-          setButtonDisabled(false);
-          return null;
+        switch (err) {
+          case "LocationError":
+            locationErrorAlert();
+            break;
+          case "LocationScreen":
+            setButtonDisabled(false);
+            Actions.location();
+            break;
+          case "ResponderError":
+            responderErrorAlert();
+            break;
+          case "ExitPromise":
+            break;
+          default:
+            console.error(err);
         }
-        else if (err === 'LocationError') locationErrorAlert();
-        else if (err === 'ResponderError') responderErrorAlert();
-        else console.error(err);
-
         setButtonDisabled(false);
-        return null;
-      })
-  }
+      });
+  };
 
   // GET RESPONDERS
 
@@ -166,7 +167,8 @@ const UsingScreen = props => {
           <Button
             variant={buttonDisabled ? "dark" : "affirmation"}
             size="large"
-            onPress={() => { !buttonDisabled && startAlarm() }}
+            disabled={buttonDisabled}
+            onPress={() => startAlarm()}
           >
             {buttonDisabled ? "wait..." : "start"}
           </Button>
