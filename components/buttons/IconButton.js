@@ -7,7 +7,7 @@ import { View } from "../layout";
 import { Text } from "../typography";
 
 const IconButton = (props) => {
-  const [disabled, setDisabled] = useState(false);
+  const [throttle, setThrottle] = useState(false);
   const buttonTimeout = useRef(false);
 
   useEffect(() => {
@@ -16,10 +16,10 @@ const IconButton = (props) => {
   }, []);
   
   const onPress = async () => {
-    if (!disabled) {
-      setDisabled(true);
+    if (!throttle) {
+      setThrottle(true);
       await props.onPress();
-      buttonTimeout.current = setTimeout(() => setDisabled(false), 300);
+      buttonTimeout.current = setTimeout(() => setThrottle(false), 300);
     }
   };
   
@@ -36,14 +36,25 @@ const IconButton = (props) => {
   };
   const content = iconButtonContent[props.variant];
 
+  const disabled = props.disabled || throttle;
   return (
     <TouchableOpacity 
-      {...{...iconButtonProps, ...props}}
+      {...props}
+      activeOpacity={theme.buttons.buttonPressOpacity}
       onPress={onPress}
       disabled={disabled}
-      style={{...iconButtonStyles.touchableOpacity, ...props.style}}
+      style={{
+        ...iconButtonStyles.touchableOpacity,
+        ...props.style,
+        opacity: disabled? theme.buttons.buttonPressOpacity : 1
+      }}
     >
-      <View style={{...iconButtonStyles.view, width: props.size, height: props.size, borderRadius: props.size}}>
+      <View style={{
+        ...iconButtonStyles.view,
+        width: props.size,
+        height: props.size,
+        borderRadius: props.size
+      }}>
           {content}
       </View>
       {!!(props.label) && <Text variant="label">{props.label}</Text>}
@@ -69,12 +80,6 @@ IconButton.defaultProps = {
   size: 42,
   color: theme.colors.green,
   counterValue: 0
-};
-
-/* Props */
-
-const iconButtonProps = {
-  activeOpacity: theme.buttons.buttonPressOpacity
 };
 
 /* Styles */

@@ -5,7 +5,7 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 import { Text } from "../typography";
 
 const Button = (props) => {
-  const [disabled, setDisabled] = useState(false);
+  const [throttle, setThrottle] = useState(false);
   const buttonTimeout = useRef(false);
 
   useEffect(() => {
@@ -14,24 +14,37 @@ const Button = (props) => {
   }, []);
 
   const onPress = async () => {
-    if (!disabled) {
-      setDisabled(true);
+    if (!throttle) {
+      setThrottle(true);
       await props.onPress();
-      buttonTimeout.current = setTimeout(() => setDisabled(false), 300);
+      buttonTimeout.current = setTimeout(() => setThrottle(false), 300);
     }
   };
   
+  const disabled = props.disabled || throttle;
   return (
     <TouchableOpacity
-      {...{...buttonProps, ...props}}
+      {...props}
+      activeOpacity={theme.buttons.buttonPressOpacity}
       onPress={onPress}
-      disabled={props.disabled || disabled}
-      style={{...baseButtonStyles, ...buttonStylesByVariant[props.variant], ...buttonStylesBySize[props.size], ...props.style}}
+      disabled={disabled}
+      style={{
+        ...baseButtonStyles,
+        ...buttonStylesByVariant[props.variant],
+        ...buttonStylesBySize[props.size],
+        ...props.style,
+        opacity: disabled? theme.buttons.buttonPressOpacity : 1
+      }}
     >
       <Text variant="body" 
-        style={{...baseTextStyles, ...textStylesByVariant[props.variant], ...textStylesBySize[props.size], ...props.textStyles}}
+        style={{
+          ...baseTextStyles,
+          ...textStylesByVariant[props.variant],
+          ...textStylesBySize[props.size],
+          ...props.textStyles
+        }}
       >
-        {props.children}
+        {props.disabled? props.loadingText : props.children}
       </Text>
     </TouchableOpacity>
   );
@@ -43,18 +56,14 @@ Button.propTypes = {
   variant: PropTypes.oneOf([ "dark", "light", "affirmation", "warning" ]),
   size: PropTypes.oneOf([ "medium", "large" ]),
   textStyles: PropTypes.object,
-  onPress: PropTypes.func
+  loadingText: PropTypes.string,
+  onPress: PropTypes.func,
+  disabled: PropTypes.bool
 };
 
 Button.defaultProps = {
   variant: "dark",
   size: "medium"
-};
-
-/* Props */
-
-const buttonProps = {
-  activeOpacity: theme.buttons.buttonPressOpacity
 };
 
 /* Styles */

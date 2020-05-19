@@ -165,12 +165,13 @@ const UsingScreen = props => {
 
         <View style={styles.startButton}>
           <Button
-            variant={buttonDisabled ? "dark" : "affirmation"}
+            variant="affirmation"
             size="large"
             disabled={buttonDisabled}
+            loadingText="wait..."
             onPress={() => startAlarm()}
           >
-            {buttonDisabled ? "wait..." : "start"}
+            start
           </Button>
         </View>
       </Content>

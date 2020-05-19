@@ -4,7 +4,7 @@ import { Actions } from "react-native-router-flux";
 import { Container, Content, Header, View } from "../components/layout";
 import { Text } from "../components/typography";
 import { Button } from "../components/buttons";
-import { Form, Input, Spinner } from "../components/forms";
+import { Form, Input } from "../components/forms";
 import * as axios from 'axios';
 import { SERVER_ROOT } from 'react-native-dotenv';
 import { signupHandler, setLoading } from '../store/actions';
@@ -18,7 +18,6 @@ class SignupScreen extends Component {
       phoneNumber: "",
       username: "",
       password: "",
-      emailIsValid: false,
       phoneNumberIsValid: false,
       usernameIsValid: false,
       passwordIsValid: false,
@@ -28,12 +27,12 @@ class SignupScreen extends Component {
 
   onSignUpButtonPress = () => {
     const { email, phoneNumber, username, password } = this.state;
-    const { emailIsValid, phoneNumberIsValid, usernameIsValid, passwordIsValid } = this.state;
+    const { phoneNumberIsValid, usernameIsValid, passwordIsValid } = this.state;
 
     console.log("[DEBUG] SignUp Button pressed.");
-    console.log("\tEmail: " + email + "\n\tPhoneNumber: " + phoneNumber + "\n\tUsername: " + username + "\n\tPassword: " + password);
+    console.log("\tPhoneNumber: " + phoneNumber + "\n\tUsername: " + username + "\n\tPassword: " + password);
 
-    if (!(emailIsValid && phoneNumberIsValid && usernameIsValid && passwordIsValid)) {
+    if (!(phoneNumberIsValid && usernameIsValid && passwordIsValid)) {
       // Force all Inputs to validate and show error messages
       this.setState({refresh: !this.state.refresh});
     } else {
@@ -44,16 +43,6 @@ class SignupScreen extends Component {
         password: password,
       });
     }
-  }
-
-  renderSignUpButtonOrSpinner = () => {
-    return (this.props.auth.loading) ?
-      (<Spinner />)
-      :
-      (<Button variant="dark" size="medium" onPress={this.onSignUpButtonPress}>
-        sign up
-        </Button>
-      );
   }
 
   render() {
@@ -95,11 +84,19 @@ class SignupScreen extends Component {
                 refresh={this.state.refresh}
                 constraints={accountConstraints.signup.password}
                 onChangeText={(password, passwordIsValid) => {this.setState({password, passwordIsValid})}}
-                onSubmitEditing={this.onSignUpButtonPress}
+                onSubmitEditing={() => this.onSignUpButtonPress()}
               />
             </View>
             <View style={styles.signupButton}>
-              {this.renderSignUpButtonOrSpinner()}
+              <Button
+                variant="dark"
+                size="medium"
+                onPress={this.onSignUpButtonPress}
+                disabled={this.props.auth.loading}
+                loadingText="wait..."
+              >
+                login
+              </Button>
             </View>
 
             <View style={styles.message}>

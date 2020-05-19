@@ -49,6 +49,9 @@ Props:
 - textStyles: additional styles to pass onto the Text component inside the Button
   - optional
   - type: object
+- loadingText: text shown on the button when the "disabled" prop is set to true
+  - optional
+  - type: string
 
 
 **Switch**
@@ -381,7 +384,7 @@ const alertTitle = "Reminder";
 const alertBody = "Please update your profile.",
 const positiveButton = {
   text: "OK",
-  onPress: () => {console.log("Woo!")}
+  onPress: () => console.log("Woo!")
 };
 const negativeButton = {
   text: "Cancel",
@@ -390,6 +393,7 @@ const negativeButton = {
 const neutralButton = {
   text: "Later"
 }
+const onCancel = () => console.log("Cancelled");
 
 return (
   <Alert
@@ -399,6 +403,7 @@ return (
     negativeButton={negativeButton}
     neutralButton={neutralButton}
     cancelable={true}
+    onCancel={onCancel}
   /> 
 );
 ```

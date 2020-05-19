@@ -5,7 +5,7 @@ import theme from "../styles/base"
 import { Container, Content, Header, View } from "../components/layout";
 import { Text } from "../components/typography";
 import { Button, Switch } from "../components/buttons";
-import { Form, Input, Spinner } from "../components/forms";
+import { Form, Input } from "../components/forms";
 import { connect } from "react-redux";
 import { loginHandler, setLoading, setLocalLocation, setStatus } from "../store/actions";
 import { promptLocationPermissions } from "../utils/index";
@@ -38,16 +38,6 @@ class LoginScreen extends Component {
     await startLocationTask();
     this.props.setLoading(true);
     this.props.loginHandler({ username: username, password: password }, rememberMe);
-  }
-
-  renderLoginButtonOrSpinner = () => {
-    return (this.props.auth.loading) ?
-      (<Spinner />)
-      :
-      (<Button variant="dark" size="medium" onPress={this.onLoginButtonPress}>
-        login
-        </Button>
-      );
   }
 
   render() {
@@ -87,7 +77,15 @@ class LoginScreen extends Component {
             </View>
 
             <View style={styles.loginButton}>
-              {this.renderLoginButtonOrSpinner()}
+              <Button
+                variant="dark"
+                size="medium"
+                onPress={this.onLoginButtonPress}
+                disabled={this.props.auth.loading}
+                loadingText="wait..."
+              >
+                login
+              </Button>
             </View>
 
             <View style={styles.signupButton}>

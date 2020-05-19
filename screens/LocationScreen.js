@@ -38,7 +38,7 @@ const LocationScreen = (props) => {
     const [mapLayers, setMapLayers] = useState(null);
     const [mapMarkers, setMapMarkers] = useState([]);
 
-    const [address, setAddress] = useState(null);
+    const [address, setAddress] = useState("Loading current location...");
     const [note, setNote] = useState(null);
 
     const [loading, setLoading] = useState(false);
@@ -61,7 +61,7 @@ const LocationScreen = (props) => {
     // Function to get device location
     // Sets map coordinates
     const refreshDeviceLocation = () => {
-        setAddress(null);
+        setAddress("Loading current location...");
         getDeviceLocationAsync()
         .then((coords) => {
           setMapLocation({ lat: coords.lat, lng: coords.lng });
@@ -138,7 +138,7 @@ const LocationScreen = (props) => {
             <Input label=""
                 variant="text"
                 onChangeText={text => setAddress(text)}
-                placeholder="Loading current location..."
+                placeholder="Enter address"
                 value={address}
                 itemStyle={styles.inputItem}
                 style={styles.inputText}
@@ -160,8 +160,14 @@ const LocationScreen = (props) => {
         </Form>
 
         <View style={styles.searchButton}>
-            <Button variant={ loading? "dark" : "affirmation" } size="medium" onPress={handleConfirm} disabled={loading}>
-              { loading? "wait..." : "confirm" }
+            <Button
+              variant="affirmation"
+              size="medium"
+              onPress={handleConfirm}
+              disabled={loading}
+              loadingText="wait..."
+            >
+              confirm
             </Button>
         </View>
     </Content>
