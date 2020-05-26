@@ -40,16 +40,6 @@ class LoginScreen extends Component {
     this.props.loginHandler({ username: username, password: password }, rememberMe);
   }
 
-  renderLoginButtonOrSpinner = () => {
-    return (this.props.auth.loading) ?
-      (<Spinner />)
-      :
-      (<Button variant="dark" size="medium" onPress={this.onLoginButtonPress}>
-        login
-        </Button>
-      );
-  }
-
   render() {
     let passwordInputRef = React.createRef();
 
@@ -87,7 +77,15 @@ class LoginScreen extends Component {
             </View>
 
             <View style={styles.loginButton}>
-              {this.renderLoginButtonOrSpinner()}
+              <Button
+                variant="dark"
+                size="medium"
+                onPress={this.onLoginButtonPress}
+                disabled={this.props.auth.loading}
+                loadingText="wait..."
+              >
+                login
+              </Button>
             </View>
 
             <View style={styles.signupButton}>

@@ -6,18 +6,18 @@ import { Text as NBText } from "native-base";
 
 const Text = (props) => {
   return (
-    <NBText {...props} style={[textStyles[props.variant], props.style]}>{props.children}</NBText>
+    <NBText {...props} style={{...textStyles[props.variant], ...props.style}}>{props.children}</NBText>
   );
-}
+};
 
 /* Prop Types */
 
 Text.propTypes = {
-  variant: PropTypes.oneOf([ "body", "footnote", "title", "header", "label"]),
+  variant: PropTypes.oneOf(["body", "footnote", "title", "header", "label", "numeral"])
 };
 
 Text.defaultProps = {
-  variant: "body",
+  variant: "body"
 };
 
 /* Styles */
@@ -25,35 +25,40 @@ Text.defaultProps = {
 const regular = {
   fontFamily: theme.fonts.body,
   fontSize: theme.fontSizes.medium,
-  color: theme.colors.darkGrey,
-}
+  color: theme.colors.darkGrey
+};
 
 const big = {
   fontFamily: theme.fonts.header,
   fontSize: theme.fontSizes.large,
-  color: theme.colors.darkGrey,
-}
+  color: theme.colors.darkGrey
+};
 
 const textStyles = StyleSheet.create({
   body: {
-    ...regular,
+    ...regular
   },
   footnote: {
     ...regular,
-    fontSize: theme.fontSizes.small,
+    fontSize: theme.fontSizes.small
   },
   title: {
     ...big,
-    textAlign: "center",
+    textAlign: "center"
   },
   header: {
     ...big,
-    color: theme.colors.white,
+    color: theme.colors.white
   },
   label: {
     ...regular,
     fontSize: theme.fontSizes.xsmall,
-    textAlign: "center",
+    textAlign: "center"
+  },
+  numeral: {
+    fontFamily: theme.fonts.numeral,
+    fontSize: 72,
+    color: theme.colors.darkGrey
   }
 });
 

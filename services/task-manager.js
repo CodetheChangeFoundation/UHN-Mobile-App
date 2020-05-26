@@ -45,7 +45,7 @@ export const registerLocationTask = () => {
   });
 }
 
-export const startLocationTask = () => {
+export const startLocationTask = async () => {
   console.log("starting location task")
   return Location.startLocationUpdatesAsync(TaskNames.LOCATION_TASK_NAME, {
     accuracy: Location.Accuracy.High,
@@ -54,9 +54,10 @@ export const startLocationTask = () => {
   })
     // On iOS, the Expo client does not include TaskManager and will throw an error.
     // TODO: iOS requires a custom Expo client https://docs.expo.io/guides/adhoc-builds/ 
-    .catch((err) => console.error(err));
+    .catch((err) => console.warn(err));
 }
 
-export const stopLocationTask = () => {
-  return Location.stopLocationUpdatesAsync(TaskNames.LOCATION_TASK_NAME);
+export const stopLocationTask = async () => {
+  return Location.stopLocationUpdatesAsync(TaskNames.LOCATION_TASK_NAME)
+  .catch((err) => console.warn(err));
 }

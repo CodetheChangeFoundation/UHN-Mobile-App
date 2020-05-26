@@ -6,9 +6,9 @@ import View from "./View";
 
 const Banner = (props) => {
   return (
-    <View {...props} style={[bannerStyles.view, props.style]}>{props.children}</View>
+    <View {...props} style={{...bannerStyles.view, ...props.style}}>{props.children}</View>
   );
-}
+};
 
 /* Styles */
 
@@ -21,7 +21,7 @@ const bannerStyles = StyleSheet.create({
     height: theme.layout.bannerHeight,
     padding: theme.layout.padding,
     overflow: "hidden"
-  },
+  }
 });
 
 export default Banner;

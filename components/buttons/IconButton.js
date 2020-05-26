@@ -1,47 +1,63 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import theme from "../../styles/base";
 import { StyleSheet, TouchableOpacity } from "react-native";
+import { Icon } from "native-base";
 import { View } from "../layout";
 import { Text } from "../typography";
-import { Ionicons } from "@expo/vector-icons";
 
 const IconButton = (props) => {
-  const combinedProps = {
-    ...iconButtonProps,
-    ...props,
-  };
+  const [throttle, setThrottle] = useState(false);
+  const buttonTimeout = useRef(false);
 
-  const combinedIconProps = {
-    ...iconProps,
-    name: props.name,
-    size: props.size || iconProps.size
+  useEffect(() => {
+    // Clean up
+    return () => clearTimeout(buttonTimeout.current);
+  }, []);
+  
+  const onPress = async () => {
+    if (!throttle) {
+      setThrottle(true);
+      await props.onPress();
+      buttonTimeout.current = setTimeout(() => setThrottle(false), 300);
+    }
   };
-
+  
+  // Render the content of the IconButton based on variant
   const iconButtonContent = {
     icon: (
-      <Ionicons {...combinedIconProps}>{props.children}</Ionicons>
+      <Icon name={props.name} style={{fontSize: props.size, color: props.color}}>{props.children}</Icon>
     ),
     counter: (
-      <View style={iconButtonStyles.counterView}>
+      <View style={{...iconButtonStyles.counterView, backgroundColor: props.color}}>
         <Text variant="header">{props.counterValue}</Text>
       </View>
     ),
   };
   const content = iconButtonContent[props.variant];
 
-  // Make button size dynamic
-  const buttonStyle = {...iconButtonStyles.view}
-  buttonStyle.width = props.size || iconProps.size
-  buttonStyle.height = props.size || iconProps.size
-  buttonStyle.borderRadius = props.size || iconProps.size
-
+  const disabled = props.disabled || throttle;
   return (
-    <TouchableOpacity {...combinedProps} onPress={props.onPress} style={[iconButtonStyles.touchableOpacity, props.style]}>
-      <View style={buttonStyle}>
+    <TouchableOpacity 
+      {...props}
+      activeOpacity={theme.buttons.buttonPressOpacity}
+      onPress={onPress}
+      disabled={disabled}
+      style={{
+        ...iconButtonStyles.touchableOpacity,
+        ...props.style,
+        opacity: disabled? theme.buttons.buttonPressOpacity : 1
+      }}
+    >
+      <View style={{
+        ...iconButtonStyles.view,
+        width: props.size,
+        height: props.size,
+        borderRadius: props.size
+      }}>
           {content}
       </View>
-      {(props.label)? <Text variant="label">{props.label}</Text> : null}
+      {!!(props.label) && <Text variant="label">{props.label}</Text>}
     </TouchableOpacity>
   );
 }
@@ -54,45 +70,31 @@ IconButton.propTypes = {
   name: PropTypes.string,
   counterValue: PropTypes.number,
   size: PropTypes.number,
-  onPress: PropTypes.func,
+  color: PropTypes.string,
+  onPress: PropTypes.func
 };
 
 IconButton.defaultProps = {
   variant: "counter",
   name: "md-pin",
-  counterValue: 0,
-};
-
-/* Props */
-
-const iconButtonProps = {
-  activeOpacity: theme.buttons.buttonPressOpacity,
-}
-
-const iconProps = {
   size: 42,
   color: theme.colors.green,
-}
+  counterValue: 0
+};
 
 /* Styles */
 
 const iconButtonStyles = StyleSheet.create({
   touchableOpacity: {
-    alignItems: "center",
+    alignItems: "center"
   },
   view: {
     flex: 0,
-    width: 0,
-    height: 0,
-    borderRadius: 0,
-    alignItems: "center", 
-    justifyContent: "center", 
-    overflow: "hidden",
+    overflow: "hidden"
   },
   counterView: {
-    alignSelf: "stretch",
-    backgroundColor: theme.colors.green,
-  },
+    alignSelf: "stretch"
+  }
 });
 
 export default IconButton;

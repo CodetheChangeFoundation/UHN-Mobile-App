@@ -15,15 +15,10 @@ import {
 } from "../store/actions";
 import { sendHelpRequest } from "../services/help-request.service";
 import { Audio } from "expo-av";
+import theme from "../styles/base";
 
 class SnoozeScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.countdown = this.countdown.bind(this);
-    this.snoozeHandler = this.snoozeHandler.bind(this);
-  }
-
-  countdown() {
+  countdown = () => {
     if (this.props.time.timeRemaining - 1 <= 0) {
       this.props.clearTime();
       clearInterval(this.interval);
@@ -41,9 +36,9 @@ class SnoozeScreen extends Component {
     } else {
       this.props.countdown(this.props.time.timeRemaining);
     }
-  }
+  };
 
-  convertSeconds = seconds => {
+  convertSeconds = (seconds) => {
     let second = Math.floor((seconds % 3600) % 60);
     if (second <= 9) {
       second = "0" + second;
@@ -51,17 +46,17 @@ class SnoozeScreen extends Component {
     return second;
   };
 
-  convertSecondsToMinutes = seconds => {
+  convertSecondsToMinutes = (seconds) => {
     let minute = Math.floor((seconds % 3600) / 60);
     return minute;
   };
 
-  snoozeHandler() {
+  snoozeHandler = () => {
     this.props.updateAlarmLog(120, null, this.props.currentAlarmLog, this.props.token);
     clearInterval(this.interval);
     this.props.resetTime();
     Actions.start();
-  }
+  };
 
   async componentDidMount() {
     this.props.countdown(this.props.time.timeRemaining);
@@ -75,61 +70,44 @@ class SnoozeScreen extends Component {
     }
     this.soundObject.setIsLoopingAsync(true);
     this.soundObject.playAsync();
-  }
+  };
 
   componentWillUnmount() {
     Vibration.cancel();
     this.soundObject.stopAsync();
-  }
+  };
 
   render() {
     const { timeRemaining } = this.props.time;
+    const backgroundColor = timeRemaining % 2 === 0 ? theme.colors.red : theme.colors.yellow;
+
     return (
-      <Container style={{ backgroundColor: timeRemaining % 2 === 0 ? "#ff0000" : "#ffa500" }}>
+      <Container style={{ backgroundColor }}>
         <Header>Snooze Mode</Header>
         <Content>
-          <View
-            style={
-              (styles.container,
-              { backgroundColor: timeRemaining % 2 === 0 ? "#ff0000" : "#ffa500" })
-            }
-          >
-            <Text style={styles.textStyle}>Your responders{"\n"}will be notified in:</Text>
-            <Text style={styles.timeStyle}>
+          <View style={{ backgroundColor }}>
+            <Text style={styles.text}>Your responders{"\n"}will be notified in:</Text>
+            <Text variant="numeral" style={styles.numeral}>
               {this.convertSecondsToMinutes(timeRemaining)}:{this.convertSeconds(timeRemaining)}
             </Text>
             <Button variant="light" size="large" onPress={this.snoozeHandler}>
               snooze
             </Button>
-            <Text style={styles.textStyle}>We'll check up on you in 2 minutes</Text>
+            <Text style={styles.text}>We'll check up on you in 2 minutes</Text>
           </View>
         </Content>
       </Container>
     );
   }
-}
+};
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
+  text: {
+    color: theme.colors.white,
   },
-  textStyle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    textAlign: "center",
-    margin: 10,
-    color: "#ffffff",
-    alignItems: "center"
-  },
-  timeStyle: {
-    fontSize: 72,
-    fontWeight: "bold",
-    color: "#ffffff",
-    textAlign: "center",
-    paddingTop: 60,
-    paddingBottom: 80,
-    justifyContent: "center",
-    alignItems: "center"
+  numeral: {
+    color: theme.colors.white,
+    paddingVertical: 80
   }
 });
 
@@ -140,7 +118,7 @@ function mapStateToProps(state) {
     token: state.auth.token,
     currentAlarmLog: state.metricAlarm.currentAlarmLog
   }
-}
+};
 
 export default connect(mapStateToProps, {
   increaseTime,

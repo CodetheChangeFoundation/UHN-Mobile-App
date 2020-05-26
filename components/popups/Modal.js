@@ -6,16 +6,15 @@ import { View } from "../layout";
 import { Text } from "../typography";
 
 const Modal = (props) => {
-
   return (
     <RNModal animationType="fade" 
       transparent={true} 
       visible={props.modalVisible} 
-      onRequestClose={props.onBackButtonPress} 
-      style={styles.modal}
+      onRequestClose={props.onBackButtonPress}
     >
       <TouchableWithoutFeedback onPress={props.onBackdropPress}>
         <View style={styles.backdrop}>
+          {/* onStartShouldSetResponder enables touch-responsive components inside the modal body */}
           <View style={styles.container} onStartShouldSetResponder={() => true}>
             
             <View style={styles.header}>
@@ -36,7 +35,7 @@ const Modal = (props) => {
       </TouchableWithoutFeedback>
     </RNModal>
   );
-}
+};
 
 /* Prop Types */
 
@@ -47,12 +46,12 @@ Modal.propTypes = {
   modalFooterLeft: PropTypes.element,
   modalFooterRight: PropTypes.element,
   onBackdropPress: PropTypes.func,
-  onBackButtonPress: PropTypes.func,
+  onBackButtonPress: PropTypes.func
 };
 
 Modal.defaultProps = {
   modalVisible: true
-}
+};
 
 /* Styles */
 
@@ -60,9 +59,7 @@ const styles = StyleSheet.create({
   backdrop: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  modal: {
+    backgroundColor: "rgba(0, 0, 0, 0.5)"
   },
   container: {
     flex: 0,
@@ -81,13 +78,13 @@ const styles = StyleSheet.create({
   body: {
     flex: 0,
     padding: theme.layout.padding,
-    alignSelf: "stretch",
+    alignSelf: "stretch"
   },
   footer: {
     flex: 0,
     flexDirection: "row",
-    justifyContent: "space-around",
-  },
+    justifyContent: "space-around"
+  }
 });
 
 export default Modal;

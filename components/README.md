@@ -49,6 +49,9 @@ Props:
 - textStyles: additional styles to pass onto the Text component inside the Button
   - optional
   - type: object
+- loadingText: text shown on the button when the "disabled" prop is set to true
+  - optional
+  - type: string
 
 
 **Switch**
@@ -99,6 +102,14 @@ Props:
   - optional
   - type: number
   - default: 0
+- size: the size of the button
+  - optional
+  - type: number
+  - default: 42
+- color: the color of the button
+  - optional
+  - type: string
+  - default: "#60A781" (green)
 - onPress: the function to execute when the IconButton is pressed
   - optional
   - type: function
@@ -115,34 +126,38 @@ Every input should be wrapped in a Form element. This allows scrolling and keybo
 ```
 <Form>
   <Input
-    label="Phone Number"
-    variant="number"
-    hasError={false}
-    errorText="Format is invalid."
+    variant="email"
+    label="Email"
+    constraints={{presence: true, email: {message: "Email is not valid."}}}
+    onChangeText=((newValue, isValid) => {console.log(newValue, isValid)})
   />
 </Form>
 ```
 
 Props:
 
-- label: acts as the placeholder, then floats up once the Input is selected
-  - required
-  - type: string
 - variant: changes the keyboard type
   - optional
   - type: one of "text", "password", "number"
   - default: "text"
-- hasError: set to true if the current input value is invalid. Invalid inputs have a red underline.
-  - optional
-  - type: boolean
-  - default: false
-- errorText: the message that shows whenever hasError is true. If not specified, no error message will ever be shown.
-  - optional
+- label: acts as the placeholder, then floats up once the Input is selected
+  - required
   - type: string
 - hasNext: set to true if onSubmitEditing is linked to another Input (see below)
   - optional
   - type: boolean
   - default: false
+- constraints: the constraints object used to validate the input
+  - optional
+  - type: object, see https://validatejs.org/#validate-single
+- onChangeText: the callback invoked whenever the user types into the Input
+  - optional
+  - type: function
+    - if the constraints prop is supplied, onChangeText can take two parameters: onChangeText = (newValue, isValid) => {...}
+    - otherwise, onChangeText can be defined as normal: onChangeText = (newValue) => {...}
+- refresh: can be used to force the Input to validate. Every time refresh is toggled, Input will simulate a call to onChangeText using the current input value
+  - optional
+  - type: boolean
 
 You can use refs to link multiple Inputs together. In the example below, pressing the return key on the Username field will shift focus to the Password field. 
 
@@ -369,7 +384,7 @@ const alertTitle = "Reminder";
 const alertBody = "Please update your profile.",
 const positiveButton = {
   text: "OK",
-  onPress: () => {console.log("Woo!")}
+  onPress: () => console.log("Woo!")
 };
 const negativeButton = {
   text: "Cancel",
@@ -378,6 +393,7 @@ const negativeButton = {
 const neutralButton = {
   text: "Later"
 }
+const onCancel = () => console.log("Cancelled");
 
 return (
   <Alert
@@ -387,6 +403,7 @@ return (
     negativeButton={negativeButton}
     neutralButton={neutralButton}
     cancelable={true}
+    onCancel={onCancel}
   /> 
 );
 ```
@@ -426,6 +443,7 @@ Props:
     - "body", "footnote", "title" (used for displaying text on screen)
     - "header" (used in the Header component)
     - "label" (used for very small text, e.g. button labels)
+    - "numeral" (used for digits on the countdown timer)
   - default: "body"
 
 ## Timer

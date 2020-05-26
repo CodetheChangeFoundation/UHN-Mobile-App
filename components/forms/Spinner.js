@@ -1,19 +1,25 @@
-import React from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import React from "react";
+import PropTypes from "prop-types";
+import theme from "../../styles/base";
+import { StyleSheet, ActivityIndicator } from "react-native";
+import { View } from "../layout";
 
-export default Spinner = ({ size }) => {
-
+const Spinner = (props) => {
   return (
-    <View style={styles.spinnerStyles}>
-      <ActivityIndicator size={size || 'large'} />
+    <View>
+      <ActivityIndicator size={props.size} />
     </View>
   );
-}
-
-const styles = {
-  spinnerStyles: {
-    flex: 1,
-    justifyContent: "center",
-    alignItem: 'center',
-  }
 };
+
+/* Prop Types */
+
+Spinner.propTypes = {
+  size: PropTypes.oneOf(["small", "large"])
+};
+
+Spinner.defaultProps = {
+  size: "large"
+};
+
+export default Spinner;

@@ -1,34 +1,64 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import theme from "../../styles/base";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Text } from "../typography";
 
 const Button = (props) => {
-  const combinedProps = {
-    ...buttonProps,
-    ...props,
-  };
+  const [throttle, setThrottle] = useState(false);
+  const buttonTimeout = useRef(false);
 
+  useEffect(() => {
+    // Clean up
+    return () => clearTimeout(buttonTimeout.current);
+  }, []);
+
+  const onPress = async () => {
+    if (!throttle) {
+      setThrottle(true);
+      await props.onPress();
+      buttonTimeout.current = setTimeout(() => setThrottle(false), 300);
+    }
+  };
+  
+  const disabled = props.disabled || throttle;
   return (
-    <TouchableOpacity {...combinedProps} 
-      style={[baseButtonStyles, variantButtonStyles[props.variant], sizeButtonStyles[props.size], props.style]}
+    <TouchableOpacity
+      {...props}
+      activeOpacity={theme.buttons.buttonPressOpacity}
+      onPress={onPress}
+      disabled={disabled}
+      style={{
+        ...baseButtonStyles,
+        ...buttonStylesByVariant[props.variant],
+        ...buttonStylesBySize[props.size],
+        ...props.style,
+        opacity: disabled? theme.buttons.buttonPressOpacity : 1
+      }}
     >
       <Text variant="body" 
-        style={[baseTextStyles, variantTextStyles[props.variant], sizeTextStyles[props.size], props.textStyles]}
+        style={{
+          ...baseTextStyles,
+          ...textStylesByVariant[props.variant],
+          ...textStylesBySize[props.size],
+          ...props.textStyles
+        }}
       >
-        {props.children}
+        {props.disabled? props.loadingText : props.children}
       </Text>
     </TouchableOpacity>
   );
-}
+};
 
 /* Prop Types */
 
 Button.propTypes = {
   variant: PropTypes.oneOf([ "dark", "light", "affirmation", "warning" ]),
   size: PropTypes.oneOf([ "medium", "large" ]),
-  textStyles: PropTypes.object
+  textStyles: PropTypes.object,
+  loadingText: PropTypes.string,
+  onPress: PropTypes.func,
+  disabled: PropTypes.bool
 };
 
 Button.defaultProps = {
@@ -36,39 +66,52 @@ Button.defaultProps = {
   size: "medium"
 };
 
-/* Props */
-
-const buttonProps = {
-  activeOpacity: theme.buttons.buttonPressOpacity,
-}
-
 /* Styles */
 
 const baseButtonStyles = {
   margin: theme.layout.margin,
   alignItems: "center",
   justifyContent: "center",
-  flexShrink: 1,
+  flexShrink: 1
 };
 
-const variantButtonStyles = StyleSheet.create({
+const buttonStylesByVariant = StyleSheet.create({
   dark: {
-    backgroundColor: theme.colors.darkGrey,
+    backgroundColor: theme.colors.darkGrey
   },
   light: {
     backgroundColor: theme.colors.white,
     borderWidth: 1,
-    borderColor: theme.colors.darkGrey,
+    borderColor: theme.colors.darkGrey
   },
   affirmation: {
-    backgroundColor: theme.colors.green,
+    backgroundColor: theme.colors.green
   },
   warning: {
-    backgroundColor: theme.colors.red,
+    backgroundColor: theme.colors.red
   }
 });
 
-const variantTextStyles = StyleSheet.create({
+const buttonStylesBySize = StyleSheet.create({
+  medium: {
+    height: 54,
+    width: 180,
+    borderRadius: 54,
+    paddingHorizontal: 18
+  },
+  large: {
+    height: 72,
+    width: 240,
+    borderRadius: 72,
+    paddingHorizontal: 24
+  }
+});
+
+const baseTextStyles = {
+  textAlign: "center"
+}
+
+const textStylesByVariant = StyleSheet.create({
   dark: {
     color: theme.colors.white
   },
@@ -83,31 +126,12 @@ const variantTextStyles = StyleSheet.create({
   }
 });
 
-const baseTextStyles = {
-  textAlign: "center",
-}
-
-const sizeButtonStyles = StyleSheet.create({
+const textStylesBySize = StyleSheet.create({
   medium: {
-    height: 54,
-    width: 180,
-    borderRadius: 54,
-    paddingHorizontal: 18,
+    fontSize: theme.fontSizes.medium
   },
   large: {
-    height: 72,
-    width: 240,
-    borderRadius: 72,
-    paddingHorizontal: 24,
-  }
-});
-
-const sizeTextStyles = StyleSheet.create({
-  medium: {
-    fontSize: theme.fontSizes.medium,
-  },
-  large: {
-    fontSize: theme.fontSizes.large,
+    fontSize: theme.fontSizes.large
   }
 });
 

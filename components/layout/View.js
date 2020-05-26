@@ -6,9 +6,9 @@ import { View as NBView } from "native-base";
 
 const View = (props) => {
   return (
-    <NBView {...props} style={[viewStyles.view, props.style]}>{props.children}</NBView>
+    <NBView {...props} style={{...viewStyles.view, ...props.style}}>{props.children}</NBView>
   );
-}
+};
 
 /* Styles */
 
@@ -17,7 +17,7 @@ const viewStyles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center"
-  },
+  }
 });
 
 export default View;

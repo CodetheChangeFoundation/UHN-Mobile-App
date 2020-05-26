@@ -6,19 +6,19 @@ import View from "./View";
 
 const List = (props) => {
   return (
-    <ScrollView {...props} style={[styles.list, props.style]}>
+    <ScrollView {...props} style={{...styles.list, ...props.style}}>
       <View onStartShouldSetResponder={() => true}>
         {props.children}
       </View>
     </ScrollView>
   );
-}
+};
 
 /* Styles */
 
 const styles = StyleSheet.create({
   list: {
-    alignSelf: "stretch",
+    alignSelf: "stretch"
   }
 });
 

@@ -16,8 +16,8 @@ const Alert = (props) => {
   const dismissModal = (func) => {
     Actions.pop();        // Pops the invisible alert Scene
     if (!!func) func();   // Runs the onPress prop for that button
-    props.checkForNotifications()
-  }
+    props.checkForNotifications();
+  };
 
   const renderButtons = (positiveButton, negativeButton, neutralButton) => {
     let buttons = [];
@@ -38,7 +38,7 @@ const Alert = (props) => {
     buttons.push({ text: positiveButton.text, style: positiveButton.style, onPress: () => dismissModal(positiveButton.onPress) });
 
     return buttons;
-  }
+  };
   
   RNAlert.alert(
     alertTitle,
@@ -46,7 +46,7 @@ const Alert = (props) => {
     renderButtons(positiveButton, negativeButton, neutralButton),
     {
       cancelable, 
-      onDismiss: () => dismissModal(null)  // To pop this Scene when cancelable == true and the modal is dismissed
+      onDismiss: () => dismissModal(props.onCancel)  // To pop this Scene when cancelable == true and the modal is dismissed
     }
   );
   
@@ -73,11 +73,12 @@ Alert.propTypes = {
     style: PropTypes.oneOf(["default", "cancel", "destructive"]),
     onPress: PropTypes.func
   }),
-  cancelable: PropTypes.bool
-}
+  cancelable: PropTypes.bool,
+  onCancel: PropTypes.func
+};
 
 Alert.defaultProps = {
   cancelable: true
-}
+};
 
 export default connect(null, { checkForNotifications })(Alert);

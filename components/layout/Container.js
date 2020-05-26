@@ -6,9 +6,9 @@ import { Container as NBContainer } from "native-base";
 
 const Container = (props) => {
   return (
-      <NBContainer {...props} style={[containerStyles.container, props.style]}>{props.children}</NBContainer>
+      <NBContainer {...props} style={{...containerStyles.container, ...props.style}}>{props.children}</NBContainer>
   );
-}
+};
 
 /* Styles */
 
@@ -16,8 +16,8 @@ const containerStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.white,
-    justifyContent: "center",
-  },
+    justifyContent: "center"
+  }
 });
 
 export default Container;
