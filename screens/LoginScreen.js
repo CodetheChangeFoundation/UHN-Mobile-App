@@ -76,7 +76,7 @@ class LoginScreen extends Component {
               />
             </View>
 
-            <View style={styles.loginButton}>
+            <View style={styles.buttons}>
               <Button
                 variant="dark"
                 size="medium"
@@ -86,9 +86,6 @@ class LoginScreen extends Component {
               >
                 login
               </Button>
-            </View>
-
-            <View style={styles.signupButton}>
               <Button variant="light" size="medium" onPress={() => Actions.signup()}>sign up</Button>
             </View>
           </Form>
@@ -103,20 +100,17 @@ const styles = StyleSheet.create({
     flex: 0,
   },
   rememberMe: {
-    flex: 2,
+    flex: 0,
     flexDirection: "row",
-    marginTop: theme.layout.margin,
+    marginBottom: theme.layout.margin,
     alignSelf: "flex-end",
+    justifyContent: "flex-start"
   },
   rememberMeSwitch: {
     marginLeft: theme.layout.margin,
   },
-  loginButton: {
-    flex: 6,
-    justifyContent: "flex-start",
-  },
-  signupButton: {
-    flex: 3,
+  buttons: {
+    justifyContent: "space-around"
   }
 });
 
