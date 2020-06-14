@@ -104,10 +104,12 @@ class SnoozeScreen extends Component {
 const styles = StyleSheet.create({
   text: {
     color: theme.colors.white,
+    paddingVertical: theme.layout.margin,
+    textAlign: "center"
   },
   numeral: {
     color: theme.colors.white,
-    paddingVertical: 80
+    paddingVertical: "10%"
   }
 });
 

@@ -135,7 +135,7 @@ const LocationScreen = (props) => {
             />
         </View>
         <Form style={styles.form}>
-            <Input label=""
+            <Input
                 variant="text"
                 onChangeText={text => setAddress(text)}
                 placeholder="Enter address"
@@ -146,7 +146,7 @@ const LocationScreen = (props) => {
                 multiline
                 onSubmitEditing={() => { notesInputRef._root.focus() }}
             />
-            <Input label=""
+            <Input
                 ref={(input) => notesInputRef = input}
                 variant="text"
                 onChangeText={text => setNote(text)}

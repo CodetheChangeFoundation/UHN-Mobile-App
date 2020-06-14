@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Dimensions, TouchableWithoutFeedback, Modal as RNModal } from 'react-native';
+import { StyleSheet, TouchableWithoutFeedback, Modal as RNModal } from 'react-native';
 import PropTypes from "prop-types";
 import theme from "../../styles/base";
 import { View } from "../layout";
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 0,
-    padding: theme.layout.padding,
+    marginBottom: theme.layout.margin,
     alignSelf: "stretch"
   },
   footer: {
