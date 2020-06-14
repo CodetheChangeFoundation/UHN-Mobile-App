@@ -77,7 +77,7 @@ IconButton.propTypes = {
 IconButton.defaultProps = {
   variant: "counter",
   name: "md-pin",
-  size: 42,
+  size: theme.buttons.iconSize,
   color: theme.colors.green,
   counterValue: 0
 };

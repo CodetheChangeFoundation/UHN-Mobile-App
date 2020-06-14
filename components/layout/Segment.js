@@ -8,7 +8,7 @@ import View from "./View";
 
 const Segment = (props) => {
   return (
-    <View style={segmentStyles.view}>
+    <View style={{...segmentStyles.view, ...props.style}}>
       <SegmentButton 
         side="left"
         text={props.leftText}
@@ -85,8 +85,8 @@ const segmentButtonProps = {
 
 const buttonStyles = {
   flex: 1,
+  flexShrink: 1,
   justifyContent: "center",
-  height: theme.layout.segmentHeight,
   padding: theme.layout.padding,
   borderWidth: 1
 };

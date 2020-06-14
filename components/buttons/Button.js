@@ -69,7 +69,7 @@ Button.defaultProps = {
 /* Styles */
 
 const baseButtonStyles = {
-  margin: theme.layout.margin,
+  margin: theme.layout.padding,
   alignItems: "center",
   justifyContent: "center",
   flexShrink: 1

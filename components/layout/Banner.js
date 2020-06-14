@@ -18,9 +18,7 @@ const bannerStyles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    height: theme.layout.bannerHeight,
-    padding: theme.layout.padding,
-    overflow: "hidden"
+    padding: theme.layout.padding
   }
 });
 
