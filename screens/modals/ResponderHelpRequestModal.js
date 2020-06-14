@@ -65,12 +65,13 @@ const ResponderHelpRequestModal = (props) => {
     <View style={styles.body}>
         <Text style={styles.address}>{address || "Location not specified."}</Text>
         <Button variant="affirmation" size="large"
+          style={styles.button}
           onPress={() => acceptRequest()}
         >
           I am on my way with Naloxone
         </Button>
         <Button variant="light" size="large" 
-          style={styles.bottomButton}
+          style={styles.button}
           onPress={() => declineRequest()}
         >
           I can't help now
@@ -96,8 +97,8 @@ const styles = StyleSheet.create({
   address: {
     textAlign: "center"
   },
-  bottomButton: {
-    marginTop: 0,
+  button: {
+    marginTop: theme.layout.margin,
   }
 })
 
