@@ -11,7 +11,6 @@ const Input = React.forwardRef((props, ref) => {
   const [passwordHidden, setPasswordHidden] = useState(true);
   const [value, setValue] = useState("");
   const [error, setError] = useState("");
-  const [selection, setSelection] = useState(0);
 
   const inputStyles = (!!error)? errorInputStyles : noErrorInputStyles;
 
@@ -56,10 +55,7 @@ const Input = React.forwardRef((props, ref) => {
           {...{...inputProps[props.variant], ...props}}
           returnKeyType={props.hasNext? "next" : "done"}
           blurOnSubmit={props.multiline? true : props.hasNext? false : true}
-          onEndEditing={() => setSelection(0)}
-          onFocus={() => setSelection(value.length)}
           secureTextEntry={(props.variant == "password" && passwordHidden)}
-          selection={{start: selection}}
           style={{...inputStyles.input, ...props.style}}
           textAlignVertical={props.multiline? "top" : "auto"}
           getRef={ref}
