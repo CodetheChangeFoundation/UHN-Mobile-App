@@ -50,7 +50,7 @@ const DrawerContent = (props) => {
     { name: "Using", function: Actions.using },
     { name: "Responding", function: Actions.responding },
     { name: "User Profile", function: Actions.profile },
-    { name: "Resource", function: Actions.resource },
+    { name: "Resources", function: Actions.resource },
     { name: "Logout", function: () => { Actions.modal(modalParams) } },
   ];
 
