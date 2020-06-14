@@ -57,7 +57,7 @@ const textStyles = StyleSheet.create({
   },
   numeral: {
     fontFamily: theme.fonts.numeral,
-    fontSize: 72,
+    fontSize: theme.fontSizes.xlarge,
     color: theme.colors.darkGrey
   }
 });

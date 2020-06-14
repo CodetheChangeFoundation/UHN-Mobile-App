@@ -7,6 +7,7 @@ import { Container, Content, Header, View, Segment, Banner } from "../components
 import { Button, IconButton } from "../components/buttons";
 import { convertToAddressAsync } from "../utils";
 import { makeAlarmLog, getNumberOfAvailableResponders, setLocalLocation, getMyResponders } from "../store/actions";
+import theme from "../styles/base";
 
 // const fredVictorCoordinates = {
 //   lat: 43.6536212,
@@ -136,15 +137,14 @@ const UsingScreen = props => {
       </Header>
 
       <Content>
-        <Banner>
-          <Segment
-            active="left"
-            leftText="using"
-            rightText="responding"
-            onRightButtonPress={() => Actions.responding()}
-          />
-        </Banner>
-        <Banner>
+        <Segment
+          style={styles.segment}
+          active="left"
+          leftText="using"
+          rightText="responding"
+          onRightButtonPress={() => Actions.responding()}
+        />
+        <Banner style={styles.icons}>
           <IconButton
             variant="icon"
             name="md-pin"
@@ -180,11 +180,20 @@ const UsingScreen = props => {
 };
 
 const styles = StyleSheet.create({
+  segment: {
+    flex: 0
+  },
+  icons: {
+    flex: 0,
+    flexGrow: 1,
+    padding: theme.layout.padding
+  },
   timer: {
-    flex: 5
+    flex: 0,
+    flexGrow: 2
   },
   startButton: {
-    flex: 2
+    flex: 3
   }
 });
 

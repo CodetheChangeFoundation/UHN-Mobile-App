@@ -40,12 +40,16 @@ const Input = React.forwardRef((props, ref) => {
     props.onChangeText(value, !result);
   });
 
+  const passwordIcon = passwordHidden? "md-eye" : "md-eye-off";
   return (
     <Fragment>
 
-      <Item floatingLabel {...itemProps} style={inputStyles.item}>
+      <Item floatingLabel={!!props.label} {...itemProps} style={inputStyles.item}>
 
-        <Label style={inputStyles.label}>{props.label}</Label>
+        {
+          props.label &&
+          <Label style={inputStyles.label}>{props.label}</Label>
+        }
 
         <NBInput
           {...{...inputProps[props.variant], ...props}}
@@ -59,12 +63,10 @@ const Input = React.forwardRef((props, ref) => {
         />
 
         {/* For password inputs, add an icon to show/hide password */}
-        {(props.variant == "password") && (
-          (passwordHidden)? 
-          <Icon active style={inputStyles.icon} name="md-eye" onPress={() => setPasswordHidden(false)} /> 
-          : 
-          <Icon active style={inputStyles.icon} name="md-eye-off" onPress={() => setPasswordHidden(true)} />
-        )}
+        {
+          (props.variant == "password") &&
+          <Icon active style={inputStyles.icon} name={passwordIcon} onPress={() => setPasswordHidden(false)} />
+        }
 
       </Item>
 
@@ -80,7 +82,8 @@ const Input = React.forwardRef((props, ref) => {
 
 Input.propTypes = {
   variant: PropTypes.oneOf([ "text", "password", "number"]),
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  placeholder: PropTypes.string,
   hasNext: PropTypes.bool,
   refresh: PropTypes.bool,
   constraints: PropTypes.object,
@@ -122,7 +125,6 @@ const baseStyles = {
 const noErrorInputStyles = StyleSheet.create({
   item: {
     ...baseStyles,
-    marginTop: theme.layout.margin,
     backgroundColor: theme.colors.white    // Match the background color
   },
   label: {

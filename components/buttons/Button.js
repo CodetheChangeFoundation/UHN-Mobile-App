@@ -16,8 +16,8 @@ const Button = (props) => {
   const onPress = async () => {
     if (!throttle) {
       setThrottle(true);
-      await props.onPress();
       buttonTimeout.current = setTimeout(() => setThrottle(false), 300);
+      await props.onPress();
     }
   };
   
@@ -69,7 +69,7 @@ Button.defaultProps = {
 /* Styles */
 
 const baseButtonStyles = {
-  margin: theme.layout.margin,
+  margin: theme.layout.padding,
   alignItems: "center",
   justifyContent: "center",
   flexShrink: 1

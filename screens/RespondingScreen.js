@@ -56,7 +56,9 @@ const RespondingScreen = props => {
         </Banner>
 
         <View style={styles.setAvailability}>
-          <Text>I am available with Naloxone</Text>
+          <View style={styles.availabilityText}>
+            <Text>I am available with Naloxone</Text>
+          </View>
           <Switch
             style={styles.availabilitySwitch}
             value={props.naloxoneAvailability}
@@ -98,6 +100,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginVertical: theme.layout.margin
+  },
+  availabilityText: {
+    alignItems: "flex-start",
+    flexWrap: "wrap"
   },
   availabilitySwitch: {
     marginLeft: theme.layout.margin

@@ -98,10 +98,6 @@ class SignupScreen extends Component {
                 login
               </Button>
             </View>
-
-            <View style={styles.message}>
-              <Text variant="footnote">You'll receive a verification code via text.</Text>
-            </View>
           </Form>
         </Content>
       </Container>
@@ -112,18 +108,14 @@ class SignupScreen extends Component {
 
 const styles = StyleSheet.create({
   title: {
-    flex: 0,
+    flex: 0
   },
   loginInfo: {
-    flex: 0,
+    flex: 0
   },
   signupButton: {
-    flex: 1,
-  },
-  message: {
-    flex: 0,
-    justifyContent: "flex-start",
-  },
+    flex: 1
+  }
 });
 
 const mapStateToProps = (state) => {

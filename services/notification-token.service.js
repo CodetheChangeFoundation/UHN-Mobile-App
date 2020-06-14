@@ -11,8 +11,13 @@ const sendNotificationToken = async userId => {
     return;
   }
 
-  let token = await Notifications.getExpoPushTokenAsync();
-  console.log("push token: ", token);
+  let token = "";
+  try {
+    token = await Notifications.getExpoPushTokenAsync();
+    console.log("push token: ", token);
+  } catch (err) {
+    console.log("no push token received");
+  }
 
   return axios
     .post(SERVER_ROOT + "/users/" + userId + "/notification-token", {

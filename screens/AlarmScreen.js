@@ -52,9 +52,6 @@ const AlarmScreen = props => {
       </Header>
 
       <Content>
-        <Banner />
-        <Banner />
-
         <View style={styles.timer}>
           <Timer isUsing={true} />
         </View>

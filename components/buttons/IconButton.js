@@ -18,8 +18,8 @@ const IconButton = (props) => {
   const onPress = async () => {
     if (!throttle) {
       setThrottle(true);
-      await props.onPress();
       buttonTimeout.current = setTimeout(() => setThrottle(false), 300);
+      await props.onPress();
     }
   };
   
@@ -77,7 +77,7 @@ IconButton.propTypes = {
 IconButton.defaultProps = {
   variant: "counter",
   name: "md-pin",
-  size: 42,
+  size: theme.buttons.iconSize,
   color: theme.colors.green,
   counterValue: 0
 };

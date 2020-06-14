@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
 import { increaseTime, decreaseTime, countdown, clearTime, resetTime, updateAlarmLog } from "../../store/actions";
@@ -74,7 +74,7 @@ class Timer extends Component {
     return (
       <ProgressCircle
         percent={(1 - timeRemaining / time) * 100}
-        radius={127.5}
+        radius={Math.round(Dimensions.get("window").width * 0.375)}
         borderWidth={8}
         color={theme.colors.lightGrey}
         shadowColor={timeRemaining < 30 ? theme.colors.red : theme.colors.green}
